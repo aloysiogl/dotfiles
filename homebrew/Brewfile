@@ -1,0 +1,16 @@
+cask_args appdir: '/Applications'
+
+tap 'homebrew/bundle'
+
+brew 'the_silver_searcher' # For ag
+brew 'bat' # cat
+brew 'coreutils' # https://apple.stackexchange.com/questions/69223/how-to-replace-mac-os-x-utilities-with-gnu-core-utilities
+brew 'wget'
+brew 'zsh'
+
+cask 'docker'
+cask 'google-chrome'
+cask 'iterm2'
+cask 'spectacle'
+cask 'visual-studio-code'
+cask 'whatsapp'

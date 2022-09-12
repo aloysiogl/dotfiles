@@ -1,0 +1,5 @@
+fd() {
+  if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
+  ag --nobreak --nonumbers --noheading $1 | fzf
+
+}

@@ -13,6 +13,12 @@ defaults write com.apple.NetworkBrowser BrowseAllInterfaces 1
 # Always open everything in Finder's list view. This is important.
 defaults write com.apple.Finder FXPreferredViewStyle Nlsv
 
+# Set dock to autohide
+defaults write com.apple.dock autohide-time-modifier -int 0;killall Dock
+
+# Cmd+Q acctually closes finder
+defaults write com.apple.finder QuitMenuItem -bool YES && killall Finder
+
 # Show the ~/Library folder.
 chflags nohidden ~/Library
 

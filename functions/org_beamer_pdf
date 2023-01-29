@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+# Usage: org_beamer_pdf <file>
+# Description: compiles an org beamer file to pdf
+#
+org_beamer_pdf () {
+    if [ -f $1 ]; then
+        org_file=$1
+        echo "Compiling $org_file to pdf"
+
+        emacs -u "$(id -un)" \
+            --batch \
+            --eval '(load user-init-file)' \
+            $org_file \
+            -f org-beamer-export-to-pdf
+
+    else
+        echo "'$1' is not a valid file"
+    fi
+}

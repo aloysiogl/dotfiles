@@ -1,0 +1,16 @@
+env:
+  TERM: xterm-256color
+font:
+  normal:
+    family: "JetBrainsMonoNL Nerd Font"
+  size: 20
+import:
+  - ~/.config/alacritty/catppuccin/catppuccin-mocha.yml
+# Start tmux if now on launch
+shell:
+  program: /bin/zsh
+  args:
+    - -l
+    - -c
+    - "tmux attach || tmux"
+  

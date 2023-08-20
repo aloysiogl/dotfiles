@@ -8,6 +8,8 @@ brew 'nvim'
 brew 'ripgrep'
 brew 'the_silver_searcher' # For ag
 brew 'wget'
+brew 'koekeishiya/formulae/yabai' # you may need --HEAD version
+brew 'koekeishiya/formulae/skhd'
 brew 'zsh'
 
 cask 'docker'

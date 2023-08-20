@@ -3,7 +3,7 @@ env:
 font:
   normal:
     family: "JetBrainsMonoNL Nerd Font"
-  size: 20
+  size: 16
 import:
   - ~/.config/alacritty/catppuccin/catppuccin-mocha.yml
 # Start tmux if now on launch

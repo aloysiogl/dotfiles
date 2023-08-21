@@ -10,5 +10,5 @@ vim.keymap.set("n", "<C-h>", "<cmd> TmuxNavigateLeft<CR>", { silent = true })
 vim.keymap.set("n", "<C-l>", "<cmd> TmuxNavigateRight<CR>", { silent = true })
 
 --Movement
-vim.keymap.set("n", "K", "9k", { silent = true })
+vim.keymap.set("n", "K", "9k", { silent = true }) --TODO this is being blocked by something
 vim.keymap.set("n", "J", "9j", { silent = true })

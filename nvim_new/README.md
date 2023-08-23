@@ -5,6 +5,7 @@ ln -s ~/.dotfiles/nvim ~/.config/nvim
 TODOS:
 - [X] Look at the keymaps in the defautl site for K (it is for lsp) and remap that
 - [ ] In lazygit you should add syntax highlight
+- [ ] Understande where the references are stored for language servers
 - [ ] Understand what other modes of flash do
 - [ ] Improve fixes provided by the language server better mappings
 - [ ] Find fuzzy finder for current file in /

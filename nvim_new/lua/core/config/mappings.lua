@@ -1,7 +1,7 @@
--- movement
-vim.keymap.set("i", "jk", "<ESC>", { silent = true })
-vim.keymap.set("c", "jk", "<ESC>", { silent = true }) --quit search
-vim.keymap.set("n", "-", vim.cmd.Ex)
+-- movementmap
+vim.keymap.set("n", "<leader>-", vim.cmd.Ex)
+vim.keymap.set("n", "-", "<C-o>")
+vim.keymap.set("n", "=", "<C-i>")
 
 vim.keymap.set("n", "J", "9j", { silent = true })
 vim.keymap.set("n", "J", "9j", { silent = true })
@@ -14,10 +14,19 @@ vim.keymap.set("c", "<C-k>", "<C-t>", { desc = "Prevous in search mode" })
 vim.keymap.set("n", "<leader>b", "<cmd>BufstopPreview<cr>", { silent = true })
 
 -- utilities
+vim.keymap.set("i", "jk", "<ESC>", { silent = true })
+
 vim.keymap.set("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
 vim.keymap.set("n", "<leader>g", "<cmd>LazyGit<cr>", { desc = "LazyGit" })
 vim.keymap.set("n", "<leader>x", "<cmd>bd<cr>", { desc = "LazyGit" })
+
 vim.keymap.set("v", "q", "<ESC>", { desc = "Quite visual mode" })
+
+vim.keymap.set("c", "jk", "<CR>", { silent = true }) --quit search
+-- vim.keymap.set("c", "<CR>", "<cmd>noh<CR>", { desc = "Close highlight after search" })
+
+-- search
+vim.keymap.set("n", "z/", "<cmd>FuzzySearch<cr>", { desc = "Fuzzy Search within buffer", noremap = true })
 
 -- harpoon
 local mark = require("harpoon.mark")

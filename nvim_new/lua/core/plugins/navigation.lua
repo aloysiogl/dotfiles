@@ -100,4 +100,10 @@ return {
     cmd = "BufstopSpeedToggle",
     event = "VeryLazy",
   },
+  {
+    "haya14busa/is.vim"
+  },
+  {
+    "ggvgc/vim-fuzzysearch"
+  }
 }

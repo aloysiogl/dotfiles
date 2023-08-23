@@ -100,6 +100,14 @@ return {
           vim.keymap.set({ 'n' }, 'H', function()
             vim.lsp.buf.hover()
           end, opts)
+
+          vim.keymap.set({ 'n' }, 'L', function()
+            vim.lsp.buf.code_action()
+          end, opts)
+
+          vim.keymap.set({ 'n' }, '<leader>rn', function()
+            vim.lsp.buf.rename()
+          end, opts)
         end)
 
 

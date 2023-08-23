@@ -1,6 +1,7 @@
 local opt = vim.opt
 
 opt.number = true
+opt.wrap = true
 opt.relativenumber = true
 opt.expandtab = true  -- Use spaces instead of tabs
 opt.tabstop = 2       -- Number of spaces tabs count for

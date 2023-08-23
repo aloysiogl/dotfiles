@@ -7,6 +7,10 @@ vim.keymap.set("n", "J", "9j", { silent = true })
 vim.keymap.set("n", "K", "9k", { silent = true })
 vim.keymap.set("n", "K", "9k", { silent = true })
 
+-- utilities
+vim.keymap.set("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
+vim.keymap.set("n", "<leader>g", "<cmd>LazyGit<cr>", { desc = "LazyGit" })
+
 -- harpoon
 local mark = require("harpoon.mark")
 local tmux = require("harpoon.tmux")
@@ -38,9 +42,6 @@ vim.keymap.set('n', '<leader><space>', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>,', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
-
--- lazy
-vim.keymap.set("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
 
 --- easymotion
 vim.g.EasyMotion_smartcase = 1

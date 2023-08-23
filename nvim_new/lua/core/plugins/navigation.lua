@@ -32,4 +32,17 @@ return {
       })
     end
   },
+  {
+    'prichrd/netrw.nvim',
+    -- trigger only when entering in netrw
+    event = 'FileType netrw',
+    dependencies = {
+      'nvim-tree/nvim-web-devicons'
+    },
+    config = function()
+      require 'netrw'.setup {
+        use_devicons = true,
+      }
+    end
+  }
 }

@@ -1,0 +1,5 @@
+[user]
+  name = aloysiogl
+  email = aloysiogl@gmail.com
+[core]
+  editor = nvim

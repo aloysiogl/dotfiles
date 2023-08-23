@@ -7,6 +7,9 @@ vim.keymap.set("n", "J", "9j", { silent = true })
 vim.keymap.set("n", "K", "9k", { silent = true })
 vim.keymap.set("n", "K", "9k", { silent = true })
 
+-- close buffer
+vim.keymap.set("n", "<leader>x", "<cmd>bd<Cr>", { silent = true })
+
 -- harpoon
 local mark = require("harpoon.mark")
 local tmux = require("harpoon.tmux")

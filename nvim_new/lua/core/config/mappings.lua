@@ -1,5 +1,6 @@
 -- movement
 vim.keymap.set("i", "jk", "<ESC>", { silent = true })
+vim.keymap.set("c", "jk", "<ESC>", { silent = true }) --quit search
 vim.keymap.set("n", "-", vim.cmd.Ex)
 
 vim.keymap.set("n", "J", "9j", { silent = true })
@@ -7,9 +8,16 @@ vim.keymap.set("n", "J", "9j", { silent = true })
 vim.keymap.set("n", "K", "9k", { silent = true })
 vim.keymap.set("n", "K", "9k", { silent = true })
 
+vim.keymap.set("c", "<C-j>", "<C-g>", { desc = "Next in search mode" })
+vim.keymap.set("c", "<C-k>", "<C-t>", { desc = "Prevous in search mode" })
+
+vim.keymap.set("n", "<leader>b", "<cmd>BufstopPreview<cr>", { silent = true })
+
 -- utilities
 vim.keymap.set("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
 vim.keymap.set("n", "<leader>g", "<cmd>LazyGit<cr>", { desc = "LazyGit" })
+vim.keymap.set("n", "<leader>x", "<cmd>bd<cr>", { desc = "LazyGit" })
+vim.keymap.set("v", "q", "<ESC>", { desc = "Quite visual mode" })
 
 -- harpoon
 local mark = require("harpoon.mark")
@@ -18,13 +26,13 @@ local ui = require("harpoon.ui")
 local cmd_ui = require("harpoon.cmd-ui")
 
 vim.keymap.set("n", "<leader>a", mark.add_file)
-vim.keymap.set("n", "<leader>c", cmd_ui.toggle_quick_menu)
-vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
-
+vim.keymap.set("n", "<leader>c", ui.toggle_quick_menu)
 vim.keymap.set("n", "<leader>q", function() ui.nav_file(1) end)
 vim.keymap.set("n", "<leader>w", function() ui.nav_file(2) end)
-vim.keymap.set("n", "<leader>t", function() tmux.gotoTerminal(5) end)
+
+vim.keymap.set("n", "<C-e>", cmd_ui.toggle_quick_menu)
 vim.keymap.set("n", "<leader>e", function() tmux.sendCommand(5,1) end)
+vim.keymap.set("n", "<leader>t", function() tmux.gotoTerminal(5) end)
 
 -- comments
 vim.keymap.set("v", "<C-_>", "gc", {remap = true})
@@ -40,6 +48,7 @@ local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader><space>', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>fm', builtin.keymaps, {})
 vim.keymap.set('n', '<leader>,', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 

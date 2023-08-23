@@ -36,8 +36,8 @@ local cmd_ui = require("harpoon.cmd-ui")
 
 vim.keymap.set("n", "<leader>a", mark.add_file)
 vim.keymap.set("n", "<leader>c", ui.toggle_quick_menu)
-vim.keymap.set("n", "<leader>q", function() ui.nav_file(1) end)
-vim.keymap.set("n", "<leader>w", function() ui.nav_file(2) end)
+vim.keymap.set("n", "<leader>w", function() ui.nav_file(1) end)
+vim.keymap.set("n", "<leader>q", function() ui.nav_file(2) end)
 
 vim.keymap.set("n", "<C-e>", cmd_ui.toggle_quick_menu)
 vim.keymap.set("n", "<leader>e", function() tmux.sendCommand(5,1) end)

@@ -14,3 +14,12 @@ vim.api.nvim_create_autocmd('filetype', {
     bind('r', 'R')
   end
 })
+
+-- vim.api.nvim_create_autocmd("BufEnter", {
+--   callback = function()
+--     -- print the current event
+--     vim.cmd('noh')
+--     vim.cmd('redraw')
+--     print("this is a test")
+--   end
+-- })

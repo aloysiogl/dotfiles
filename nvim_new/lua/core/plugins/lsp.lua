@@ -17,7 +17,7 @@ return {
       'hrsh7th/nvim-cmp',
       event = 'InsertEnter',
       dependencies = {
-        { 'L3MON4D3/LuaSnip' },
+        "L3MON4D3/LuaSnip",
       },
       config = function()
         -- Here is where you configure the autocompletion settings.
@@ -37,18 +37,31 @@ return {
               nil
         end
 
-        cmp.setup({
-          sources = {
-            { name = 'copilot' },
-            { name = 'nvim_lsp' },
-          },
-          mapping = {
-            ['<Tab>'] = cmp.mapping.confirm({
+        local completion =
+            cmp.mapping.confirm({
               -- documentation says this is important.
               -- I don't know why.
               behavior = cmp.ConfirmBehavior.Replace,
               select = true,
-            }),
+            })
+
+        cmp.setup({
+          sources = {
+            { name = 'copilot' },
+            { name = 'nvim_lsp' },
+            { name = 'luasnip', option = { show_autosnippets = true, use_show_condition = false } },
+            { name = "buffer" },
+            { name = "path" },
+          },
+          snippet = {
+            expand = function(args)
+              print(args.body)
+              require 'luasnip'.lsp_expand(args.body)
+            end
+          },
+          mapping = {
+            ['<Tab>'] = completion,
+            ['<CR>'] = completion,
             ['<C-Space>'] = cmp.mapping.complete(),
             ["<C-j>"] = vim.schedule_wrap(function(fallback)
               if cmp.visible() and has_words_before() then
@@ -58,11 +71,26 @@ return {
                 fallback()
               end
             end),
+            ["<C-k>"] = vim.schedule_wrap(function(fallback)
+              if cmp.visible() and has_words_before() then
+                cmp.select_prev_item({
+                  behavior = cmp.SelectBehavior.Select })
+              else
+                fallback()
+              end
+            end)
           }
         })
       end
     },
-
+    {
+      'saadparwaiz1/cmp_luasnip',
+      dependencies = {
+        { 'lervag/vimtex' },
+      }
+    },
+    { "hrsh7th/cmp-buffer" },
+    { "hrsh7th/cmp-path" },
     -- LSP
     {
       'neovim/nvim-lspconfig',
@@ -82,8 +110,20 @@ return {
           lsp.default_keymaps({ buffer = bufnr })
           local opts = { buffer = bufnr }
 
-          vim.keymap.set({ 'n', 'x' }, 'gq', function()
+          vim.keymap.set({ 'n', 'x' }, 'ft', function()
             vim.lsp.buf.format({ async = false, timeout_ms = 10000 })
+          end, opts)
+
+          vim.keymap.set({ 'n' }, 'H', function()
+            vim.lsp.buf.hover()
+          end, opts)
+
+          vim.keymap.set({ 'n' }, 'L', function()
+            vim.lsp.buf.code_action()
+          end, opts)
+
+          vim.keymap.set({ 'n' }, '<leader>rn', function()
+            vim.lsp.buf.rename()
           end, opts)
         end)
 

@@ -17,7 +17,7 @@ return {
       'hrsh7th/nvim-cmp',
       event = 'InsertEnter',
       dependencies = {
-        { 'L3MON4D3/LuaSnip' },
+        "L3MON4D3/LuaSnip",
       },
       config = function()
         -- Here is where you configure the autocompletion settings.
@@ -49,6 +49,9 @@ return {
           sources = {
             { name = 'copilot' },
             { name = 'nvim_lsp' },
+            { name = 'luasnip' },
+            { name = "buffer" },
+            { name = "path" },
           },
           mapping = {
             ['<Tab>'] = completion,
@@ -74,6 +77,14 @@ return {
         })
       end
     },
+    {
+      'saadparwaiz1/cmp_luasnip',
+      dependencies = {
+        { 'lervag/vimtex' },
+      }
+    },
+    { "hrsh7th/cmp-buffer" },
+    { "hrsh7th/cmp-path" },
     -- LSP
     {
       'neovim/nvim-lspconfig',
@@ -109,7 +120,6 @@ return {
             vim.lsp.buf.rename()
           end, opts)
         end)
-
 
         -- (Optional) Configure lua language server for neovim
         require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())

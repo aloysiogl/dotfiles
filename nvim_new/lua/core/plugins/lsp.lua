@@ -49,9 +49,15 @@ return {
           sources = {
             { name = 'copilot' },
             { name = 'nvim_lsp' },
-            { name = 'luasnip' },
+            { name = 'luasnip', option = { show_autosnippets = true, use_show_condition = false } },
             { name = "buffer" },
             { name = "path" },
+          },
+          snippet = {
+            expand = function(args)
+              print(args.body)
+              require 'luasnip'.lsp_expand(args.body)
+            end
           },
           mapping = {
             ['<Tab>'] = completion,
@@ -120,6 +126,7 @@ return {
             vim.lsp.buf.rename()
           end, opts)
         end)
+
 
         -- (Optional) Configure lua language server for neovim
         require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())

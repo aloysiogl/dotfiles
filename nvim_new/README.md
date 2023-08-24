@@ -4,6 +4,8 @@ ln -s ~/.dotfiles/nvim ~/.config/nvim
 
 TODOS:
 - [X] Look at the keymaps in the defautl site for K (it is for lsp) and remap that
+- [ ] Center screen after back from search
+- [ ] Keep always a part of your screeen with you
 - [ ] In lazygit you should add syntax highlight
 - [ ] Tmux add sintax hihgligh for errors
 - [ ] Understande where the references are stored for language servers

@@ -105,5 +105,5 @@ return {
   },
   {
     "ggvgc/vim-fuzzysearch"
-  }
+  },
 }

@@ -24,6 +24,10 @@ if [ ! -d $ZSH_CUSTOM/plugins/k ]; then
   git clone https://github.com/supercrabtree/k $ZSH_CUSTOM/plugins/k
 fi
 
+if [ ! -d $ZSH_CUSTOM/plugins/zsh-output-highlighting ]; then
+  git clone https://github.com/l4u/zsh-output-highlighting.git  ${ZSH_CUSTOM}/plugins/zsh-output-highlighting
+fi
+
 ZSH_THEME_DIR=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
 if [ ! -d "$ZSH_THEME_DIR" ]; then
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$ZSH_THEME_DIR"

@@ -7,6 +7,8 @@ vim.keymap.set("n", "J", "9j", { silent = true })
 vim.keymap.set("n", "J", "9j", { silent = true })
 vim.keymap.set("n", "K", "9k", { silent = true })
 vim.keymap.set("n", "K", "9k", { silent = true })
+-- quit teminal mode to normal mode
+vim.keymap.set("t", "<leader><space>", "<C-\\><C-n>", { desc = "Quit terminal mode" })
 
 --quickfix
 vim.keymap.set("n", "<leader>aj", "<cmd>cn<cr>", { desc = "Next in quickfix list" })
@@ -38,7 +40,7 @@ vim.keymap.set("n", "z/", "<cmd>FuzzySearch<cr>", { desc = "Fuzzy Search within 
 
 -- harpoon
 local mark = require("harpoon.mark")
-local tmux = require("harpoon.tmux")
+local term = require("harpoon.term")
 local ui = require("harpoon.ui")
 local cmd_ui = require("harpoon.cmd-ui")
 
@@ -48,8 +50,8 @@ vim.keymap.set("n", "<leader>w", function() ui.nav_file(1) end, { desc = "Harpoo
 vim.keymap.set("n", "<leader>q", function() ui.nav_file(2) end, { desc = "Harpoon file 2" })
 
 vim.keymap.set("n", "<leader>cc", cmd_ui.toggle_quick_menu, { desc = "Harpoon command list" })
-vim.keymap.set("n", "<leader>e", function() tmux.sendCommand(5, 1) end, { desc = "Harpoon first command to termianal" })
-vim.keymap.set("n", "<leader>ct", function() tmux.gotoTerminal(5) end, { desc = "Harpoon open terminal" })
+vim.keymap.set("n", "<leader>e", function() term.sendCommand(1, 1) end, { desc = "Harpoon first command to termianal" })
+vim.keymap.set("n", "<leader>ct", function() term.gotoTerminal(1) end, { desc = "Harpoon open terminal" })
 
 -- comments
 vim.keymap.set("v", "<C-_>", "gc", { remap = true })

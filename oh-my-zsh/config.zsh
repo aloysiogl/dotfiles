@@ -12,6 +12,7 @@ plugins=(
     z 
     zsh-autosuggestions
     zsh-syntax-highlighting
+    zsh-output-highlighting
     k
 )
 

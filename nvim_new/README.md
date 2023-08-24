@@ -15,7 +15,8 @@ TODOS:
 - [ ] Find fuzzy finder for grep in all files (you had that before)
 - [ ] Investigate telescope fuzzy command search with :cmap
 - [ ] Configure spectre
-- [ ] In telescope make q quit
+- [X] In telescope make q quit
+- [ ] Take a look at all other telescope features for LazyGit
 - [ ] Configure whichkey and other folkes plugins
 - [ ] Keep the same open files when I open or clise directory (save state)
 - [ ] Add new languages support for org mode

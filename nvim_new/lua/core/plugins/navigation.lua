@@ -89,7 +89,12 @@ return {
       end
       opts.defaults = vim.tbl_deep_extend("force", opts.defaults or {}, {
         mappings = {
-          n = { s = flash },
+          n = {
+            s = flash,
+            ["q"] = function(...)
+              return require("telescope.actions").close(...)
+            end,
+          },
           i = { ["<c-s>"] = flash },
         },
       })

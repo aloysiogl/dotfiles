@@ -21,4 +21,5 @@ TODOS:
 - [ ] Keep the same open files when I open or clise directory (save state)
 - [ ] Add new languages support for org mode
 - [ ] Add python language server
+- [ ] Study if mini comemnt would not be a better alternative for commenting
 - [ ] Add typescript etc...

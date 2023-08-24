@@ -47,7 +47,7 @@ vim.keymap.set("n", "<leader>cf", ui.toggle_quick_menu, { desc = "Harpoon file l
 vim.keymap.set("n", "<leader>w", function() ui.nav_file(1) end, { desc = "Harpoon file 1" })
 vim.keymap.set("n", "<leader>q", function() ui.nav_file(2) end, { desc = "Harpoon file 2" })
 
-vim.keymap.set("n", "<leader>cc", cmd_ui.toggle_quick_menu, { desc = "Harpoon commad list" })
+vim.keymap.set("n", "<leader>cc", cmd_ui.toggle_quick_menu, { desc = "Harpoon command list" })
 vim.keymap.set("n", "<leader>e", function() tmux.sendCommand(5, 1) end, { desc = "Harpoon first command to termianal" })
 vim.keymap.set("n", "<leader>ct", function() tmux.gotoTerminal(5) end, { desc = "Harpoon open terminal" })
 

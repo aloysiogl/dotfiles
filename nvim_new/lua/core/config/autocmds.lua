@@ -7,6 +7,8 @@ vim.api.nvim_create_autocmd('filetype', {
       vim.keymap.set('n', lhs, rhs, { remap = true, buffer = true })
     end
 
+    vim.keymap.set('v', "mf", ":normal mf<cr>", { remap = true, buffer = true })
+
     -- edit new file
     bind('c', '%')
 

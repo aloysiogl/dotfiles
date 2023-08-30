@@ -15,7 +15,10 @@ Navigation:
 - [ ] Find fuzzy finder for current file in /, maybe use telescope fuzzy finder? (type :Telescope current_buffer_fuzzy_find)
 - [ ] Find fuzzy finder for grep in all files (you had that before)
 - [ ] Investigate telescope fuzzy command search with :cmap
-- [ ] Take a look at all other telescope features for LazyGit
+
+Git:
+- [ ] Take a look at all other telescope features for LazyGit and Fugitive
+- [ ] Improve git experience in git diff pre-commit view with fugitive by previewing the diff under cursor
 
 LSP:
 - [ ] Improve fixes provided by the language server with better mappings

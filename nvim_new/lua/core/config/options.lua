@@ -10,6 +10,7 @@ opt.shiftround = true     -- Round indent
 opt.shiftwidth = 2        -- Size of an indent
 opt.incsearch = true      -- Search as characters are entered
 opt.grepprg = "rg --vimgrep"
+opt.scrolloff = 10        -- Lines on the border
 
 -- netrw do not show ./ or ../
 vim.g.netrw_list_hide = "^\\./$,^\\../$"

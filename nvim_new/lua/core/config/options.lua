@@ -12,6 +12,7 @@ opt.incsearch = true          -- Search as characters are entered
 opt.grepprg = "rg --vimgrep"
 opt.scrolloff = 10            -- Lines on the border
 opt.clipboard = "unnamedplus" -- Use system clipboard
+opt.smartcase = true          -- Search case sensitive if there is a capital letter only
 
 -- netrw do not show ./ or ../
 vim.g.netrw_list_hide = "^\\./$,^\\../$"
@@ -20,4 +21,3 @@ vim.g.netrw_hide = 1
 -- bufstop
 vim.g.BufstopDismissKey = "q"
 vim.g.BufstopAutoSpeedToggle = 1
-

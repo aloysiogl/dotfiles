@@ -3,10 +3,8 @@ vim.keymap.set("n", "<leader>-", vim.cmd.Ex, { desc = "File explorer" })
 vim.keymap.set("n", "-", "<C-o>", { desc = "Previous jump" })
 vim.keymap.set("n", "=", "<C-i>", { desc = "Next jump" })
 
-vim.keymap.set("n", "J", "9j", { silent = true })
-vim.keymap.set("n", "J", "9j", { silent = true })
-vim.keymap.set("n", "K", "9k", { silent = true })
-vim.keymap.set("n", "K", "9k", { silent = true })
+vim.keymap.set("n", "J", "<C-d>", { silent = true })
+vim.keymap.set("n", "K", "<C-u>", { silent = true })
 -- quit teminal mode to normal mode
 vim.keymap.set("t", "<leader><space>", "<C-\\><C-n>", { desc = "Quit terminal mode" })
 

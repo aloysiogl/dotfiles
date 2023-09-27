@@ -11,7 +11,6 @@ return {
         require('lsp-zero.settings').preset({})
       end
     },
-
     -- Autocompletion
     {
       'hrsh7th/nvim-cmp',
@@ -79,7 +78,10 @@ return {
                 fallback()
               end
             end)
-          }
+          },
+          experimental = {
+            ghost_text = true,
+          },
         })
       end
     },
@@ -134,5 +136,11 @@ return {
         lsp.setup()
       end
     }
+  },
+  {
+    'nvim-orgmode/orgmode',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter'
+    },
   }
 }

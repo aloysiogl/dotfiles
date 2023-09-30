@@ -109,6 +109,9 @@ return {
         local lsp = require('lsp-zero')
 
         lsp.on_attach(function(client, bufnr)
+          -- Do not provide highlighting for semantic tokens
+          client.server_capabilities.semanticTokensProvider = nil
+
           lsp.default_keymaps({ buffer = bufnr })
           local generate_opts = function(desc)
             return { desc = desc, buffer = bufnr }
@@ -137,10 +140,10 @@ return {
           vim.keymap.set({ 'n' }, '<leader>lD', vim.lsp.buf.type_definition, generate_opts('LSP type_definition'))
 
           -- Disgnostics
-          vim.keymap.set('n', '<leader>df', vim.diagnostic.open_float, { desc = 'Diagnostics open_float'})
-          vim.keymap.set('n', '<leader>dk', vim.diagnostic.goto_prev, { desc = 'Diagnostics goto_prev'})
-          vim.keymap.set('n', '<leader>dj', vim.diagnostic.goto_next, { desc = 'Diagnostics goto_next'})
-          vim.keymap.set('n', '<leader>dl', vim.diagnostic.setloclist, { desc = 'Diagnostics setloclist'})
+          vim.keymap.set('n', '<leader>df', vim.diagnostic.open_float, { desc = 'Diagnostics open_float' })
+          vim.keymap.set('n', '<leader>dk', vim.diagnostic.goto_prev, { desc = 'Diagnostics goto_prev' })
+          vim.keymap.set('n', '<leader>dj', vim.diagnostic.goto_next, { desc = 'Diagnostics goto_next' })
+          vim.keymap.set('n', '<leader>dl', vim.diagnostic.setloclist, { desc = 'Diagnostics setloclist' })
         end)
 
         -- (Optional) Configure lua language server for neovim
@@ -155,5 +158,21 @@ return {
     dependencies = {
       'nvim-treesitter/nvim-treesitter'
     },
+  },
+  {
+    'nvim-treesitter/nvim-treesitter',
+    build = ":TSUpdate",
+    config = function()
+      local configs = require 'nvim-treesitter.configs'
+      configs.setup {
+        ensure_installed = {
+          'python',
+          'haskell',
+        },
+        highlight = {
+          enable = true
+        },
+      }
+    end,
   }
 }

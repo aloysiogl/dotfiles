@@ -23,7 +23,7 @@ vim.keymap.set("n", "<leader>b", "<cmd>BufstopPreview<cr>", { silent = true })
 -- utilities
 vim.keymap.set("i", "jk", "<ESC>", { silent = true })
 
-vim.keymap.set("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
+vim.keymap.set("n", "<leader>ll", "<cmd>Lazy<cr>", { desc = "Lazy" })
 vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "LazyGit" })
 vim.keymap.set("n", "<leader>gd", "<cmd>Git difftool --name-only<cr>", { desc = "Previous in quickfix list" })
 vim.keymap.set("n", "<leader>x", "<cmd>bd<cr>", { desc = "Close current buffer" })

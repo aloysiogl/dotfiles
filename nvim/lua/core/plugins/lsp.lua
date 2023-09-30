@@ -110,23 +110,25 @@ return {
 
         lsp.on_attach(function(client, bufnr)
           lsp.default_keymaps({ buffer = bufnr })
-          local opts = { buffer = bufnr }
+          local generate_opts = function(desc)
+            return { desc = desc, buffer = bufnr }
+          end
 
-          vim.keymap.set({ 'n', 'x' }, 'ft', function()
+          vim.keymap.set({ 'n', 'x' }, '<leader>lf', function()
             vim.lsp.buf.format({ async = false, timeout_ms = 10000 })
-          end, opts)
+          end, generate_opts('LSP format'))
 
-          vim.keymap.set({ 'n' }, 'H', function()
+          vim.keymap.set({ 'n' }, '<leader>lh', function()
             vim.lsp.buf.hover()
-          end, opts)
+          end, generate_opts('LSP hover'))
 
-          vim.keymap.set({ 'n' }, 'L', function()
+          vim.keymap.set({ 'n' }, '<leader>la', function()
             vim.lsp.buf.code_action()
-          end, opts)
+          end, generate_opts('LSP action'))
 
-          vim.keymap.set({ 'n' }, '<leader>rn', function()
+          vim.keymap.set({ 'n' }, '<leader>lr', function()
             vim.lsp.buf.rename()
-          end, opts)
+          end, generate_opts('LSP rename'))
         end)
 
 

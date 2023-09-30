@@ -36,7 +36,10 @@ return {
       })
     end,
   },
-  { "kevinhwang91/nvim-bqf" },
+  {
+    "kevinhwang91/nvim-bqf",
+    event = "VeryLazy",
+  },
   {
     "nvim-pack/nvim-spectre",
     dependencies = {

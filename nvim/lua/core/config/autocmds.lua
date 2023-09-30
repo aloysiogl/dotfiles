@@ -28,18 +28,33 @@ vim.api.nvim_create_autocmd('filetype', {
     end
     -- haskell-language-server relies heavily on codeLenses,
     -- so auto-refresh (see advanced configuration) is enabled by default
-    vim.keymap.set('n', '<leader>lc', vim.lsp.codelens.run, make_opts('vim.lsp.codelens.run'))
     -- Hoogle search for the type signature of the definition under the cursor
     vim.keymap.set('n', '<leader>lhs', ht.hoogle.hoogle_signature, make_opts('ht.hoogle.hoogle_signature'))
+    vim.keymap.set('n', '<leader>lc', vim.lsp.codelens.run, make_opts('vim.lsp.codelens.run'))
     -- Evaluate all code snippets
     vim.keymap.set('n', '<leader>lea', ht.lsp.buf_eval_all, make_opts('ht.lsp.buf_eval_all'))
+    -- Repl configs
     -- Toggle a GHCi repl for the current package
-    vim.keymap.set('n', '<leader>lrr', ht.repl.toggle, make_opts('ht.repl.toggle'))
-    -- Toggle a GHCi repl for the current buffer
-    vim.keymap.set('n', '<leader>lrf', function()
-      ht.repl.toggle(vim.api.nvim_buf_get_name(0))
-    end, make_opts('ht.repl.toggle'))
-    vim.keymap.set('n', '<leader>lrq', ht.repl.quit, make_opts('ht.repl.quit'))
+    vim.keymap.set('n', '<leader>lm',
+      function()
+        vim.keymap.del('n', '<leader>lr', { buffer = bufnr })
+        local plugin = require("lazy.core.config").plugins["which-key.nvim"]
+        require("lazy.core.loader").reload(plugin)
+        local wk = require('which-key')
+        wk.register({
+          ["<leader>l"] = { name = "Language server" },
+          -- ["<leader>lr"] = { name = "Repl" },
+        })
+        vim.keymap.set('n', '<leader>lrr', ht.repl.toggle, make_opts('ht.repl.toggle'))
+        vim.keymap.set('n', '<leader>lrp', ht.repl.paste, make_opts('ht.repl.paste'))
+        vim.keymap.set('n', '<leader>lrt', ht.repl.paste_type, make_opts('ht.repl.paste_type'))
+        -- Toggle a GHCi repl for the current buffer
+        vim.keymap.set('n', '<leader>lrf', function()
+          ht.repl.toggle(vim.api.nvim_buf_get_name(0))
+        end, make_opts('ht.repl.toggle'))
+        vim.keymap.set('n', '<leader>lrq', ht.repl.quit, make_opts('ht.repl.quit'))
+      end
+      , { desc = 'Set hakell keymaps' })
   end
 })
 

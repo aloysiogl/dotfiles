@@ -30,24 +30,26 @@ vim.keymap.set("n", "<leader>x", "<cmd>bd<cr>", { desc = "Close current buffer" 
 
 vim.keymap.set("v", "q", "<ESC>", { desc = "Quite visual mode" })
 
-vim.keymap.set("c", "jk", "<CR>", { silent = true }) --quit search
 -- vim.keymap.set("c", "<CR>", "<cmd>noh<CR>", { desc = "Close highlight after search" })
 
 -- search
 vim.keymap.set("n", "z/", "<cmd>FuzzySearch<cr>", { desc = "Fuzzy Search within buffer", noremap = true })
+vim.keymap.set("n", "<leader>o", "/", { desc = "Fuzzy Search within buffer" })
+vim.keymap.set("c", "jk", "<CR>", { silent = true })        --quit search
+vim.keymap.set("c", "<leader>o", "<CR>", { silent = true }) --quit search
 
 --spectre
 vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {
-    desc = "Toggle Spectre"
+  desc = "Toggle Spectre"
 })
 vim.keymap.set('n', '<leader>sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', {
-    desc = "Search current word"
+  desc = "Search current word"
 })
 vim.keymap.set('v', '<leader>sw', '<esc><cmd>lua require("spectre").open_visual()<CR>', {
-    desc = "Search current word"
+  desc = "Search current word"
 })
 vim.keymap.set('n', '<leader>sp', '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', {
-    desc = "Search on current file"
+  desc = "Search on current file"
 })
 
 -- harpoon
@@ -76,12 +78,31 @@ vim.keymap.set("n", "<C-l>", "<cmd> TmuxNavigateRight<CR>", { silent = true })
 
 -- telescope
 local builtin = require("telescope.builtin")
-vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Telecope find files" })
-vim.keymap.set("n", "<leader><space>", builtin.find_files, { desc = "Telecope find files" })
-vim.keymap.set("n", "<leader>fg", builtin.live_grep, {desc = "Telescope live grep"})
-vim.keymap.set("n", "<leader>fm", builtin.keymaps, {desc = "Telescope find mapping/keybinding"})
-vim.keymap.set("n", "<leader>,", builtin.buffers, {desc = "Telescope find buffer"})
-vim.keymap.set("n", "<leader>fh", builtin.help_tags, {desc = "Telescope find help"})
+local wk = require("which-key")
+wk.register({
+  ["<leader>f"] = { name = "Telescope", }
+})
+vim.keymap.set("n", "<leader>fd", builtin.git_bcommits, { desc = "Telecope commits for current buffer" })
+vim.keymap.set("n", "<leader>fs", builtin.git_status, { desc = "Telecope git status" })
+local find_files_description = "Telescope find files"
+vim.keymap.set("n", "<leader><space>", builtin.find_files, { desc = find_files_description })
+vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope live grep" })
+vim.keymap.set("n", "<leader>fm", builtin.keymaps, { desc = "Telescope find mapping/keybinding" })
+vim.keymap.set("n", "<leader>fu", builtin.current_buffer_fuzzy_find, { desc = "Fuzzy find in the current buffer" })
+vim.keymap.set("n", "<leader>ft", builtin.treesitter, { desc = "Treesitter" })
+vim.keymap.set("n", "<leader>fb", function()
+  local maps = vim.api.nvim_get_keymap("n")
+  for _, v in pairs(maps) do
+    if v.lhs == "  " then
+      if v.desc == find_files_description then
+        vim.keymap.set("n", "<leader><space>", builtin.buffers, { desc = "Telescope find buffer" })
+      else
+        vim.keymap.set("n", "<leader><space>", builtin.find_files, { desc = find_files_description })
+      end
+    end
+  end
+end, { desc = "Telescope switch to buffer mode" })
+vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope find help" })
 
 --- easymotion
 vim.g.EasyMotion_smartcase = 1

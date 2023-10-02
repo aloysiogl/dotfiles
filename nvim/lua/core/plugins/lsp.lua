@@ -170,7 +170,8 @@ return {
           'haskell',
         },
         highlight = {
-          enable = true
+          enable = true,
+          disable = { 'latex' },
         },
       }
     end,

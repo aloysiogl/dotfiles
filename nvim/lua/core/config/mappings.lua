@@ -1,3 +1,5 @@
+local wk = require("which-key")
+
 -- movement
 vim.keymap.set("n", "<leader>-", vim.cmd.Ex, { desc = "File explorer" })
 vim.keymap.set("n", "-", "<C-o>", { desc = "Previous jump" })
@@ -58,14 +60,19 @@ local term = require("harpoon.term")
 local ui = require("harpoon.ui")
 local cmd_ui = require("harpoon.cmd-ui")
 
-vim.keymap.set("n", "<leader>ca", mark.add_file, { desc = "Harpoon add current file to list" })
-vim.keymap.set("n", "<leader>cf", ui.toggle_quick_menu, { desc = "Harpoon file list" })
-vim.keymap.set("n", "<leader>w", function() ui.nav_file(1) end, { desc = "Harpoon file 1" })
-vim.keymap.set("n", "<leader>q", function() ui.nav_file(2) end, { desc = "Harpoon file 2" })
+local harpoon_prefix = "<leader>i"
+wk.register({
+  [harpoon_prefix] = { name = "Harpoon", }
+})
 
-vim.keymap.set("n", "<leader>cc", cmd_ui.toggle_quick_menu, { desc = "Harpoon command list" })
-vim.keymap.set("n", "<leader>e", function() term.sendCommand(1, 1) end, { desc = "Harpoon first command to termianal" })
-vim.keymap.set("n", "<leader>ct", function() term.gotoTerminal(1) end, { desc = "Harpoon open terminal" })
+vim.keymap.set("n", harpoon_prefix .. "a", mark.add_file, { desc = "Harpoon add current file to list" })
+vim.keymap.set("n", harpoon_prefix .. "f", ui.toggle_quick_menu, { desc = "Harpoon file list" })
+vim.keymap.set("n", "w", function() ui.nav_file(1) end, { desc = "Harpoon file 1" })
+vim.keymap.set("n", "q", function() ui.nav_file(2) end, { desc = "Harpoon file 2" })
+
+vim.keymap.set("n", harpoon_prefix .. "c", cmd_ui.toggle_quick_menu, { desc = "Harpoon command list" })
+vim.keymap.set("n", "e", function() term.sendCommand(1, 1) end, { desc = "Harpoon first command to termianal" })
+vim.keymap.set("n", harpoon_prefix .. "t", function() term.gotoTerminal(1) end, { desc = "Harpoon open terminal" })
 
 -- comments
 vim.keymap.set("v", "<C-_>", "gc", { remap = true })
@@ -108,3 +115,26 @@ vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope find he
 vim.g.EasyMotion_smartcase = 1
 vim.keymap.set("n", "s", "<Plug>(easymotion-s)", { desc = "Easymotion s" })
 vim.keymap.set("v", "s", "<Plug>(easymotion-s)", { desc = "Easymotion s" })
+
+-- chat gpt
+wk.register({
+  c = {
+    name = "ChatGPT",
+    c = { "<cmd>ChatGPT<CR>", "ChatGPT" },
+    p = { "<cmd>ChatGPTActAs<CR>", "ChatGPTActAs" },
+    e = { "<cmd>ChatGPTEditWithInstruction<CR>", "Edit with instruction", mode = { "n", "v" } },
+    g = { "<cmd>ChatGPTRun grammar_correction<CR>", "Grammar Correction", mode = { "n", "v" } },
+    t = { "<cmd>ChatGPTRun translate<CR>", "Translate", mode = { "n", "v" } },
+    k = { "<cmd>ChatGPTRun keywords<CR>", "Keywords", mode = { "n", "v" } },
+    d = { "<cmd>ChatGPTRun docstring<CR>", "Docstring", mode = { "n", "v" } },
+    a = { "<cmd>ChatGPTRun add_tests<CR>", "Add Tests", mode = { "n", "v" } },
+    o = { "<cmd>ChatGPTRun optimize_code<CR>", "Optimize Code", mode = { "n", "v" } },
+    s = { "<cmd>ChatGPTRun summarize<CR>", "Summarize", mode = { "n", "v" } },
+    f = { "<cmd>ChatGPTRun fix_bugs<CR>", "Fix Bugs", mode = { "n", "v" } },
+    x = { "<cmd>ChatGPTRun explain_code<CR>", "Explain Code", mode = { "n", "v" } },
+    r = { "<cmd>ChatGPTRun roxygen_edit<CR>", "Roxygen Edit", mode = { "n", "v" } },
+    l = { "<cmd>ChatGPTRun code_readability_analysis<CR>", "Code Readability Analysis", mode = { "n", "v" } },
+  },
+}, {
+  prefix = "<leader>",
+})

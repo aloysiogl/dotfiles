@@ -71,7 +71,7 @@ vim.keymap.set("n", "w", function() ui.nav_file(1) end, { desc = "Harpoon file 1
 vim.keymap.set("n", "q", function() ui.nav_file(2) end, { desc = "Harpoon file 2" })
 
 vim.keymap.set("n", harpoon_prefix .. "c", cmd_ui.toggle_quick_menu, { desc = "Harpoon command list" })
-vim.keymap.set("n", "e", function() term.sendCommand(1, 1) end, { desc = "Harpoon first command to termianal" })
+vim.keymap.set("n", "<leader>e", function() term.sendCommand(1, 1) end, { desc = "Harpoon first command to termianal" })
 vim.keymap.set("n", harpoon_prefix .. "t", function() term.gotoTerminal(1) end, { desc = "Harpoon open terminal" })
 
 -- comments
@@ -92,6 +92,7 @@ wk.register({
 vim.keymap.set("n", "<leader>fd", builtin.git_bcommits, { desc = "Telecope commits for current buffer" })
 vim.keymap.set("n", "<leader>fs", builtin.git_status, { desc = "Telecope git status" })
 local find_files_description = "Telescope find files"
+vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = find_files_description })
 vim.keymap.set("n", "<leader><space>", builtin.find_files, { desc = find_files_description })
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope live grep" })
 vim.keymap.set("n", "<leader>fm", builtin.keymaps, { desc = "Telescope find mapping/keybinding" })

@@ -53,7 +53,7 @@ return {
       { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,     desc = "Toggle Flash Search" },
     },
     opts = {
-      labels = "asdfjkl",
+      labels = "jfdksla;ghrueiwoqptyvmc,x.z/bn",
       search = {
         -- mode = "fuzzy",
         incremental = false,

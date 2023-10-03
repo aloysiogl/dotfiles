@@ -21,3 +21,12 @@ vim.g.netrw_hide = 1
 -- bufstop
 vim.g.BufstopDismissKey = "q"
 vim.g.BufstopAutoSpeedToggle = 1
+vim.g.BufstopLeader = "<BS>"
+vim.g.BufstopSpeedKeys = { "a", "s", "d", "f", "g", "h" }
+
+-- disable netrw at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- set termguicolors to enable highlight groups
+vim.opt.termguicolors = true

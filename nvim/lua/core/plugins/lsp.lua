@@ -136,7 +136,8 @@ return {
             generate_opts('LSP add_workspace_folder'))
           vim.keymap.set({ 'n' }, '<leader>lwr', vim.lsp.buf.remove_workspace_folder,
             generate_opts('LSP remove_workspace_folder'))
-          vim.keymap.set({ 'n' }, '<leader>le', vim.lsp.buf.references, generate_opts('LSP references'))
+          -- vim.keymap.set({ 'n' }, '<leader>le', vim.lsp.buf.references, generate_opts('LSP references'))
+          vim.keymap.set("n", "<leader>le", function() require("trouble").open("lsp_references") end)
           vim.keymap.set({ 'n' }, '<leader>lD', vim.lsp.buf.type_definition, generate_opts('LSP type_definition'))
 
           -- Disgnostics

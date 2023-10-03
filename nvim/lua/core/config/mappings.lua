@@ -71,7 +71,7 @@ vim.keymap.set("n", "w", function() ui.nav_file(1) end, { desc = "Harpoon file 1
 vim.keymap.set("n", "q", function() ui.nav_file(2) end, { desc = "Harpoon file 2" })
 
 vim.keymap.set("n", harpoon_prefix .. "c", cmd_ui.toggle_quick_menu, { desc = "Harpoon command list" })
-vim.keymap.set("n", "<leader>e", function() term.sendCommand(1, 1) end, { desc = "Harpoon first command to termianal" })
+vim.keymap.set("n", "<BS>e", function() term.sendCommand(1, 1) end, { desc = "Harpoon first command to termianal" })
 vim.keymap.set("n", harpoon_prefix .. "t", function() term.gotoTerminal(1) end, { desc = "Harpoon open terminal" })
 
 -- comments

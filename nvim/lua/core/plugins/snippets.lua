@@ -26,6 +26,7 @@ return {
     end
   },
   {
-    "evesdropper/luasnip-latex-snippets.nvim"
+    "evesdropper/luasnip-latex-snippets.nvim",
+    event = "VeryLazy",
   }
 }

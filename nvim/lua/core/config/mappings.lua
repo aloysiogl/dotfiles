@@ -1,12 +1,15 @@
 local wk = require("which-key")
 
+-- command mode
+vim.keymap.set("n", ";", ":", { desc = "Previous jump" })
+
 -- movement
 vim.keymap.set("n", "<leader>-", vim.cmd.Ex, { desc = "File explorer" })
 vim.keymap.set("n", "-", "<C-o>", { desc = "Previous jump" })
 vim.keymap.set("n", "=", "<C-i>", { desc = "Next jump" })
 
-vim.keymap.set("n", "J", "<C-d>", { silent = true })
-vim.keymap.set("n", "K", "<C-u>", { silent = true })
+vim.keymap.set({ "n", "v" }, "J", "<C-d>", { silent = true })
+vim.keymap.set({ "n", "v" }, "K", "<C-u>", { silent = true })
 -- quit teminal mode to normal mode
 vim.keymap.set("t", "<leader><space>", "<C-\\><C-n>", { desc = "Quit terminal mode" })
 
@@ -37,8 +40,7 @@ vim.keymap.set("v", "q", "<ESC>", { desc = "Quite visual mode" })
 -- search
 vim.keymap.set("n", "z/", "<cmd>FuzzySearch<cr>", { desc = "Fuzzy Search within buffer", noremap = true })
 vim.keymap.set("n", "<leader>o", "/", { desc = "Fuzzy Search within buffer" })
-vim.keymap.set("c", "jk", "<CR>", { silent = true })        --quit search
-vim.keymap.set("c", "<leader>o", "<CR>", { silent = true }) --quit search
+vim.keymap.set("c", "<leader>o", "<CR>", { silent = true })
 
 --spectre
 vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {
@@ -72,7 +74,7 @@ vim.keymap.set("n", "q", function() ui.nav_file(2) end, { desc = "Harpoon file 2
 
 vim.keymap.set("n", harpoon_prefix .. "c", cmd_ui.toggle_quick_menu, { desc = "Harpoon command list" })
 vim.keymap.set("n", "<BS>e", function() term.sendCommand(1, 1) end, { desc = "Harpoon first command to termianal" })
-vim.keymap.set("n", harpoon_prefix .. "t", function() term.gotoTerminal(1) end, { desc = "Harpoon open terminal" })
+vim.keymap.set("n", "<BS>c", function() term.gotoTerminal(1) end, { desc = "Harpoon open terminal" })
 
 -- comments
 vim.keymap.set("v", "<C-_>", "gc", { remap = true })
@@ -84,33 +86,40 @@ vim.keymap.set("n", "<C-h>", "<cmd> TmuxNavigateLeft<CR>", { silent = true })
 vim.keymap.set("n", "<C-l>", "<cmd> TmuxNavigateRight<CR>", { silent = true })
 
 -- telescope
-local builtin = require("telescope.builtin")
+local builtin_telescope = require("telescope.builtin")
 local wk = require("which-key")
 wk.register({
   ["<leader>f"] = { name = "Telescope", }
 })
-vim.keymap.set("n", "<leader>fd", builtin.git_bcommits, { desc = "Telecope commits for current buffer" })
-vim.keymap.set("n", "<leader>fs", builtin.git_status, { desc = "Telecope git status" })
-local find_files_description = "Telescope find files"
-vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = find_files_description })
-vim.keymap.set("n", "<leader><space>", builtin.find_files, { desc = find_files_description })
-vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope live grep" })
-vim.keymap.set("n", "<leader>fm", builtin.keymaps, { desc = "Telescope find mapping/keybinding" })
-vim.keymap.set("n", "<leader>fu", builtin.current_buffer_fuzzy_find, { desc = "Fuzzy find in the current buffer" })
-vim.keymap.set("n", "<leader>ft", builtin.treesitter, { desc = "Treesitter" })
-vim.keymap.set("n", "<leader>fb", function()
+vim.keymap.set("n", "<leader>fd", builtin_telescope.git_bcommits, { desc = "Telecope commits for current buffer" })
+vim.keymap.set("n", "<leader>fs", builtin_telescope.git_status, { desc = "Telecope git status" })
+local find_buffer_description = "Telescope find buffer"
+vim.keymap.set("n", "<leader>ff", builtin_telescope.find_files, { desc = find_buffer_description })
+vim.keymap.set("n", "<leader><space>", builtin_telescope.buffers, { desc = find_buffer_description })
+vim.keymap.set("n", "<leader>fg", builtin_telescope.live_grep, { desc = "Telescope live grep" })
+vim.keymap.set("n", "<leader>fm", builtin_telescope.keymaps, { desc = "Telescope find mapping/keybinding" })
+vim.keymap.set("n", "<leader>fu", builtin_telescope.current_buffer_fuzzy_find,
+  { desc = "Fuzzy find in the current buffer" })
+vim.keymap.set("n", "<leader>ft", builtin_telescope.treesitter, { desc = "Treesitter" })
+vim.keymap.set("n", "<leader>fp", function()
   local maps = vim.api.nvim_get_keymap("n")
   for _, v in pairs(maps) do
     if v.lhs == "  " then
-      if v.desc == find_files_description then
-        vim.keymap.set("n", "<leader><space>", builtin.buffers, { desc = "Telescope find buffer" })
+      if v.desc == find_buffer_description then
+        vim.keymap.set("n", "<leader><space>", builtin_telescope.find_files, { desc = "Telescope find files" })
       else
-        vim.keymap.set("n", "<leader><space>", builtin.find_files, { desc = find_files_description })
+        vim.keymap.set("n", "<leader><space>", builtin_telescope.buffers { desc = find_buffer_description })
       end
     end
   end
 end, { desc = "Telescope switch to buffer mode" })
-vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope find help" })
+vim.api.nvim_set_keymap(
+  "n",
+  "<leader>fb",
+  ":Telescope file_browser path=%:p:h select_buffer=true<CR>",
+  { noremap = true, desc = "Telescope file browser" }
+)
+vim.keymap.set("n", "<leader>fh", builtin_telescope.help_tags, { desc = "Telescope find help" })
 
 --- easymotion
 vim.g.EasyMotion_smartcase = 1
@@ -148,6 +157,7 @@ vim.keymap.set("n", "<leader>-", function()
     sep = sep or '/'
     return str:match("(.*" .. sep .. ")")
   end
-  api.tree.toggle({ path = getPath(filename, "/") })
-  print(getPath(filename, "/"))
+  -- api.tree.toggle({ path = getPath(filename, "/") })
+  api.tree.toggle()
+  -- print(getPath(filename, "/"))
 end, { desc = "File explorer" })

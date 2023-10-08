@@ -58,6 +58,23 @@ vim.api.nvim_create_autocmd('filetype', {
   end
 })
 
+-- vim.api.nvim_create_autocmd("filetype", {
+--   pattern = 'NvimTree',
+--   callback = function()
+--   end
+-- })
+
+-- vim.api.nvim_create_autocmd("CursorMoved", {
+--   callback = function()
+--     local api = require('nvim-tree.api')
+--     local node = api.tree.get_node_under_cursor()
+--     if node ~= nil and node.nodes == nil then
+--       api.node.open.edit(node)
+--       api.tree.focus()
+--     end
+--   end
+-- })
+
 -- vim.api.nvim_create_autocmd("BufEnter", {
 --   callback = function()
 --     -- print the current event
@@ -65,4 +82,5 @@ vim.api.nvim_create_autocmd('filetype', {
 --     vim.cmd('redraw')
 --     print("this is a test")
 --   end
+--
 -- })

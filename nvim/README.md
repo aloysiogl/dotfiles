@@ -20,6 +20,8 @@ Git:
 - [ ] Learn how to integrate diffview
 
 LSP:
+- [ ] Make my custom citation commmands work on vimtex
+- [ ] Make copilot as only ghost text (maybe will have to resort to tpope copilot), related to the next point
 - [ ] Make copilot completions actually work for multiple lines, might need to go the tpopes plugin
 - [ ] Improve fixes provided by the language server with better mappings
 - [ ] Add new languages support for org mode

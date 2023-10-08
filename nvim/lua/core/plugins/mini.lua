@@ -20,7 +20,7 @@ return {
         },
       }
     require("mini.statusline").setup()
-    require("mini.starter").setup()
+    -- require("mini.starter").setup()
     end
   },
 }

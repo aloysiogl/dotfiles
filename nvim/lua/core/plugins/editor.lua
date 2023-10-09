@@ -110,4 +110,8 @@ return {
       -- refer to the configuration section below
     },
   },
+  {
+    "RRethy/vim-illuminate",
+    event = "VeryLazy",
+  }
 }

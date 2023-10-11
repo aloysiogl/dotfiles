@@ -46,7 +46,7 @@ return {
 
         cmp.setup({
           sources = {
-            { name = 'copilot' },
+            -- { name = 'copilot' },
             { name = 'nvim_lsp' },
             { name = 'luasnip', option = { show_autosnippets = true, use_show_condition = false } },
             { name = "buffer" },
@@ -59,7 +59,7 @@ return {
             end
           },
           mapping = {
-            ['<Tab>'] = completion,
+            -- ['<Tab>'] = completion,
             ['<CR>'] = completion,
             ['<C-Space>'] = cmp.mapping.complete(),
             ["<C-j>"] = vim.schedule_wrap(function(fallback)
@@ -80,7 +80,7 @@ return {
             end)
           },
           experimental = {
-            ghost_text = true,
+            -- ghost_text = true,
           },
         })
       end

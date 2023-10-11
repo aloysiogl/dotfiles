@@ -66,7 +66,18 @@ return {
       label = {
         exclude = "<>-",
         uppercase = false,
-      }
+        rainbow = {
+          enabled = true,
+          -- number between 1 and 9
+          shade = 9,
+        },
+      },
+      modes = {
+        char = {
+          jump_labels = true,
+          autohide = true,
+        }
+      },
     },
   },
   {

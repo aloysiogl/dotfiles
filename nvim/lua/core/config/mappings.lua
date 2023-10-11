@@ -10,6 +10,15 @@ vim.keymap.set("n", "=", "<C-i>", { desc = "Next jump" })
 
 vim.keymap.set({ "n", "v" }, "J", "<C-d>", { silent = true })
 vim.keymap.set({ "n", "v" }, "K", "<C-u>", { silent = true })
+vim.keymap.set({ "n" }, "<leader>w", function()
+  require("flash").jump({
+    labels = "asdfghjklqwertyuiopzxcvbnm",
+    search = { mode = "search", max_length = 0 },
+    label = { after = { 0, 0 } },
+    pattern = "^"
+  })
+end, { desc = "Next in quickfix list" })
+
 -- quit teminal mode to normal mode
 vim.keymap.set("t", "<leader><space>", "<C-\\><C-n>", { desc = "Quit terminal mode" })
 

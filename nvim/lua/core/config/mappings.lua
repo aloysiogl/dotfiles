@@ -167,6 +167,6 @@ vim.keymap.set("n", "<leader>-", function()
     return str:match("(.*" .. sep .. ")")
   end
   -- api.tree.toggle({ path = getPath(filename, "/") })
-  api.tree.toggle()
+  api.tree.toggle({ find_file = true })
   -- print(getPath(filename, "/"))
 end, { desc = "File explorer" })

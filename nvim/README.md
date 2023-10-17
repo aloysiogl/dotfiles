@@ -3,12 +3,17 @@ ln -s ~/.dotfiles/nvim ~/.config/nvim
 ```
 
 TODOS:
+Quickfix list:
+- [ ] Be able to select an item and close
+- [ ] Maybe change the preview, but I will see that in the future
+
 Build:
 - [ ] Be able to build latex files correctly and put build errors in quickfix list. Help material:
 https://www.reddit.com/r/neovim/comments/iafxvz/asynchronous_make_in_neovim_with_lua/
 https://www.ejmastnak.com/tutorials/vim-latex/compilation/#error-parse
 
 File explorer:
+- [ ] Have better and consistent mappings.
 - [ ] On hover, be able to preview the current file
 - [ ] Make git stuff work well on nvim tree
 - [ ] Telescope to open when nvim into dir https://www.reddit.com/r/neovim/comments/mtay0q/telescope_into_a_directory/
@@ -35,6 +40,7 @@ Snippets:
 - [ ] Use regtrig for automatic snippets especially begin for example
 
 Miscellaneous:
+- [ ] Install undotree
 - [ ] Look other folkes plugins
 - [ ] Study if mini comment would not be a better alternative for commenting
 

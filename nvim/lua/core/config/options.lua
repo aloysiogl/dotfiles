@@ -10,7 +10,6 @@ opt.shiftround = true         -- Round indent
 opt.shiftwidth = 2            -- Size of an indent
 opt.incsearch = true          -- Search as characters are entered
 opt.grepprg = "rg --vimgrep"
-opt.scrolloff = 100000        -- Lines on the border
 opt.clipboard = "unnamedplus" -- Use system clipboard
 opt.smartcase = true          -- Search case sensitive if there is a capital letter only
 

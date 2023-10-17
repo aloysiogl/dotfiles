@@ -8,6 +8,9 @@ vim.keymap.set("n", "<leader>-", vim.cmd.Ex, { desc = "File explorer" })
 vim.keymap.set("n", "-", "<C-o>", { desc = "Previous jump" })
 vim.keymap.set("n", "=", "<C-i>", { desc = "Next jump" })
 
+-- vim.keymap.set("n", "j", "jzz", { noremap = true })
+-- vim.keymap.set("n", "k", "kzz", { noremap = true })
+
 vim.keymap.set({ "n", "v" }, "J", "<C-d>", { silent = true })
 vim.keymap.set({ "n", "v" }, "K", "<C-u>", { silent = true })
 vim.keymap.set({ "n" }, "<leader>w", function()

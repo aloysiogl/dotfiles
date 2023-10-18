@@ -48,6 +48,7 @@ return {
           sources = {
             -- { name = 'copilot' },
             { name = 'nvim_lsp' },
+            { name = 'omni' },
             { name = 'luasnip', option = { show_autosnippets = true, use_show_condition = false } },
             { name = "buffer" },
             { name = "path" },
@@ -92,6 +93,8 @@ return {
       }
     },
     { "hrsh7th/cmp-buffer" },
+    -- Support for ominifunc
+    { "hrsh7th/cmp-omni" },
     { "hrsh7th/cmp-path" },
     -- LSP
     {

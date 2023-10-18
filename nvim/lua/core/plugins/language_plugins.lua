@@ -1,5 +1,8 @@
 return {
-  { 'lervag/vimtex' },
+  {
+    'lervag/vimtex',
+    event = 'VeryLazy',
+  },
   {
     'mrcjkb/haskell-tools.nvim',
     dependencies = {

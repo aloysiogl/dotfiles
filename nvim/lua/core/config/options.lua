@@ -27,5 +27,30 @@ vim.g.BufstopSpeedKeys = { "a", "s", "d", "f", "g", "h" }
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- vimtex
+vim.g.vimtex_compiler_latexmk = {
+  aux_dir = '',
+  out_dir = '',
+  callback = 1,
+  continuous = 1,
+  executable = 'latexmk',
+  hooks = {},
+  options = {
+    '-verbose',
+    '-file-line-error',
+    '-pdflatex=lualatex',
+    '-synctex=1',
+    '-r ' .. vim.fn.getcwd() .. '/latexmkrc',
+    '-interaction=nonstopmode',
+  },
+}
+
+vim.g.vimtex_quickfix_open_on_warning = 0
+vim.g.vimtex_view_method = 'zathura'
+
+vim.g.vimtex_complete_bib = {
+  ['custom_patterns'] = { 'ncite' }
+}
+
 -- set termguicolors to enable highlight groups
 vim.opt.termguicolors = true

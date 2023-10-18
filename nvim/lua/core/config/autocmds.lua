@@ -58,6 +58,23 @@ vim.api.nvim_create_autocmd('filetype', {
   end
 })
 
+vim.api.nvim_create_autocmd('filetype', {
+  pattern = 'tex',
+  desc = 'Mappings for latex',
+  callback = function()
+    vim.keymap.set("n", "<leader>vv", "<plug>(vimtex-view)", { desc = "no", noremap = true })
+    wk = require("which-key")
+    wk.register({
+      v = {
+        name = "Vimtex",
+        v = { "<plug>(vimtex-view)", "Vimtex view" },
+        c = { "<plug>(vimtex-compile)", "Vimtex compile" },
+      },
+    }, {
+      prefix = "<leader>",
+    })
+  end
+})
 -- vim.api.nvim_create_autocmd("filetype", {
 --   pattern = 'NvimTree',
 --   callback = function()
@@ -119,8 +136,4 @@ endfunction
 -- end
 --
 -- vim.api.nvim_command('command! -nargs=0 InsertRecenter lua InsertRecenter()')
-
-
-
-
 

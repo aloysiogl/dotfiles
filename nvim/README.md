@@ -2,6 +2,11 @@
 ln -s ~/.dotfiles/nvim ~/.config/nvim
 ```
 
+General remarks:
+- In git I want to be able to navigate fast in the files history and this should not be too hard with fugitive for gitsigns.
+- It's hard to get in and out of the terminal, should think about shortcuts which work directly from the command mode.
+- Should think of an easier way of switching tabs while on a normal keyboard.
+
 TODOS:
 Quickfix list:
 - [ ] Be able to select an item and close
@@ -30,7 +35,7 @@ Git:
 - [ ] Improve git experience in git diff pre-commit view with fugitive by previewing the diff under cursor
 
 LSP:
-- [ ] Make my custom citation commmands work on vimtex
+- [ ] Make my custom reference commmands work on vimtex (actually texlab was the provider, but for some reason reference citations are not shown for vimtex, needs further investigations, for texlab it's unlikely that I can add new reference commmands for now)
 - [ ] Migrate to my own lsp config (out of lsp-zero), use config on dreas of code youtube channel for python as base.
 - [ ] Add typescript and language support for javascript coding in vim
 
@@ -45,6 +50,7 @@ Miscellaneous:
 - [ ] Study if mini comment would not be a better alternative for commenting
 
 Done:
+- [X] Make my custom citation commmands work on vimtex
 - [X] Have a session manager
 - [X] Keep the same open files when I open or clise directory (save state)
 - [X] Make copilot as only ghost text (maybe will have to resort to tpope copilot), related to the next point

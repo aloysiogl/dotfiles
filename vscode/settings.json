@@ -1,0 +1,417 @@
+{
+  "settingsSync.ignoredSettings": [],
+  "workbench.iconTheme": "material-icon-theme",
+  "git.ignoreLegacyWarning": true,
+  "cmake.configureOnOpen": true,
+  "workbench.editor.enablePreviewFromQuickOpen": false,
+  "todo-tree.tree.showScanModeButton": false,
+  "todo-tree.highlights.customHighlight": {
+    "BUG": {
+      "icon": "bug"
+    },
+    "FIXME": {
+      "icon": "flame"
+    }
+  },
+  "git.autofetch": true,
+  "editor.minimap.enabled": false,
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "tabnine.experimentalAutoImports": true,
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter-notebook",
+    "*.pdf": "latex-workshop-pdf-hook"
+  },
+  "files.maxMemoryForLargeFilesMB": 16000,
+  "liveshare.authenticationProvider": "GitHub",
+  "python.languageServer": "Pylance",
+  "python.venvPath": "~/miniconda3/envs",
+  "editor.largeFileOptimizations": false,
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "notebook.cellToolbarLocation": {
+    "default": "right",
+    "jupyter-notebook": "left"
+  },
+  "files.associations": {
+    "*.rmd": "markdown",
+    "cctype": "cpp",
+    "clocale": "cpp",
+    "cmath": "cpp",
+    "csignal": "cpp",
+    "cstdarg": "cpp",
+    "cstddef": "cpp",
+    "cstdio": "cpp",
+    "cstdlib": "cpp",
+    "cstring": "cpp",
+    "ctime": "cpp",
+    "cwchar": "cpp",
+    "cwctype": "cpp",
+    "array": "cpp",
+    "atomic": "cpp",
+    "strstream": "cpp",
+    "bit": "cpp",
+    "*.tcc": "cpp",
+    "bitset": "cpp",
+    "chrono": "cpp",
+    "complex": "cpp",
+    "condition_variable": "cpp",
+    "cstdint": "cpp",
+    "deque": "cpp",
+    "list": "cpp",
+    "map": "cpp",
+    "set": "cpp",
+    "unordered_map": "cpp",
+    "unordered_set": "cpp",
+    "vector": "cpp",
+    "exception": "cpp",
+    "algorithm": "cpp",
+    "functional": "cpp",
+    "iterator": "cpp",
+    "memory": "cpp",
+    "memory_resource": "cpp",
+    "numeric": "cpp",
+    "optional": "cpp",
+    "random": "cpp",
+    "ratio": "cpp",
+    "string": "cpp",
+    "string_view": "cpp",
+    "system_error": "cpp",
+    "tuple": "cpp",
+    "type_traits": "cpp",
+    "utility": "cpp",
+    "hash_map": "cpp",
+    "hash_set": "cpp",
+    "fstream": "cpp",
+    "initializer_list": "cpp",
+    "iomanip": "cpp",
+    "iosfwd": "cpp",
+    "iostream": "cpp",
+    "istream": "cpp",
+    "limits": "cpp",
+    "mutex": "cpp",
+    "new": "cpp",
+    "ostream": "cpp",
+    "shared_mutex": "cpp",
+    "sstream": "cpp",
+    "stdexcept": "cpp",
+    "streambuf": "cpp",
+    "thread": "cpp",
+    "cfenv": "cpp",
+    "cinttypes": "cpp",
+    "typeindex": "cpp",
+    "typeinfo": "cpp",
+    "variant": "cpp"
+  },
+  "editor.inlineSuggest.enabled": true,
+  "vim.easymotionMarkerBackgroundColor": "#7e57c2",
+  "vim.easymotionKeys": "jfdksla;ghrueiwoqptyvmc,x.z/bn",
+  "vim.leader": " ",
+  "vim.normalModeKeyBindings": [
+    {
+      "before": ["leader", "e"],
+      "after": ["$"]
+    },
+  ],
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["m"],
+      "commands": ["bookmarks.toggle"]
+    },
+    {
+      "before": ["'"],
+      "commands": ["bookmarks.listFromAllFiles"]
+    },
+    {
+      "before": [";"],
+      "commands": [{ "command": "workbench.action.showCommands" }]
+    },
+    // Language server actions
+    {
+      "before": ["<leader>", "l", "f"],
+      "commands": [{ "command": "editor.action.formatDocument" }]
+    },
+    {
+      "before": ["<leader>", "l", "h"],
+      "commands": [{ "command": "editor.action.showDefinitionPreviewHover" }]
+    },
+    {
+      "before": ["<leader>", "l", "h"],
+      "commands": [{ "command": "editor.action.showDefinitionPreviewHover" }]
+    },
+    {
+      "before": ["<leader>", "l", "a"],
+      "commands": [{ "command": "editor.action.quickFix" }]
+    },
+    // git
+    {
+      "before": [" ", "g", "g"],
+      "commands": ["workbench.scm.focus"]
+      // "commands": ["workbench.view.scm"]
+    },
+    {
+      "before": [" ", "g", "n"],
+      "commands": ["gitlens.diffWithNext"]
+    },
+    {
+      "before": [" ", "g", "a"],
+      "commands": ["git.stage"]
+    },
+    {
+      "before": [" ", "g", "p"],
+      "commands": ["gitlens.diffWithPrevious"]
+    },
+    //
+    {
+      "before": [" ", "l", "d"],
+      "commands": ["editor.action.revealDefinition"]
+    },
+    {
+      "before": ["<BS>", "s"],
+      "commands": [
+        { "command": "workbench.action.quickOpen" },
+        { "command": "workbench.action.quickOpenNavigateNextInEditorPicker" },
+        { "command": "workbench.action.acceptSelectedQuickOpenItem" }
+      ]
+    },
+    {
+      "before": ["<BS>", "d"],
+      "commands": [
+        { "command": "workbench.action.quickOpen" },
+        { "command": "workbench.action.quickOpenNavigateNextInEditorPicker" },
+        { "command": "workbench.action.quickOpenNavigateNextInEditorPicker" },
+        { "command": "workbench.action.acceptSelectedQuickOpenItem" }
+      ]
+    },
+    {
+      "before": [" ", "l", "e"],
+      "commands": ["references-view.findReferences"]
+    },
+    {
+      "before": ["-"],
+      "commands": ["workbench.action.navigateBack"]
+    },
+    {
+      "before": ["leader", "-"],
+      "commands": ["workbench.action.toggleSidebarVisibility"],
+    },
+    {
+      "before": ["="],
+      "commands": ["workbench.action.navigateForward"]
+    },
+    {
+      "before": [" ", "l", "r"],
+      "commands": ["editor.action.rename"]
+    },
+    {
+      "before": [" ", "f", "e"],
+      "commands": ["workbench.view.explorer"]
+    },
+    {
+      "before": [" ", "x"],
+      "commands": ["workbench.action.closeActiveEditor"]
+    },
+    {
+      "before": ["<C-n>"],
+      "commands": ["workbench.action.toggleSidebarVisibility"]
+    },
+    // search
+    {
+      "before": [" ", "f", "f"],
+      "commands": ["workbench.action.findInFiles"]
+    },
+    {
+      "before": [" ", "f", "i"],
+      "commands": [
+        { "command": "workbench.action.findInFiles" },
+        { "command": "workbench.action.search.toggleQueryDetails" }
+      ]
+    },
+    {
+      "before": [" ", "f", "x"],
+      "commands": [
+        { "command": "workbench.action.findInFiles" },
+        { "command": "search.action.clearSearchResults" },
+        { "command": "workbench.action.toggleSidebarVisibility" },
+      ]
+    },
+    //
+    {
+      "before": [" ", "a"],
+      "commands": ["interactiveEditor.start"]
+    },
+    {
+      "before": ["s"],
+      "after": ["leader", "leader", "s"]
+    },
+    {
+      "before": ["leader", "leader"],
+      "commands": ["workbench.action.quickOpen"]
+    },
+    {
+      "before": [" ", "f", "b"],
+      "commands": ["workbench.action.showAllEditors"]
+    },
+    {
+      "before": [" ", "t"],
+      "commands": ["workbench.action.gotoSymbol"]
+    },
+    {
+      "before": [" ", "w"],
+      "after": ["<C-w>"]
+    },
+    {
+      "before": ["<C-j>"],
+      "after": ["<C-d>"]
+    },
+    {
+      "before": ["<C-k>"],
+      "after": ["<C-u>"]
+    },
+    {
+      "before": ["J"],
+      "after": ["<C-d>"]
+    },
+    {
+      "before": ["K"],
+      "after": ["<C-u>"]
+    },
+    {
+      "before": ["<Leader>", "j"],
+      "after": ["J"]
+    }
+  ],
+  "vim.enableNeovim": true,
+  "vim.visualModeKeyBindingsNonRecursive": [
+    {
+      "before": [" ", "a"],
+      "commands": ["interactiveEditor.start"]
+    },
+    {
+      "before": ["J"],
+      "after": ["<C-d>"]
+    },
+    {
+      "before": [";"],
+      "commands": [{ "command": "workbench.action.showCommands" }]
+    },
+    {
+      "before": ["K"],
+      "after": ["<C-u>"]
+    },
+    {
+      "before": ["s"],
+      "after": ["leader", "leader", "s"]
+    },
+    {
+      "before": ["q"],
+      "after": ["<esc>"]
+    },
+    {
+      "before": ["<C-j>"],
+      "after": ["<C-d>"]
+    },
+    {
+      "before": ["<C-k>"],
+      "after": ["<C-u>"]
+    },
+    {
+      "before": ["leader", "j", "k"],
+      "after": ["<esc>"]
+    }
+  ],
+  "vim.smartcase": true,
+  "vim.easymotion": true,
+  "vim.hlsearch": true,
+  "vim.insertModeKeyBindings": [
+    {
+      "before": ["j", "k"],
+      "after": ["<esc>"]
+    }
+  ],
+  "vim.highlightedyank.enable": true,
+  "editor.smoothScrolling": true,
+  "editor.cursorSurroundingLines": 100,
+  "workbench.colorTheme": "Catppuccin Mocha",
+  "jupyter.askForKernelRestart": false,
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "editor.renderWhitespace": "selection",
+  "redhat.telemetry.enabled": false,
+  "emeraldwalk.runonsave": {},
+  "[python]": {
+    "editor.formatOnType": true,
+    "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  "python.analysis.typeCheckingMode": "strict",
+  "arduino.useArduinoCli": true,
+  "vim.commandLineModeKeyBindings": [],
+  "explorer.confirmDelete": false,
+  "editor.unicodeHighlight.ambiguousCharacters": false,
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "terminal.integrated.inheritEnv": true,
+  "terminal.integrated.env.osx": {
+    "PATH": ""
+  },
+  "terminal.integrated.fontFamily": "JetBrainsMonoNL Nerd Font", // Taken from the file JetBrainsMonoNLNerdFont-Regular.ttf
+  "terminal.integrated.fontSize": 14,
+  "workbench.colorCustomizations": {
+    "terminal.background": "#031A16",
+    "terminal.foreground": "#81B5AC",
+    "terminalCursor.background": "#81B5AC",
+    "terminalCursor.foreground": "#81B5AC",
+    "terminal.ansiBlack": "#031A16",
+    "terminal.ansiBlue": "#96883E",
+    "terminal.ansiBrightBlack": "#2B685E",
+    "terminal.ansiBrightBlue": "#96883E",
+    "terminal.ansiBrightCyan": "#963E4C",
+    "terminal.ansiBrightGreen": "#883E96",
+    "terminal.ansiBrightMagenta": "#4C963E",
+    "terminal.ansiBrightRed": "#3E9688",
+    "terminal.ansiBrightWhite": "#D2E7E4",
+    "terminal.ansiBrightYellow": "#3E4C96",
+    "terminal.ansiCyan": "#963E4C",
+    "terminal.ansiGreen": "#883E96",
+    "terminal.ansiMagenta": "#4C963E",
+    "terminal.ansiRed": "#3E9688",
+    "terminal.ansiWhite": "#81B5AC",
+    "terminal.ansiYellow": "#3E4C96"
+},
+  "terminalAllInOne.terminalTheme": "Apathy",
+  "security.workspace.trust.untrustedFiles": "open",
+  "latex-workshop.latex.external.build.command": "make",
+  "editor.insertSpaces": true,
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode" }, "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": true,
+    "scminput": false
+  },
+  "files.autoSave": "afterDelay",
+  "window.zoomLevel": 1,
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "haskell.manageHLS": "GHCup",
+  "flake8.showNotifications": "always",
+  "flake8.args": ["--config=.flake8", "--max-line-length=88"],
+  "editor.defaultFormatter": "ms-python.flake8",
+  "gitlens.ai.experimental.provider": "openai",
+  "gitlens.ai.experimental.openai.model": "gpt-4-turbo-preview",
+  "keyboard.dispatch": "keyCode",
+  "[latex]": {
+    "editor.defaultFormatter": "James-Yu.latex-workshop"
+  }
+}

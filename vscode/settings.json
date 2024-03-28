@@ -138,6 +138,15 @@
       "before": [";"],
       "commands": [{ "command": "workbench.action.showCommands" }]
     },
+    // Debugging
+    {
+      "before": ["<leader>", "d", "s"],
+      "commands": ["workbench.action.debug.start"]
+    },
+    {
+      "before": ["<leader>", "d", "b"],
+      "commands": ["editor.debug.action.toggleBreakpoint"]
+    }, 
     // Language server actions
     {
       "before": ["<leader>", "l", "f"],
@@ -418,5 +427,8 @@
   "keyboard.dispatch": "keyCode",
   "[latex]": {
     "editor.defaultFormatter": "James-Yu.latex-workshop"
+  },
+  "[c]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
   }
 }

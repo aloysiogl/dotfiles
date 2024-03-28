@@ -101,6 +101,25 @@
   },
 
   // ===================================================
+  // debugging
+  // step to next
+  {
+    "key": "n",
+    "command": "workbench.action.debug.stepOver",
+    "when": "debugState == 'stopped' && inDebugMode"
+  },
+  {
+    "key": "s",
+    "command": "workbench.action.debug.stepInto",
+    "when": "debugState == 'stopped' && inDebugMode"
+  },
+  {
+    "key": "c",
+    "command": "workbench.action.debug.continue",
+    "when": "debugState == 'stopped' && inDebugMode"
+  },
+
+  // ===================================================
   // ctrl n(next) and p(previous) already works, just adding jk as a personal preference
 
   {
@@ -164,16 +183,16 @@
   // ===================================================
   // git
   {
-    "key": "ctrl+j",
-    "command": "list.focusDown",
-    "when": "inputFocus"
-  },
-  // when in source control list, a stages a files
-  {
     "key": "a",
     "command": "git.stage",
-    "when": ""
+    "when": "!filesExplorerFocus && explorerViewletVisible && !inputFocus"
   },
+  // go to next in list of files and visizalize it in the sidebar
+  // {
+  //   "key": "j",
+  //   "command": "list.focusDown",
+  //   "when": "listFocus && !inputFocus"
+  // },
 
   // ===================================================
   // git diff

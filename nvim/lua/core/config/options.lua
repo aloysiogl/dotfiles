@@ -12,6 +12,7 @@ opt.incsearch = true          -- Search as characters are entered
 opt.grepprg = "rg --vimgrep"
 opt.clipboard = "unnamedplus" -- Use system clipboard
 opt.smartcase = true          -- Search case sensitive if there is a capital letter only
+opt.cmdheight = 0             -- Height of command line (0 = one single line)
 
 -- netrw do not show ./ or ../
 vim.g.netrw_list_hide = "^\\./$,^\\../$"

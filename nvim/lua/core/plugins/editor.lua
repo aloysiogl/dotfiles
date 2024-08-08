@@ -96,11 +96,61 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     config = function()
-      require("nvim-tree").setup {
+      local custom_on_attatch = function()
+        local api = require('nvim-tree.api')
 
+        local function opts(desc)
+          return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+        end
+
+        api.config.mappings.default_on_attach(bufnr)
+
+        -- your removals and mappings go here
+      end
+      require("nvim-tree").setup {
+        -- on_attach = custom_on_attatch,
       }
     end,
   },
+  ---@type LazySpec
+{
+  "mikavilpas/yazi.nvim",
+  event = "VeryLazy",
+  keys = {
+    -- 👇 in this section, choose your own keymappings!
+    {
+      "<leader>-",
+      "<cmd>Yazi<cr>",
+      desc = "Open yazi at the current file",
+    },
+    {
+      -- Open in the current working directory
+      "<leader>cw",
+      "<cmd>Yazi cwd<cr>",
+      desc = "Open the file manager in nvim's working directory" ,
+    },
+    {
+      -- NOTE: this requires a version of yazi that includes
+      -- https://github.com/sxyazi/yazi/pull/1305 from 2024-07-18
+      '<c-up>',
+      "<cmd>Yazi toggle<cr>",
+      desc = "Resume the last yazi session",
+    },
+  },
+  ---@type YaziConfig
+  opts = {
+    -- if you want to open yazi instead of netrw, see below for more info
+    open_for_directories = false,
+
+    -- enable these if you are using the latest version of yazi
+    -- use_ya_for_events_reading = true,
+    -- use_yazi_client_id_flag = true,
+
+    keymaps = {
+      show_help = '<f1>',
+    },
+  },
+}, 
   {
     "folke/trouble.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -113,5 +163,5 @@ return {
   {
     "RRethy/vim-illuminate",
     event = "VeryLazy",
-  }
+  },
 }

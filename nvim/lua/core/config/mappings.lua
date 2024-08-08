@@ -51,8 +51,6 @@ vim.keymap.set("v", "q", "<ESC>", { desc = "Quite visual mode" })
 
 -- search
 vim.keymap.set("n", "z/", "<cmd>FuzzySearch<cr>", { desc = "Fuzzy Search within buffer", noremap = true })
-vim.keymap.set("n", "<leader>o", "/", { desc = "Fuzzy Search within buffer" })
-vim.keymap.set("c", "<leader>o", "<CR>", { silent = true })
 
 --spectre
 vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {
@@ -162,14 +160,14 @@ wk.register({
 })
 
 -- File explorer
-vim.keymap.set("n", "<leader>-", function()
-  local api = require("nvim-tree.api")
-  local filename = vim.api.nvim_buf_get_name(0)
-  local getPath = function(str, sep)
-    sep = sep or '/'
-    return str:match("(.*" .. sep .. ")")
-  end
-  -- api.tree.toggle({ path = getPath(filename, "/") })
-  api.tree.toggle({ find_file = true })
-  -- print(getPath(filename, "/"))
-end, { desc = "File explorer" })
+-- vim.keymap.set("n", "<leader>-", function()
+--   local api = require("nvim-tree.api")
+--   local filename = vim.api.nvim_buf_get_name(0)
+--   local getPath = function(str, sep)
+--     sep = sep or '/'
+--     return str:match("(.*" .. sep .. ")")
+--   end
+--   -- api.tree.toggle({ path = getPath(filename, "/") })
+--   api.tree.toggle({ find_file = true })
+--   -- print(getPath(filename, "/"))
+-- end, { desc = "File explorer" })

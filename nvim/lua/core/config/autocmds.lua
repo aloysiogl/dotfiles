@@ -123,6 +123,25 @@ function InsertRecenter() abort
 endfunction
 ]], false)
 
+vim.api.nvim_exec([[
+autocmd TermOpen * setlocal nonumber norelativenumber
+]], false)
+
+local o				= vim.o		-- options
+local wo			= vim.wo	-- window options
+
+-- Terminal
+vim.api.nvim_create_autocmd({"TermOpen"}, {
+	pattern = { "term://*" },
+	callback = function()
+		wo.relativenumber	= false
+		wo.number			= false
+		o.signcolumn		= "no"
+
+		vim.cmd([[ startinsert ]])
+	end,
+})
+
 -- local function InsertRecenter()
 --   local at_end = vim.fn.getcurpos()[3] > #vim.fn.getline('.')
 --   vim.api.nvim_command('normal! zz')

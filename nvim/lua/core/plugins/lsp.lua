@@ -49,6 +49,7 @@ return {
             -- { name = 'copilot' },
             { name = 'nvim_lsp' },
             { name = 'omni' },
+            { name = 'orgmode' },
             { name = 'luasnip', option = { show_autosnippets = true, use_show_condition = false } },
             { name = "buffer" },
             { name = "path" },
@@ -154,6 +155,18 @@ return {
         -- (Optional) Configure lua language server for neovim
         require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
 
+        -- Solve: Multiple different client offset_encodings detected on cpp
+        local cmp_nvim_lsp = require "cmp_nvim_lsp"
+
+        require("lspconfig").clangd.setup {
+          -- on_attach = on_attach,
+          capabilities = cmp_nvim_lsp.default_capabilities(),
+          cmd = {
+            "clangd",
+            "--offset-encoding=utf-16",
+          },
+        }
+
         lsp.setup()
       end
     }
@@ -179,8 +192,14 @@ return {
 
       -- Setup orgmode
       require('orgmode').setup({
-        org_agenda_files = '~/orgfiles/**/*',
+        org_agenda_files = '~/Dropbox/notes/**/*',
         org_default_notes_file = '~/orgfiles/refile.org',
+        org_todo_keywords = { 'TODO', 'WAITING', '|', 'DONE', 'CANCELLED' },
+        org_todo_keyword_faces = {
+          WAITING = ':foreground blue :weight bold',
+          CANCELLED = ':foreground gray :weight bold',
+          TODO = ':foreground yellow :weight bold', -- overrides builtin color for `TODO` keyword
+        },
       })
     end,
   },

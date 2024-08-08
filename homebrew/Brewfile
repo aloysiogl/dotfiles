@@ -11,6 +11,7 @@ brew 'wget'
 brew 'koekeishiya/formulae/yabai' # you may need --HEAD version
 brew 'koekeishiya/formulae/skhd'
 brew 'zsh'
+brew 'zoxide'
 
 cask 'docker'
 cask 'google-chrome'

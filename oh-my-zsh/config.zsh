@@ -9,7 +9,8 @@ plugins=(
     docker-compose 
     fzf
     git 
-    z 
+    # z 
+    zsh-vi-mode
     zsh-autosuggestions
     zsh-syntax-highlighting
     zsh-output-highlighting

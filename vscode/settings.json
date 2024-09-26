@@ -147,11 +147,14 @@
     {
       "before": ["<leader>", "d", "b"],
       "commands": ["editor.debug.action.toggleBreakpoint"]
-    }, 
+    },
     // Language server actions
     {
       "before": ["<leader>", "l", "f"],
-      "commands": [{ "command": "editor.action.formatDocument" }]
+      "commands": [
+        { "command": "editor.action.formatDocument" },
+        { "command": "editor.action.organizeImports" }
+      ]
     },
     {
       "before": ["<leader>", "l", "h"],
@@ -398,7 +401,7 @@
     "terminal.ansiRed": "#3E9688",
     "terminal.ansiWhite": "#81B5AC",
     "terminal.ansiYellow": "#3E4C96"
-},
+  },
   "terminalAllInOne.terminalTheme": "Apathy",
   "security.workspace.trust.untrustedFiles": "open",
   "latex-workshop.latex.external.build.command": "make",
@@ -410,7 +413,9 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode" }, "github.copilot.enable": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "github.copilot.enable": {
     "*": true,
     "plaintext": false,
     "markdown": true,

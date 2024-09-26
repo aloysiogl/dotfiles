@@ -101,28 +101,29 @@ local wk = require("which-key")
 wk.register({
   ["<leader>f"] = { name = "Telescope", }
 })
+
 vim.keymap.set("n", "<leader>fd", builtin_telescope.git_bcommits, { desc = "Telecope commits for current buffer" })
 vim.keymap.set("n", "<leader>fs", builtin_telescope.git_status, { desc = "Telecope git status" })
 local find_buffer_description = "Telescope find buffer"
-vim.keymap.set("n", "<leader>ff", builtin_telescope.find_files, { desc = find_buffer_description })
-vim.keymap.set("n", "<leader><space>", builtin_telescope.buffers, { desc = find_buffer_description })
-vim.keymap.set("n", "<leader>fg", builtin_telescope.live_grep, { desc = "Telescope live grep" })
+-- vim.keymap.set("n", "<leader>ff", builtin_telescope.find_files, { desc = find_buffer_description })
+vim.keymap.set("n", "<leader><space>", builtin_telescope.find_files, { desc = find_buffer_description })
+vim.keymap.set("n", "<leader>ff", builtin_telescope.live_grep, { desc = "Telescope live grep" })
 vim.keymap.set("n", "<leader>fm", builtin_telescope.keymaps, { desc = "Telescope find mapping/keybinding" })
 vim.keymap.set("n", "<leader>fu", builtin_telescope.current_buffer_fuzzy_find,
   { desc = "Fuzzy find in the current buffer" })
 vim.keymap.set("n", "<leader>ft", builtin_telescope.treesitter, { desc = "Treesitter" })
-vim.keymap.set("n", "<leader>fp", function()
-  local maps = vim.api.nvim_get_keymap("n")
-  for _, v in pairs(maps) do
-    if v.lhs == "  " then
-      if v.desc == find_buffer_description then
-        vim.keymap.set("n", "<leader><space>", builtin_telescope.find_files, { desc = "Telescope find files" })
-      else
-        vim.keymap.set("n", "<leader><space>", builtin_telescope.buffers { desc = find_buffer_description })
-      end
-    end
-  end
-end, { desc = "Telescope switch to buffer mode" })
+-- vim.keymap.set("n", "<leader>fp", function()
+--   local maps = vim.api.nvim_get_keymap("n")
+--   for _, v in pairs(maps) do
+--     if v.lhs == "  " then
+--       if v.desc == find_buffer_description then
+--         vim.keymap.set("n", "<leader><space>", builtin_telescope.find_files, { desc = "Telescope find files" })
+--       else
+--         vim.keymap.set("n", "<leader><space>", builtin_telescope.buffers { desc = find_buffer_description })
+--       end
+--     end
+--   end
+-- end, { desc = "Telescope switch to buffer mode" })
 vim.api.nvim_set_keymap(
   "n",
   "<leader>fb",

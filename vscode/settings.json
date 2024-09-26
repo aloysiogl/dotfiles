@@ -216,8 +216,8 @@
       "commands": ["workbench.action.navigateBack"]
     },
     {
-      "before": ["leader", "-"],
-      "commands": ["workbench.action.toggleSidebarVisibility"],
+      "before": ["<leader>", "-"],
+      "commands": ["multiCommand.toggleSidebar"]
     },
     {
       "before": ["="],
@@ -256,7 +256,7 @@
       "commands": [
         { "command": "workbench.action.findInFiles" },
         { "command": "search.action.clearSearchResults" },
-        { "command": "workbench.action.toggleSidebarVisibility" },
+        { "command": "workbench.action.toggleSidebarVisibility" }
       ]
     },
     //
@@ -364,7 +364,7 @@
   "emeraldwalk.runonsave": {},
   "[python]": {
     "editor.formatOnType": true,
-    "editor.defaultFormatter": "ms-python.autopep8"
+    "editor.defaultFormatter": "charliermarsh.ruff"
   },
   "python.analysis.typeCheckingMode": "strict",
   "arduino.useArduinoCli": true,
@@ -435,5 +435,51 @@
   },
   "[c]": {
     "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[bibtex]": {
+    "editor.defaultFormatter": "James-Yu.latex-workshop"
+  },
+  "gitlens.graph.layout": "editor",
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+  "python.analysis.diagnosticMode": "workspace",
+  "[cpp]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "github.copilot.editor.enableAutoCompletions": true,
+  "[haskell]": {
+    "editor.defaultFormatter": "haskell.haskell"
+  },
+  "[terraform]": {
+    "editor.defaultFormatter": "hashicorp.terraform"
+  },
+  "diffEditor.ignoreTrimWhitespace": false,
+  // "ruff.format.args": [
+  //   "--sort-imports"
+  // ]
+  "multiCommand.commands": [
+    {
+      "command": "multiCommand.toggleSidebar",
+      "sequence": [
+        // {
+        //   "command": "workbench.action.toggleSidebarVisibility",
+        //   "when": "!sideBarVisible"
+        // },
+        {
+          "command": "workbench.view.explorer"
+        }
+      ],
+      "when": "sideBarVisible"
+    }
+  ],
+  "[lua]": {
+    "editor.defaultFormatter": "yinfei.luahelper"
+  },
+  "[tex]": {
+    "editor.defaultFormatter": "James-Yu.latex-workshop"
   }
 }

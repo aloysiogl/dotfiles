@@ -116,17 +116,17 @@
     {
       "before": ["leader", "e"],
       "after": ["$"]
-    },
+    }
   ],
   "vim.normalModeKeyBindingsNonRecursive": [
-    {
-      "before": ["m"],
-      "commands": ["bookmarks.toggle"]
-    },
-    {
-      "before": ["'"],
-      "commands": ["bookmarks.jumpToNext"]
-    },
+    // {
+    //   "before": ["m"],
+    //   "commands": ["bookmarks.toggle"]
+    // },
+    // {
+    //   "before": ["'"],
+    //   "commands": ["bookmarks.jumpToNext"]
+    // },
     {
       "before": ["<leader>", "m", "x"],
       "commands": ["bookmarks.clearFromAllFiles"]

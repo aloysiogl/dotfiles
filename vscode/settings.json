@@ -358,7 +358,7 @@
   "editor.cursorSurroundingLines": 100,
   "workbench.colorTheme": "Catppuccin Mocha",
   "jupyter.askForKernelRestart": false,
-  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.latex.autoBuild.run": "never",
   "editor.renderWhitespace": "selection",
   "redhat.telemetry.enabled": false,
   "emeraldwalk.runonsave": {},
@@ -404,7 +404,6 @@
   },
   "terminalAllInOne.terminalTheme": "Apathy",
   "security.workspace.trust.untrustedFiles": "open",
-  "latex-workshop.latex.external.build.command": "make",
   "editor.insertSpaces": true,
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

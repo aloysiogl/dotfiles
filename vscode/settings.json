@@ -110,6 +110,7 @@
   "editor.inlineSuggest.enabled": true,
   "vim.easymotionMarkerBackgroundColor": "#7e57c2",
   "vim.easymotionKeys": "jfdksla;ghrueiwoqptyvmc,x.z/bn",
+  "vim.useSystemClipboard": true,
   "vim.leader": " ",
   "vim.normalModeKeyBindings": [
     {

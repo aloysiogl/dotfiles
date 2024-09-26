@@ -120,6 +120,15 @@
   },
 
   // ===================================================
+  // comamnd pallet everywhere
+
+  {
+    "key": ";",
+    "command": "workbench.action.showCommands",
+    "when": "!editorFocus && !inputFocus"
+  },
+
+  // ===================================================
   // ctrl n(next) and p(previous) already works, just adding jk as a personal preference
 
   {
@@ -164,12 +173,12 @@
   {
     "key": "n",
     "command": "search.action.focusNextSearchResult",
-    "when": "hasSearchResult && vim.mode == 'Normal' || inSearchEditor"
+    "when": "hasSearchResult && vim.mode == 'Normal' && editorFocus || (inSearchEditor && !inputFocus)"
   },
   {
     "key": "shift+n",
     "command": "search.action.focusPreviousSearchResult",
-    "when": "hasSearchResult && vim.mode == 'Normal'|| inSearchEditor"
+    "when": "hasSearchResult && vim.mode == 'Normal' && editorFocus || (inSearchEditor && !inputFocus)"
   },
   {
     "key": "ctrl+backspace",
@@ -340,4 +349,10 @@
     "command": "-bookmarks.jumpToPrevious",
     "when": "editorTextFocus"
   },
+  // {
+  //   "key": "ctrl+1 ctrl+2",
+  //   "command": "editor.action.diffReview.next"
+  // },
+
+  //TODO: create toggle sidebar command
 ]

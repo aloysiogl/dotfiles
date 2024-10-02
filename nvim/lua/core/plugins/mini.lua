@@ -19,7 +19,7 @@ return {
           suffix_next = 'n', -- Suffix to search with "next" method
         },
       }
-    require("mini.statusline").setup()
+    -- require("mini.statusline").setup()
     -- require("mini.starter").setup()
     end
   },

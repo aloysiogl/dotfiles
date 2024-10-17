@@ -28,24 +28,6 @@ return {
     end,
   },
   {
-    "zoriya/auto-save.nvim",
-    config = function()
-      require("auto-save").setup({
-        -- your config goes here
-        -- or just leave it empty :)
-        execution_message = {
-          message = "",
-        },
-        triggered_events = { "InsertLeave" },
-        callbacks = {
-          after_saving = function()
-            -- os.execute("make > /tmp/latex_build 2> /tmp/latex_error &")
-          end,
-        },
-      })
-    end,
-  },
-  {
     "kevinhwang91/nvim-bqf",
     event = "VeryLazy",
   },

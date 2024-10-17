@@ -94,7 +94,7 @@ zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh') # avoids ove
 eval "$(zoxide init zsh)"
 
 # Source all .zsh files in a list of selected directories
-for dir in system zsh nvim git; do
+for dir in system zsh nvim git nix; do
   for file in $DOTFILES_ROOT/$dir/*.zsh; do
     source $file
   done

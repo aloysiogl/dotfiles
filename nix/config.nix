@@ -5,24 +5,29 @@
     myPackages = pkgs.buildEnv {
       name = "my-packages";
       paths = [
-        # Programs
-        pkgs.bat
-        pkgs.neovim
-        pkgs.vim
-        pkgs.zoxide
-        pkgs.lazygit
-        pkgs.nvimpager
-        pkgs.zotero
-
-        # Git
-        pkgs.delta
-
-        # Node
-        pkgs.nodejs_22
-
-        # Nvim
+        #programs
+        bat
+        neovim
+        ncdu
+        vim
+        zoxide
+        lazygit
+        nvimpager
+        zotero
+        blender
+        #python
+        pipx
+        poetry
+        ruff
+        ruff-lsp
+        #git
+        delta
+        #node
+        nodejs_22
+        #nvim
         tree-sitter
       ];
     };
   };
 }
+

@@ -49,3 +49,27 @@ this script in `bin/`.
 
 - https://github.com/holman/dotfiles
 - https://github.com/rafaeleyng/dotfiles
+
+## Unbuntu install
+
+- [ ] Need to make each part add to the zshrc file as it should be, but for now, it's manual
+
+Follow the order:
+- Perform nix installs
+- Zsh
+- Oh-my-zsh
+- Install zoxide 
+- Allacrity
+- Look your notes in the `organization` repo for swap esc with escape
+- Configure git (folder and ssh with github), you can copy your keys from the old machine
+- Configure nvim (already installed in nix)
+- Configure tmux
+- Configure firefox
+- Configure lazygit
+- Symlinks for vscode
+
+In the end check that you did all folders
+
+## TODO
+
+- [ ] Fix script to install everything in linux

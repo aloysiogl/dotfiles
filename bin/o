@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# if no argument is given run open
+if [ $# -eq 0 ]; then
+  open .
+  exit
+else
+  open $@
+fi

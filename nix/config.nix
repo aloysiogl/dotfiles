@@ -10,6 +10,9 @@
         pkgs.vim
         pkgs.zoxide
         pkgs.lazygit
+
+        # Nvim
+        tree-sitter
       ];
     };
   };

@@ -1,2 +1,2 @@
 alias cat='bat'
-alias grep='ag'
+alias grep='rg'

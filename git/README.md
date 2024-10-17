@@ -1,5 +1,5 @@
 Create symlink
 
 ```bash
-ln -s ~/
+ln -s ~/.dotfiles/git/gitconfig.symlink ~/.gitconfig
 ```

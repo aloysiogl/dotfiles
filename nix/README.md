@@ -12,3 +12,7 @@ To install new packages do:
 ```zsh
 nix-env -iA nixpkgs.myPackages
 ```
+
+## Todos
+
+- [ ] Learn to use `https://www.nixhub.io/` to find past versions of packages.

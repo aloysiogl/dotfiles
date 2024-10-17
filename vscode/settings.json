@@ -108,6 +108,7 @@
     "variant": "cpp"
   },
   "editor.inlineSuggest.enabled": true,
+  "editor.wordWrap": "on",
   "vim.easymotionMarkerBackgroundColor": "#7e57c2",
   "vim.easymotionKeys": "jfdksla;ghrueiwoqptyvmc,x.z/bn",
   "vim.useSystemClipboard": true,
@@ -481,5 +482,9 @@
   },
   "[tex]": {
     "editor.defaultFormatter": "James-Yu.latex-workshop"
-  }
+  },
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
+  },
+  "terminal.integrated.cursorStyle": "block"
 }

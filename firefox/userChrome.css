@@ -1,0 +1,5 @@
+#TabsToolbar { visibility: collapse !important; }
+#TabsToolbar-customization-target { visibility: collapse !important; } 
+#tabbrowser-tabs { visibility: collapse !important; }
+#sidebar-header { visibility: collapse !important; }
+#tabs-bar { visibility: collapse !important; }

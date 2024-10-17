@@ -4,12 +4,10 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 DEFAULT_USER=$(whoami)
 
 plugins=(
-    ag
     docker 
     docker-compose 
     fzf
     git 
-    # z 
     zsh-vi-mode
     zsh-autosuggestions
     zsh-syntax-highlighting

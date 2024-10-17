@@ -15,6 +15,10 @@ if [ ! -d ${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting ]; then
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting
 fi
 
+if [ ! -d ${ZSH_CUSTOM}/plugins/zsh-autocomplete ]; then
+  git clone https://github.com/marlonrichert/zsh-autocomplete.git ${ZSH_CUSTOM}/plugins/zsh-autocomplete
+fi
+
 if [ ! -d ${FZF_PATH} ]; then
   git clone --depth 1 https://github.com/junegunn/fzf.git ${FZF_PATH}
   ${FZF_PATH}/install

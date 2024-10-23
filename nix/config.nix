@@ -15,9 +15,22 @@
         nvimpager
         zotero
         blender
+        libreoffice
+        inkscape
+        vlc
+        cmake
+        neofetch
+        google-cloud-sdk
+        terraform
+        gh # github cli
+        ffmpeg
+        findutils
+        opencv
+        boost
         #python
         pipx
         poetry
+        virtualenv
         ruff
         ruff-lsp
         #git

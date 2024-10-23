@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ $# -eq 0 ]; then
+    nvim $DOTFILES_ROOT
+else
+    nvim $DOTFILES_ROOT/$1
+fi

@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+# execute given command in command line and then source the follwoing env
+source /home/aloysio/Documents/code/prediction_planning/ros2_ws/src/install/setup.zsh && exec "$@" && source /home/aloysio/Documents/code/prediction_planning/ros2_ws/src/install/setup.zsh
+
+
+

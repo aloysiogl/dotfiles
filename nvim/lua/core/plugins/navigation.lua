@@ -82,6 +82,7 @@ return {
   },
   {
     "nvim-telescope/telescope.nvim",
+    tag = "0.1.7",
     optional = true,
     opts = function(_, opts)
       local function flash(prompt_bufnr)

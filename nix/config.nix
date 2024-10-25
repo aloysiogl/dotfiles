@@ -14,12 +14,13 @@
         lazygit
         nvimpager
         zotero
-        blender
+        # blender (does not work in ubuntu)
         libreoffice
         inkscape
         vlc
         cmake
         neofetch
+        htop
         google-cloud-sdk
         terraform
         gh # github cli

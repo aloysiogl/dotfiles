@@ -41,6 +41,60 @@ return {
       "nvim-telescope/telescope.nvim"
     }
   },
+  -- {
+  --   "pasky/claude.vim",
+  --   lazy = false,
+  --   config = function()
+  --     -- Load API key from environment variable
+  --     local api_key = os.getenv("ANTHROPIC_API_KEY")
+  --     if api_key then
+  --       vim.g.claude_api_key = api_key
+  --     else
+  --       vim.notify("ANTHROPIC_API_KEY environment variable is not set", vim.log.levels.WARN)
+  --     end
+  --
+  --     vim.keymap.set("v", "<leader>la", ":'<,'>ClaudeImplement ", { noremap = true, desc = "Claude Implement" })
+  --     vim.keymap.set("n", "<leader>lc", ":ClaudeChat<CR>", { noremap = true, silent = true, desc = "Claude Chat" })
+  --   end,
+  -- },
+{
+  "olimorris/codecompanion.nvim",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "nvim-treesitter/nvim-treesitter",
+    "hrsh7th/nvim-cmp", -- Optional: For using slash commands and variables in the chat buffer
+    "nvim-telescope/telescope.nvim", -- Optional: For using slash commands
+    { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves `vim.ui.select`
+  },
+  config = function()
+    require("codecompanion").setup(
+    {
+ strategies = {
+    chat = {
+      -- adapter = "anthropic",
+      adapter = "copilot",
+    },
+    inline = {
+      adapter = "copilot",
+    },
+    agent = {
+      -- adapter = "anthropic",
+      adapter = "copilot",
+    },
+  },
+   adapters = {
+    anthropic = function()
+      return require("codecompanion.adapters").extend("anthropic", {
+        env = {
+          api_key = "ANTHROPIC_API_KEY"
+        },
+      })
+    end,
+  },
+    }
+    )
+  end,
+},
   {
     "nomnivore/ollama.nvim",
     dependencies = {

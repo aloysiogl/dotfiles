@@ -21,12 +21,18 @@
         cmake
         neofetch
         htop
+        ollama
         google-cloud-sdk
         terraform
         gh # github cli
         ffmpeg
         findutils
         opencv
+        # audio vide editing
+        audacity
+        imagemagick
+
+
         boost
         #python
         pipx

@@ -42,7 +42,7 @@ end, {
 })
 
 -- quit teminal mode to normal mode
-vim.keymap.set("t", "<leader><space>", "<C-\\><C-n>", {
+vim.keymap.set("t", "jk", "<C-\\><C-n>", {
     desc = "Quit terminal mode"
 })
 
@@ -318,14 +318,14 @@ vim.keymap.set("n", "<leader>ca", "<cmd>CodeCompanionActions<cr>", { noremap = t
 -- }})
 
 -- File explorer
--- vim.keymap.set("n", "<leader>-", function()
---   local api = require("nvim-tree.api")
---   local filename = vim.api.nvim_buf_get_name(0)
---   local getPath = function(str, sep)
---     sep = sep or '/'
---     return str:match("(.*" .. sep .. ")")
---   end
---   -- api.tree.toggle({ path = getPath(filename, "/") })
---   api.tree.toggle({ find_file = true })
---   -- print(getPath(filename, "/"))
--- end, { desc = "File explorer" })
+vim.keymap.set("n", "<leader>-", function()
+  local api = require("nvim-tree.api")
+  local filename = vim.api.nvim_buf_get_name(0)
+  local getPath = function(str, sep)
+    sep = sep or '/'
+    return str:match("(.*" .. sep .. ")")
+  end
+  -- api.tree.toggle({ path = getPath(filename, "/") })
+  api.tree.toggle({ find_file = true })
+  -- print(getPath(filename, "/"))
+end, { desc = "File explorer" })

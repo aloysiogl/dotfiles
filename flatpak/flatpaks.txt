@@ -1,0 +1,9 @@
+com.google.Chrome/x86_64/stable
+com.obsproject.Studio/x86_64/stable
+com.parsecgaming.parsec/x86_64/stable
+com.skype.Client/x86_64/stable
+com.stremio.Stremio/x86_64/stable
+org.blender.Blender/x86_64/stable
+org.inkscape.Inkscape/x86_64/stable
+org.kicad.KiCad/x86_64/stable
+org.mozilla.Thunderbird/x86_64/stable

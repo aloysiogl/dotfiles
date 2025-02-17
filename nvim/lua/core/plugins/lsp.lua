@@ -143,6 +143,26 @@ return {
           -- vim.keymap.set({ 'n' }, '<leader>le', vim.lsp.buf.references, generate_opts('LSP references'))
           vim.keymap.set("n", "<leader>le", function() require("trouble").open("lsp_references") end,
             generate_opts('LSP references'))
+          -- Configure Ruff LSP for Python formatting and import sorting
+          require('lspconfig').ruff.setup({
+            init_options = {
+              settings = {
+                -- Format using Ruff
+                format = {
+                  args = {},
+                },
+                -- Configure Ruff to use organize-imports
+                organizeImports = true,
+              }
+            },
+            on_attach = function(client, bufnr)
+              -- Enable formatting capabilities for Ruff
+              client.server_capabilities.documentFormattingProvider = true
+              client.server_capabilities.documentRangeFormattingProvider = true
+            end,
+          })
+
+
           vim.keymap.set({ 'n' }, '<leader>lD', vim.lsp.buf.type_definition, generate_opts('LSP type_definition'))
 
           -- Disgnostics
@@ -178,7 +198,6 @@ return {
     },
     event = 'VeryLazy',
     config = function()
-
       -- Setup treesitter
       require('nvim-treesitter.configs').setup({
         highlight = {

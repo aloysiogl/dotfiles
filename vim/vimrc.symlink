@@ -24,3 +24,4 @@ set cursorcolumn
 
 " Maps jk to esc
 imap jk <Esc>
+nmap ; :

@@ -63,15 +63,11 @@ vim.api.nvim_create_autocmd('filetype', {
   desc = 'Mappings for latex',
   callback = function()
     vim.keymap.set("n", "<leader>vv", "<plug>(vimtex-view)", { desc = "no", noremap = true })
-    wk = require("which-key")
-    wk.register({
-      v = {
-        name = "Vimtex",
-        v = { "<plug>(vimtex-view)", "Vimtex view" },
-        c = { "<plug>(vimtex-compile)", "Vimtex compile" },
-      },
-    }, {
-      prefix = "<leader>",
+    local wk = require("which-key")
+    wk.add({
+      { "<leader>v",  group = "Vimtex" },
+      { "<leader>vc", "<plug>(vimtex-compile)", desc = "Vimtex compile" },
+      { "<leader>vv", "<plug>(vimtex-view)",    desc = "Vimtex view" },
     })
   end
 })
@@ -127,19 +123,19 @@ vim.api.nvim_exec([[
 autocmd TermOpen * setlocal nonumber norelativenumber
 ]], false)
 
-local o				= vim.o		-- options
-local wo			= vim.wo	-- window options
+local o  = vim.o  -- options
+local wo = vim.wo -- window options
 
 -- Terminal
-vim.api.nvim_create_autocmd({"TermOpen"}, {
-	pattern = { "term://*" },
-	callback = function()
-		wo.relativenumber	= false
-		wo.number			= false
-		o.signcolumn		= "no"
+vim.api.nvim_create_autocmd({ "TermOpen" }, {
+  pattern = { "term://*" },
+  callback = function()
+    wo.relativenumber = false
+    wo.number         = false
+    o.signcolumn      = "no"
 
-		vim.cmd([[ startinsert ]])
-	end,
+    vim.cmd([[ startinsert ]])
+  end,
 })
 
 -- local function InsertRecenter()

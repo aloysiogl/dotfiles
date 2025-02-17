@@ -5,19 +5,37 @@
     myPackages = pkgs.buildEnv {
       name = "my-packages";
       paths = [
-        #programs
-        bat
-        neovim
-        ncdu
+        # text editing
         vim
+        neovim
+
+        # program launcher
+        albert 
+
+        # utilities
+        bat
+        delta
+        ncdu
+
+        # backups
+        rclone
+        restic
+
+        # system monitoring
+        btop
+        # powertop
+
+        pv
         zoxide
         lazygit
         nvimpager
         zotero
+        texliveFull
         # blender (does not work in ubuntu)
-        libreoffice
-        inkscape
-        vlc
+        # dbeaver-bin # moved to flathub 
+        # libreoffice # moved to flathub
+        # inkscape    # moved to flathub
+        # vlc         # moved to flathub
         cmake
         neofetch
         htop
@@ -25,27 +43,36 @@
         google-cloud-sdk
         terraform
         gh # github cli
+        git-lfs
         ffmpeg
         findutils
         opencv
         # audio vide editing
-        audacity
+        # audacity
+        # thunderbird
         imagemagick
 
-
-        boost
+        # programming
+        go
+        rustc
+        rustfmt
         #python
         pipx
         poetry
         virtualenv
         ruff
         ruff-lsp
-        #git
-        delta
         #node
+        #git
         nodejs_22
-        #nvim
         tree-sitter
+        ## libraries
+        boost
+        ## performance analysis
+        hotspot # gui for perf plots
+
+        # pdf
+        zathura
       ];
     };
   };

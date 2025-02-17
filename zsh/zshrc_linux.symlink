@@ -1,5 +1,14 @@
 export DOTFILES_ROOT=$HOME/.dotfiles
 
+# Nix
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d
+/nix-daemon.sh' ]; then
+. '/nix/var/nix/profiles/default/etc/profile.d/nix-d
+aemon.sh'
+fi
+# End Nix
+
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 

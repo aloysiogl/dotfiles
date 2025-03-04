@@ -160,13 +160,13 @@ required_env_vars=(
   "OPENAI_API_KEY"
 )
 if [ -f "$HOME/.env" ]; then
-  source "$HOME/.env"
+    source "$HOME/.env"
 else
-  echo "WARNING: ~/.env file not found. Environment variables may not be set correctly." | sed 's/WARNING/\x1b[31m&\x1b[0m/g'
+    echo -e "\e[31mWARNING:\e[0m ~/.env file not found. Environment variables may not be set correctly."
 fi
 
 for var in "${required_env_vars[@]}"; do
-  if [ -z "${(P)var}" ]; then
-    echo "WARNING: $var is not set. Check your ~/.env file." | sed 's/WARNING/\x1b[33m&\x1b[0m/g'
-  fi
+    if [ -z "${(P)var}" ]; then
+        echo -e "\e[33mWARNING:\e[0m $var is not set. Check your ~/.env file."
+    fi
 done

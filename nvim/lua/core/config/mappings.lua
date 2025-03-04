@@ -79,9 +79,13 @@ vim.keymap.set("i", "jk", "<ESC>", {
 vim.keymap.set("n", "<leader>ll", "<cmd>Lazy<cr>", {
     desc = "Lazy"
 })
-vim.keymap.set("n", "<leader>gg", "<cmd>Neogit<cr>", {
-    desc = "LazyGit"
+-- Git
+vim.keymap.set("n", "<leader>gg", "<cmd>DiffviewOpen<cr>", {
+    desc = "Open Diffview"
 })
+-- vim.keymap.set("n", "<leader>gg", "<cmd>Neogit<cr>", {
+--     desc = "LazyGit"
+-- })
 vim.keymap.set("n", "<leader>gd", "<cmd>Git difftool --name-only<cr>", {
     desc = "Previous in quickfix list"
 })
@@ -237,9 +241,18 @@ vim.keymap.set("v", "s", "<Plug>(easymotion-s)", {
     desc = "Easymotion s"
 })
 
-vim.keymap.set("v", "<leader>la", ":CodeCompanion ", { noremap = true, silent = false })
-vim.keymap.set("n", "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>ca", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
+vim.keymap.set("v", "<leader>la", ":CodeCompanion ", {
+    noremap = true,
+    silent = false
+})
+vim.keymap.set("n", "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", {
+    noremap = true,
+    silent = true
+})
+vim.keymap.set("n", "<leader>ca", "<cmd>CodeCompanionActions<cr>", {
+    noremap = true,
+    silent = true
+})
 
 -- chat gpt
 -- wk.add({{
@@ -319,13 +332,17 @@ vim.keymap.set("n", "<leader>ca", "<cmd>CodeCompanionActions<cr>", { noremap = t
 
 -- File explorer
 vim.keymap.set("n", "<leader>-", function()
-  local api = require("nvim-tree.api")
-  local filename = vim.api.nvim_buf_get_name(0)
-  local getPath = function(str, sep)
-    sep = sep or '/'
-    return str:match("(.*" .. sep .. ")")
-  end
-  -- api.tree.toggle({ path = getPath(filename, "/") })
-  api.tree.toggle({ find_file = true })
-  -- print(getPath(filename, "/"))
-end, { desc = "File explorer" })
+    local api = require("nvim-tree.api")
+    local filename = vim.api.nvim_buf_get_name(0)
+    local getPath = function(str, sep)
+        sep = sep or '/'
+        return str:match("(.*" .. sep .. ")")
+    end
+    -- api.tree.toggle({ path = getPath(filename, "/") })
+    api.tree.toggle({
+        find_file = true
+    })
+    -- print(getPath(filename, "/"))
+end, {
+    desc = "File explorer"
+})

@@ -110,19 +110,22 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     config = function()
-      local custom_on_attatch = function()
+      local function custom_on_attach(bufnr)
         local api = require('nvim-tree.api')
 
         local function opts(desc)
           return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
         end
 
+        -- default mappings
         api.config.mappings.default_on_attach(bufnr)
-
-        -- your removals and mappings go here
+        -- add 'o' mapping for system_open
+        vim.keymap.del('n', 's', { buffer = bufnr })
+        vim.keymap.set('n', 'o', api.node.run.system, opts('Open in system application'))
       end
+
       require("nvim-tree").setup {
-        -- on_attach = custom_on_attatch,
+        on_attach = custom_on_attach,
       }
     end,
   },

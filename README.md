@@ -59,7 +59,7 @@ Follow the order:
 - Zsh
 - Oh-my-zsh
 - Install zoxide 
-- Allacrity
+- Allacrity (may not launch due to config problems)
 - Look your notes in the `organization` repo for swap esc with escape
 - Configure git (folder and ssh with github), you can copy your keys from the old machine
 - Configure nvim (already installed in nix)

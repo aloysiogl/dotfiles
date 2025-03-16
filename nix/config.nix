@@ -34,7 +34,7 @@
         # blender (does not work in ubuntu)
         # dbeaver-bin # moved to flathub 
         # libreoffice # moved to flathub
-        # inkscape    # moved to flathub
+        inkscape
         # vlc         # moved to flathub
         cmake
         neofetch
@@ -47,13 +47,18 @@
         ffmpeg
         findutils
         opencv
-        # audio vide editing
+
+        # audio video editing
         # audacity
         # thunderbird
         imagemagick
 
+        # network
+        wireshark
+
         # programming
         go
+        cargo
         rustc
         rustfmt
         #python

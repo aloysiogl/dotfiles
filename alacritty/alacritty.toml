@@ -11,4 +11,4 @@ family = "JetBrainsMonoNL Nerd Font"
 
 [shell]
 args = ["-l", "-c", "tmux attach || tmux"]
-program = "/bin/zsh"
+program = "/bin/sh"

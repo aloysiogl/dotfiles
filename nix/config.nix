@@ -16,6 +16,11 @@
         bat
         delta
         ncdu
+        ripgrep
+
+        # file management
+        yazi
+        zathura # pdf
 
         # backups
         rclone
@@ -24,6 +29,7 @@
         # system monitoring
         btop
         # powertop
+
 
         pv
         zoxide
@@ -76,8 +82,6 @@
         ## performance analysis
         hotspot # gui for perf plots
 
-        # pdf
-        zathura
       ];
     };
   };

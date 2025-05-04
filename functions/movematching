@@ -1,0 +1,5 @@
+#!/bin/sh
+
+movematching() {
+    python "/home/aloysio/.dotfiles/scripts/movematching.py" "$@"
+}

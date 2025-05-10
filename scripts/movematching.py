@@ -14,7 +14,8 @@ def move_file_to_folder(file_path: str, folder_path: str):
 
 def main():
     regexes_to_paths = {
-        r"\d{4}_\d{2}_BP_(janvier|fevrier|mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre)": "/home/aloysio/gdrive/pessoal/financeiro/rendimentos/2025/x"
+        r"\d{4}_\d{2}_BP_(janvier|fevrier|mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre)": "/home/aloysio/gdrive/pessoal/financeiro/rendimentos/2025/x",
+        r"sfr-facture-\d{6}.pdf": "/home/aloysio/gdrive/pessoal/financeiro/franca/internet/2025",
     }
     folder_to_scan = os.path.expanduser("~/Downloads")
     file_list = [

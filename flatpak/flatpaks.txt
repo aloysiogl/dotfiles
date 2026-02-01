@@ -10,6 +10,7 @@ io.github.jonmagon.kdiskmark/x86_64/stable
 net.davidotek.pupgui2/x86_64/stable
 nl.emphisia.icon/x86_64/stable
 org.blender.Blender/x86_64/stable
+org.gimp.GIMP/x86_64/stable
 org.gnome.FileRoller/x86_64/stable
 org.gnome.design.IconLibrary/x86_64/stable
 org.inkscape.Inkscape/x86_64/stable
@@ -18,3 +19,4 @@ org.libreoffice.LibreOffice/x86_64/stable
 org.mozilla.Thunderbird/x86_64/stable
 org.qbittorrent.qBittorrent/x86_64/stable
 org.videolan.VLC/x86_64/stable
+us.zoom.Zoom/x86_64/stable

@@ -58,6 +58,7 @@
         # audacity
         # thunderbird
         imagemagick
+        # digikam
 
         # network
         wireshark
@@ -72,7 +73,7 @@
         poetry
         virtualenv
         ruff
-        ruff-lsp
+        # ruff-lsp #(might not exist anymore)
         #node
         #git
         nodejs_22

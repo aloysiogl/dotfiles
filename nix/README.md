@@ -32,3 +32,29 @@ Run garbage collection on everything:
 ```zsh
 nix-collect-garbage -d
 ```
+
+## Troubleshooting on first install with arch
+
+### Create the nix-users group
+
+```zsh
+sudo groupadd --system nix-users
+```
+
+### Add your current user to that group
+
+```zsh
+sudo usermod -aG nix-users $(whoami)
+```
+
+### Change ownership of the config directory just in case
+
+```zsh
+sudo chgrp nix-users /nix/var/nix/daemon-socket
+```
+
+### Enable deamon
+
+```zsh
+sudo systemctl enable --now nix-daemon.service
+```

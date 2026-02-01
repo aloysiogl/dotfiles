@@ -64,6 +64,7 @@ Follow the order:
 - Configure git (folder and ssh with github), you can copy your keys from the old machine
 - Configure nvim (already installed in nix)
 - Configure tmux
+- Configure hyperland
 - Configure firefox
 - Configure lazygit
 - Symlinks for vscode

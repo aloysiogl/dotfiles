@@ -1,16 +1,5 @@
 return {
   {
-    {
-      'VonHeikemen/lsp-zero.nvim',
-      branch = 'v2.x',
-      lazy = true,
-      config = function()
-        -- This is where you modify the settings for lsp-zero
-        -- Note: autocompletion settings will not take effect
-
-        require('lsp-zero.settings').preset({})
-      end
-    },
     -- Autocompletion
     {
       'hrsh7th/nvim-cmp',
@@ -19,13 +8,6 @@ return {
         "L3MON4D3/LuaSnip",
       },
       config = function()
-        -- Here is where you configure the autocompletion settings.
-        -- The arguments for .extend() have the same shape as `manage_nvim_cmp`:
-        -- https://github.com/VonHeikemen/lsp-zero.nvim/blob/v2.x/doc/md/api-reference.md#manage_nvim_cmp
-
-        require('lsp-zero.cmp').extend()
-
-        -- And you can configure cmp even more, if you want to.
         local cmp = require('cmp')
 
         local has_words_before = function()
@@ -108,86 +90,94 @@ return {
         { 'williamboman/mason.nvim' },
       },
       config = function()
-        -- This is where all the LSP shenanigans will live
+        -- Setup mason first
+        require('mason').setup()
+        require('mason-lspconfig').setup({
+          ensure_installed = { 'lua_ls', 'ruff', 'clangd' },
+        })
 
-        local lsp = require('lsp-zero')
+        -- Get capabilities from cmp
+        local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-        lsp.on_attach(function(client, bufnr)
-          -- Do not provide highlighting for semantic tokens
-          client.server_capabilities.semanticTokensProvider = nil
+        -- LSP keymaps on attach
+        vim.api.nvim_create_autocmd('LspAttach', {
+          group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+          callback = function(ev)
+            local client = vim.lsp.get_client_by_id(ev.data.client_id)
+            local bufnr = ev.buf
 
-          lsp.default_keymaps({ buffer = bufnr })
-          local generate_opts = function(desc)
-            return { desc = desc, buffer = bufnr }
-          end
+            -- Do not provide highlighting for semantic tokens
+            if client then
+              client.server_capabilities.semanticTokensProvider = nil
+            end
 
-          vim.keymap.set({ 'n', 'x' }, '<leader>lf', function()
-            vim.lsp.buf.format({ async = true, timeout_ms = 10000 })
-          end, generate_opts('LSP format'))
+            local generate_opts = function(desc)
+              return { desc = desc, buffer = bufnr }
+            end
 
-          vim.keymap.set({ 'n' }, '<leader>lwl', function()
-            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-          end, generate_opts('LSP list_workspace_folders'))
+            vim.keymap.set({ 'n', 'x' }, '<leader>lf', function()
+              vim.lsp.buf.format({ async = true, timeout_ms = 10000 })
+            end, generate_opts('LSP format'))
 
-          vim.keymap.set({ 'n' }, '<leader>lh', vim.lsp.buf.hover, generate_opts('LSP hover'))
-          vim.keymap.set({ 'n' }, '<leader>la', vim.lsp.buf.code_action, generate_opts('LSP action'))
-          vim.keymap.set({ 'n' }, '<leader>lr', vim.lsp.buf.rename, generate_opts('LSP rename'))
-          vim.keymap.set({ 'n' }, '<leader>ld', vim.lsp.buf.definition, generate_opts('LSP definition'))
-          vim.keymap.set({ 'n' }, '<leader>lD', vim.lsp.buf.declaration, generate_opts('LSP declaration'))
-          vim.keymap.set({ 'n' }, '<leader>li', vim.lsp.buf.implementation, generate_opts('LSP implementation'))
-          vim.keymap.set({ 'n' }, '<leader>ls', vim.lsp.buf.signature_help, generate_opts('LSP signature_help'))
-          vim.keymap.set({ 'n' }, '<leader>lwa', vim.lsp.buf.add_workspace_folder,
-            generate_opts('LSP add_workspace_folder'))
-          vim.keymap.set({ 'n' }, '<leader>lwr', vim.lsp.buf.remove_workspace_folder,
-            generate_opts('LSP remove_workspace_folder'))
+            vim.keymap.set({ 'n' }, '<leader>lwl', function()
+              print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+            end, generate_opts('LSP list_workspace_folders'))
+
+            vim.keymap.set({ 'n' }, '<leader>lh', vim.lsp.buf.hover, generate_opts('LSP hover'))
+            vim.keymap.set({ 'n' }, '<leader>la', vim.lsp.buf.code_action, generate_opts('LSP action'))
+            vim.keymap.set({ 'n' }, '<leader>lr', vim.lsp.buf.rename, generate_opts('LSP rename'))
+            vim.keymap.set({ 'n' }, '<leader>ld', vim.lsp.buf.definition, generate_opts('LSP definition'))
+            vim.keymap.set({ 'n' }, '<leader>lD', vim.lsp.buf.type_definition, generate_opts('LSP type_definition'))
+            vim.keymap.set({ 'n' }, '<leader>li', vim.lsp.buf.implementation, generate_opts('LSP implementation'))
+            vim.keymap.set({ 'n' }, '<leader>ls', vim.lsp.buf.signature_help, generate_opts('LSP signature_help'))
+            vim.keymap.set({ 'n' }, '<leader>lwa', vim.lsp.buf.add_workspace_folder,
+              generate_opts('LSP add_workspace_folder'))
+            vim.keymap.set({ 'n' }, '<leader>lwr', vim.lsp.buf.remove_workspace_folder,
+              generate_opts('LSP remove_workspace_folder'))
           -- vim.keymap.set({ 'n' }, '<leader>le', vim.lsp.buf.references, generate_opts('LSP references'))
-          vim.keymap.set("n", "<leader>le", function() require("trouble").open("lsp_references") end,
-            generate_opts('LSP references'))
-          -- Configure Ruff LSP for Python formatting and import sorting
-          require('lspconfig').ruff.setup({
-            init_options = {
-              settings = {
-                -- Format using Ruff
-                format = {
-                  args = {},
-                },
-                -- Configure Ruff to use organize-imports
-                organizeImports = true,
-              }
+            vim.keymap.set("n", "<leader>le", function() require("trouble").open("lsp_references") end,
+              generate_opts('LSP references'))
+
+            -- Diagnostics
+            vim.keymap.set('n', '<leader>df', vim.diagnostic.open_float, { desc = 'Diagnostics open_float' })
+            vim.keymap.set('n', '<leader>dk', vim.diagnostic.goto_prev, { desc = 'Diagnostics goto_prev' })
+            vim.keymap.set('n', '<leader>dj', vim.diagnostic.goto_next, { desc = 'Diagnostics goto_next' })
+            vim.keymap.set('n', '<leader>dl', vim.diagnostic.setloclist, { desc = 'Diagnostics setloclist' })
+          end,
+        })
+
+        -- Configure LSP servers using new Neovim 0.11+ API
+        vim.lsp.config('lua_ls', {
+          capabilities = capabilities,
+          settings = {
+            Lua = {
+              runtime = { version = 'LuaJIT' },
+              workspace = {
+                checkThirdParty = false,
+                library = { vim.env.VIMRUNTIME },
+              },
+              diagnostics = { globals = { 'vim' } },
             },
-            on_attach = function(client, bufnr)
-              -- Enable formatting capabilities for Ruff
-              client.server_capabilities.documentFormattingProvider = true
-              client.server_capabilities.documentRangeFormattingProvider = true
-            end,
-          })
-
-
-          vim.keymap.set({ 'n' }, '<leader>lD', vim.lsp.buf.type_definition, generate_opts('LSP type_definition'))
-
-          -- Disgnostics
-          vim.keymap.set('n', '<leader>df', vim.diagnostic.open_float, { desc = 'Diagnostics open_float' })
-          vim.keymap.set('n', '<leader>dk', vim.diagnostic.goto_prev, { desc = 'Diagnostics goto_prev' })
-          vim.keymap.set('n', '<leader>dj', vim.diagnostic.goto_next, { desc = 'Diagnostics goto_next' })
-          vim.keymap.set('n', '<leader>dl', vim.diagnostic.setloclist, { desc = 'Diagnostics setloclist' })
-        end)
-
-        -- (Optional) Configure lua language server for neovim
-        require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
-
-        -- Solve: Multiple different client offset_encodings detected on cpp
-        local cmp_nvim_lsp = require "cmp_nvim_lsp"
-
-        require("lspconfig").clangd.setup {
-          -- on_attach = on_attach,
-          capabilities = cmp_nvim_lsp.default_capabilities(),
-          cmd = {
-            "clangd",
-            "--offset-encoding=utf-16",
           },
-        }
+        })
 
-        lsp.setup()
+        vim.lsp.config('ruff', {
+          capabilities = capabilities,
+          init_options = {
+            settings = {
+              format = { args = {} },
+              organizeImports = true,
+            },
+          },
+        })
+
+        vim.lsp.config('clangd', {
+          capabilities = capabilities,
+          cmd = { 'clangd', '--offset-encoding=utf-16' },
+        })
+
+        -- Enable the configured servers
+        vim.lsp.enable({ 'lua_ls', 'ruff', 'clangd' })
       end
     }
   },
@@ -198,15 +188,6 @@ return {
     },
     event = 'VeryLazy',
     config = function()
-      -- Setup treesitter
-      require('nvim-treesitter.configs').setup({
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = { 'org' },
-        },
-        ensure_installed = { 'org' },
-      })
-
       -- Setup orgmode
       require('orgmode').setup({
         org_agenda_files = '~/Dropbox/notes/**/*',
@@ -223,19 +204,18 @@ return {
   {
     'nvim-treesitter/nvim-treesitter',
     build = ":TSUpdate",
-    config = function()
-      local configs = require 'nvim-treesitter.configs'
-      configs.setup {
-        ensure_installed = {
-          'python',
-          'haskell',
-        },
-        highlight = {
-          enable = true,
-          disable = { 'latex' },
-        },
-      }
-    end,
+    opts = {
+      ensure_installed = {
+        'python',
+        'haskell',
+        'org',
+      },
+      highlight = {
+        enable = true,
+        disable = { 'latex' },
+        additional_vim_regex_highlighting = { 'org' },
+      },
+    },
   },
   { "folke/neodev.nvim", event = "VeryLazy" },
 }

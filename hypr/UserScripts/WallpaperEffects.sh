@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
 # Wallpaper Effects using ImageMagick (SUPER SHIFT W)
 
@@ -15,32 +15,32 @@ iDIR="$HOME/.config/swaync/images"
 iDIRi="$HOME/.config/swaync/icons"
 
 # swww transition config
-FPS=30
+FPS=60
 TYPE="wipe"
-DURATION=1
+DURATION=2
 BEZIER=".43,1.19,1,.4"
 SWWW_PARAMS="--transition-fps $FPS --transition-type $TYPE --transition-duration $DURATION --transition-bezier $BEZIER"
 
 # Define ImageMagick effects
 declare -A effects=(
     ["No Effects"]="no-effects"
-    ["Black & White"]="convert $wallpaper_current -colorspace gray -sigmoidal-contrast 10,40% $wallpaper_output"
-    ["Blurred"]="convert $wallpaper_current -blur 0x10 $wallpaper_output"
-    ["Charcoal"]="convert $wallpaper_current -charcoal 0x5 $wallpaper_output"
-    ["Edge Detect"]="convert $wallpaper_current -edge 1 $wallpaper_output"
-    ["Emboss"]="convert $wallpaper_current -emboss 0x5 $wallpaper_output"
-    ["Frame Raised"]="convert $wallpaper_current +raise 150 $wallpaper_output"
-    ["Frame Sunk"]="convert $wallpaper_current -raise 150 $wallpaper_output"
-    ["Negate"]="convert $wallpaper_current -negate $wallpaper_output"
-    ["Oil Paint"]="convert $wallpaper_current -paint 4 $wallpaper_output"
-    ["Posterize"]="convert $wallpaper_current -posterize 4 $wallpaper_output"
-    ["Polaroid"]="convert $wallpaper_current -polaroid 0 $wallpaper_output"
-    ["Sepia Tone"]="convert $wallpaper_current -sepia-tone 65% $wallpaper_output"
-    ["Solarize"]="convert $wallpaper_current -solarize 80% $wallpaper_output"
-    ["Sharpen"]="convert $wallpaper_current -sharpen 0x5 $wallpaper_output"
-    ["Vignette"]="convert $wallpaper_current -vignette 0x3 $wallpaper_output"
-    ["Vignette-black"]="convert $wallpaper_current -background black -vignette 0x3 $wallpaper_output"
-    ["Zoomed"]="convert $wallpaper_current -gravity Center -extent 1:1 $wallpaper_output"
+    ["Black & White"]="magick $wallpaper_current -colorspace gray -sigmoidal-contrast 10,40% $wallpaper_output"
+    ["Blurred"]="magick $wallpaper_current -blur 0x10 $wallpaper_output"
+    ["Charcoal"]="magick $wallpaper_current -charcoal 0x5 $wallpaper_output"
+    ["Edge Detect"]="magick $wallpaper_current -edge 1 $wallpaper_output"
+    ["Emboss"]="magick $wallpaper_current -emboss 0x5 $wallpaper_output"
+    ["Frame Raised"]="magick $wallpaper_current +raise 150 $wallpaper_output"
+    ["Frame Sunk"]="magick $wallpaper_current -raise 150 $wallpaper_output"
+    ["Negate"]="magick $wallpaper_current -negate $wallpaper_output"
+    ["Oil Paint"]="magick $wallpaper_current -paint 4 $wallpaper_output"
+    ["Posterize"]="magick $wallpaper_current -posterize 4 $wallpaper_output"
+    ["Polaroid"]="magick $wallpaper_current -polaroid 0 $wallpaper_output"
+    ["Sepia Tone"]="magick $wallpaper_current -sepia-tone 65% $wallpaper_output"
+    ["Solarize"]="magick $wallpaper_current -solarize 80% $wallpaper_output"
+    ["Sharpen"]="magick $wallpaper_current -sharpen 0x5 $wallpaper_output"
+    ["Vignette"]="magick $wallpaper_current -vignette 0x3 $wallpaper_output"
+    ["Vignette-black"]="magick $wallpaper_current -background black -vignette 0x3 $wallpaper_output"
+    ["Zoomed"]="magick $wallpaper_current -gravity Center -extent 1:1 $wallpaper_output"
 )
 
 # Function to apply no effects
@@ -106,35 +106,3 @@ fi
 main
 
 sleep 1
-
-if [[ -n "$choice" ]]; then
-  sddm_sequoia="/usr/share/sddm/themes/sequoia_2"
-  if [ -d "$sddm_sequoia" ]; then
-  
-	# Check if yad is running to avoid multiple yad notification
-	if pidof yad > /dev/null; then
-	  killall yad
-	fi
-	
-	if yad --info --text="Set current wallpaper as SDDM background?\n\nNOTE: This only applies to SEQUOIA SDDM Theme" \
-    --text-align=left \
-    --title="SDDM Background" \
-    --timeout=5 \
-    --timeout-indicator=right \
-    --button="yad-yes:0" \
-    --button="yad-no:1" \
-    ; then
-
-    # Check if terminal exists
-    if ! command -v "$terminal" &>/dev/null; then
-    notify-send -i "$iDIR/ja.png" "Missing $terminal" "Install $terminal to enable setting of wallpaper background"
-    exit 1
-    fi
-
-      # Open terminal and set the wallpaper
-    $terminal -e bash -c "echo 'Enter your password to set wallpaper as SDDM Background'; \
-    sudo cp -r $wallpaper_output '$sddm_sequoia/backgrounds/default' && \
-    notify-send -i '$iDIR/ja.png' 'SDDM' 'Background SET'"
-    fi
-  fi
-fi

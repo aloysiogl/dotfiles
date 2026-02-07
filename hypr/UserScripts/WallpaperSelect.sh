@@ -1,10 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
 # This script for selecting wallpapers (SUPER W)
 
 # WALLPAPERS PATH
 terminal=kitty
-wallDIR="$HOME/Pictures/wallpapers"
+PICTURES_DIR="$(xdg-user-dir PICTURES 2>/dev/null || echo "$HOME/Pictures")"
+wallDIR="$PICTURES_DIR/wallpapers"
 SCRIPTSDIR="$HOME/.config/hypr/scripts"
 wallpaper_current="$HOME/.config/hypr/wallpaper_effects/.wallpaper_current"
 
@@ -13,9 +14,9 @@ iDIR="$HOME/.config/swaync/images"
 iDIRi="$HOME/.config/swaync/icons"
 
 # swww transition config
-FPS=30
+FPS=60
 TYPE="any"
-DURATION=1
+DURATION=2
 BEZIER=".43,1.19,1,.4"
 SWWW_PARAMS="--transition-fps $FPS --transition-type $TYPE --transition-duration $DURATION --transition-bezier $BEZIER"
 
@@ -93,44 +94,11 @@ menu() {
       fi
       printf "%s\x00icon\x1f%s\n" "$pic_name" "$cache_preview_image"
     else
-      printf "%s\x00icon\x1f%s\n" "$(echo "$pic_name" | cut -d. -f1)" "$pic_path"
+      printf "%s\x00icon\x1f%s\n" "$pic_name" "$pic_path"
     fi
   done
 }
 
-# Offer SDDM Sequioa Wallpaper Option (only for non-video wallpapers)
-set_sddm_wallpaper() {
-  sleep 1
-  sddm_sequoia="/usr/share/sddm/themes/sequoia_2"
-
-  if [ -d "$sddm_sequoia" ]; then
-
-    # Check if yad is running to avoid multiple notifications
-    if pidof yad >/dev/null; then
-      killall yad
-    fi
-
-    if yad --info --text="Set current wallpaper as SDDM background?\n\nNOTE: This only applies to SEQUOIA SDDM Theme" \
-      --text-align=left \
-      --title="SDDM Background" \
-      --timeout=5 \
-      --timeout-indicator=right \
-      --button="yes:0" \
-      --button="no:1"; then
-
-      # Check if terminal exists
-      if ! command -v "$terminal" &>/dev/null; then
-        notify-send -i "$iDIR/error.png" "Missing $terminal" "Install $terminal to enable setting of wallpaper background"
-        exit 1
-      fi
-
-      # Open terminal to enter password
-      $terminal -e bash -c "echo 'Enter your password to set wallpaper as SDDM Background'; \
-            sudo cp -r $wallpaper_current '$sddm_sequoia/backgrounds/default' && \
-            notify-send -i '$iDIR/ja.png' 'SDDM' 'Background SET'"
-    fi
-  fi
-}
 
 modify_startup_config() {
   local selected_file="$1"
@@ -170,13 +138,12 @@ apply_image_wallpaper() {
 
   swww img -o "$focused_monitor" "$image_path" $SWWW_PARAMS
 
-  # Run additional scripts
-  "$SCRIPTSDIR/WallustSwww.sh"
+  # Run additional scripts (pass the image path to avoid cache race conditions)
+  "$SCRIPTSDIR/WallustSwww.sh" "$image_path"
   sleep 2
   "$SCRIPTSDIR/Refresh.sh"
   sleep 1
 
-  set_sddm_wallpaper
 }
 
 apply_video_wallpaper() {
@@ -236,4 +203,3 @@ if pidof rofi >/dev/null; then
 fi
 
 main
-

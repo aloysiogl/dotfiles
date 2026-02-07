@@ -1,0 +1,11 @@
+configuration {
+    /* Add Vim-like keybindings for navigation */
+    kb-row-up:                   "Up,Control+k";
+    kb-row-down:                 "Down,Control+j";
+    kb-accept-entry:             "Return,KP_Enter";
+    kb-remove-to-eol:            "Control+Shift+e";
+    kb-mode-next:                "Shift+Right,Control+Tab,Control+l";
+    kb-mode-complete:            "Control+Shift+l";
+    kb-mode-previous:            "Shift+Left,Control+Shift+Tab,Control+h";
+    kb-remove-char-back:         "BackSpace";
+}

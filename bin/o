@@ -1,9 +1,25 @@
 #!/bin/sh
 
+os="$(uname -s)"
+open_cmd="open"
+run_bg=false
+
+case "$os" in
+  Linux)
+    if command -v xdg-open >/dev/null 2>&1; then
+      open_cmd="xdg-open"
+    fi
+    run_bg=true
+    ;;
+esac
+
 # if no argument is given run open
 if [ $# -eq 0 ]; then
-  open .
-  exit
+  set -- .
+fi
+
+if [ "$run_bg" = true ]; then
+  "$open_cmd" "$@" >/dev/null 2>&1 &
 else
-  open $@
+  "$open_cmd" "$@"
 fi

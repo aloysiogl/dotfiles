@@ -94,14 +94,29 @@ plugins=(
 # Check archlinux plugin commands here
 # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/archlinux
 
+# Zsh-vi-mode settings (must be set before loading plugin)
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
+ZVM_SYSTEM_CLIPBOARD_ENABLED=true
+ZVM_VI_HIGHLIGHT_BACKGROUND=#585b70
+ZVM_VI_HIGHLIGHT_FOREGROUND=#cdd6f4
+ZVM_VI_HIGHLIGHT_EXTRASTYLE=default
+
+zvm_exit_shell() {
+    zle -I
+    exit
+}
+
 source $ZSH/oh-my-zsh.sh
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Vi mode for zsh
-ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
-
 zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh') # avoids overwrithing keybindings
+zvm_after_init_commands+=('zvm_bindkey vicmd "p" zvm_paste_clipboard_after')
+zvm_after_init_commands+=('zvm_bindkey vicmd "P" zvm_paste_clipboard_before')
+zvm_after_init_commands+=('zvm_bindkey visual "p" zvm_visual_paste_clipboard')
+zvm_after_init_commands+=('zvm_bindkey visual "P" zvm_visual_paste_clipboard')
+zvm_after_init_commands+=('zle -N zvm_exit_shell')
+zvm_after_init_commands+=('zvm_bindkey vicmd " x" zvm_exit_shell')
 
 # Zoxide
 eval "$(zoxide init zsh)"
@@ -199,3 +214,6 @@ HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
 ### END Some new stuff added by Ja.KooLit that I didnt check  
+
+# opencode
+export PATH=/home/aloysio/.opencode/bin:$PATH

@@ -1,5 +1,9 @@
 # Improvements
 
+## Dotfiles
+
+- [ ] make it work automatically on any distro (back to using dot), make it mine (remove holmanns stuff), maybe check the upstream as well.
+
 ## Rofi
 
 - [ ] Add calculator
@@ -9,3 +13,20 @@
 ## Firefox
 
 - [ ] Improve mouseless navigation (write down here what is missing)
+
+## Terminal
+
+- [X] Terminal vim find text correctly
+- [ ] Be able to fuzzy saerch folders/files
+- [ ] improve terminal backward search/forward (mode when you exit the command line) to find stuff, make it easy to copy outputs
+
+## Default
+
+- [X] Configure xdg-defaults
+
+## Tmux
+
+- [ ] shortcuts not very ergonomic to create new terminals and to create splits as well
+  - [X] new splits
+  - [ ] add terminals
+  - [ ] move between terminals

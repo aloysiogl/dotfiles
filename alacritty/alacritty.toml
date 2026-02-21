@@ -10,6 +10,20 @@ family = "JetBrainsMonoNL Nerd Font"
 [general]
 import = ["~/.config/alacritty/catppuccin/catppuccin-mocha.toml"]
 
+# Terminals normally send the same byte for Enter regardless of modifiers.
+# These bindings make Alacritty emit unique CSI u escape sequences so tmux can
+# distinguish Ctrl+Enter and Ctrl+Shift+Enter from plain Enter.
+# Requires tmux "extended-keys on" to parse the sequences natively.
+[[keyboard.bindings]]
+key = "Return"
+mods = "Control"
+chars = "\u001B[13;5u"
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Control|Shift"
+chars = "\u001B[13;6u"
+
 [terminal]
 
 [terminal.shell]

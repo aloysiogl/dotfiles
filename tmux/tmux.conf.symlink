@@ -1,6 +1,10 @@
 
 set -g default-terminal "xterm-256color"
 set-option -ga terminal-overrides ",xterm-256color:Tc"
+# Enable CSI u (extended keys) so tmux can distinguish modifier+key combos
+# that terminals normally can't differentiate (e.g. Enter vs Shift+Enter).
+# Alacritty must also be configured to send CSI u sequences for these keys.
+set -s extended-keys on
 set -g mouse on
 
 unbind C-b
@@ -54,3 +58,9 @@ bind-key -T copy-mode-vi y send-keys -X copy-selection-and-cancel
 
 bind '"' split-window -v -c "#{pane_current_path}"
 bind % split-window -h -c "#{pane_current_path}"
+
+# Split panes with Ctrl+Enter (vertical) and Ctrl+Shift+Enter (horizontal)
+# These work because Alacritty sends CSI u sequences (\e[13;5u and \e[13;6u)
+# and tmux's "extended-keys on" parses them as C-Enter and C-S-Enter natively.
+bind -n C-Enter split-window -h -c "#{pane_current_path}"
+bind -n C-S-Enter split-window -v -c "#{pane_current_path}"

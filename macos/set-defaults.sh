@@ -28,3 +28,11 @@ defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
 
 # Shows the betttery percentage
 defaults -currentHost write com.apple.controlcenter.plist BatteryShowPercentage -bool true
+
+# Disable press and hold to allow for vim key repeat on vscode-like editors
+defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false # VSCode
+defaults write com.todesktop.230313mzl4w4u92 ApplePressAndHoldEnabled -bool false # Cursor
+
+# Aerospace needed defaults
+defaults write com.apple.dock expose-group-apps -bool true && killall Dock # fix mission control
+defaults write com.apple.spaces spans-displays -bool true && killall SystemUIServer # fix stability issues and allows for windows to span displays

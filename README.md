@@ -68,6 +68,7 @@ Follow the order:
 - Configure firefox
 - Configure lazygit
 - Symlinks for vscode
+- Set mac defaults if in mac
 
 In the end check that you did all folders
 

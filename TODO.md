@@ -30,3 +30,7 @@
   - [X] new splits
   - [ ] add terminals
   - [ ] move between terminals
+## Dotfiles
+
+- [ ] Make a distinction between essentials and extended install, make the dot script work for any system on the go
+- [ ] Add some /etc configs maybe?

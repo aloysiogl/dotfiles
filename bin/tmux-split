@@ -1,0 +1,119 @@
+#!/bin/bash
+#
+# Run multiple commands in tmux, each in its own split.
+# Must be run from inside an existing tmux session.
+# Splits are created intelligently — always dividing the largest pane
+# along its longer axis to keep all panes roughly square.
+#
+# USAGE:
+#
+#   $ tmux-split "npm run dev" "nvim ." "git log --oneline"
+#   # => opens a new window with 3 splits, one per command
+#
+#   $ tmux-split "server:npm run dev" "editor:nvim ." "logs:tail -f app.log"
+#   # => opens a new window with 3 named splits
+#
+# OPTIONS:
+#   -h         Show this help message
+#
+# Each argument can be "name:command" or just "command".
+# If no name is given, the command itself is used as the pane title.
+
+set -e
+
+if [ -z "$TMUX" ]; then
+    echo "Error: not inside a tmux session."
+    echo "Run this command from within tmux."
+    exit 1
+fi
+
+usage() {
+    sed -n '/^# USAGE/,/^[^#]/p' "$0" | head -n -1 | sed 's/^# \?//'
+    echo ""
+    sed -n '/^# OPTIONS/,/^[^#]/p' "$0" | head -n -1 | sed 's/^# \?//'
+    exit 0
+}
+
+# Parse "name:command" — if no colon, name defaults to the command
+parse_arg() {
+    local arg="$1"
+    if [[ "$arg" == *:* ]]; then
+        PANE_NAME="${arg%%:*}"
+        PANE_CMD="${arg#*:}"
+    else
+        PANE_NAME="$arg"
+        PANE_CMD="$arg"
+    fi
+}
+
+# Wait for a pane's shell to be ready
+wait_for_shell() {
+    local target_pane="$1"
+    for _ in $(seq 1 50); do
+        local cmd
+        cmd=$(tmux display-message -t "$target_pane" -p '#{pane_current_command}' 2>/dev/null || true)
+        if [[ "$cmd" == "zsh" || "$cmd" == "bash" || "$cmd" == "sh" || "$cmd" == "fish" ]]; then
+            return 0
+        fi
+        sleep 0.05
+    done
+}
+
+while getopts "h" opt; do
+    case $opt in
+        h) usage ;;
+        *) usage ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+if [ $# -eq 0 ]; then
+    echo "Error: provide at least one command as an argument."
+    echo "Run 'tmux-split -h' for usage."
+    exit 1
+fi
+
+# Create a new window with the first command
+parse_arg "$1"
+tmux new-window
+WINDOW=$(tmux display-message -p '#{window_id}')
+wait_for_shell "$WINDOW"
+tmux send-keys -t "$WINDOW" "$PANE_CMD" C-m
+tmux select-pane -t "$WINDOW" -T "$PANE_NAME"
+shift
+
+# Create a split for each remaining command
+for arg in "$@"; do
+    parse_arg "$arg"
+
+    # Find the pane with the largest area in the new window
+    target=$(tmux list-panes -t "$WINDOW" -F '#{pane_id} #{pane_width} #{pane_height}' \
+        | awk '{ print $1, $2, $3, $2 * $3 }' \
+        | sort -k4 -nr \
+        | head -1)
+
+    pane_id=$(echo "$target" | awk '{ print $1 }')
+    width=$(echo "$target" | awk '{ print $2 }')
+    height=$(echo "$target" | awk '{ print $3 }')
+
+    # Split along the longer axis to keep panes square
+    # Multiply height by 2 to account for terminal characters being ~2x taller than wide
+    if [ $((width)) -gt $((height * 2)) ]; then
+        tmux split-window -h -t "$pane_id"
+    else
+        tmux split-window -v -t "$pane_id"
+    fi
+
+    # Wait for the new pane's shell to initialize before sending keys
+    new_pane=$(tmux display-message -p '#{pane_id}')
+    wait_for_shell "$new_pane"
+    tmux send-keys -t "$new_pane" "$PANE_CMD" C-m
+    tmux select-pane -t "$new_pane" -T "$PANE_NAME"
+done
+
+# Show pane titles in the border
+tmux set-option -t "$WINDOW" pane-border-status top
+tmux set-option -t "$WINDOW" pane-border-format " #{pane_title} "
+
+# Focus the first pane in the new window
+tmux select-pane -t "$WINDOW.0"

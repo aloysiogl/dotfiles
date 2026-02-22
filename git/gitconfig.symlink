@@ -4,6 +4,7 @@
 [core]
   editor = nvim
   pager = delta
+  hooksPath = ~/.dotfiles/git/hooks
 
 [interactive]
   diffFilter = delta --color-only
@@ -27,3 +28,4 @@
 	smudge = git-lfs smudge -- %f
 [push]
 	default = current
+	autoSetupRemote = true

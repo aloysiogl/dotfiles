@@ -1,0 +1,35 @@
+#!/bin/sh
+# Block force push to main in any repo (only fast-forward allowed).
+# Force push to dev: warn with authors who pushed to dev and prompt.
+# Then run repo-local pre-push hook if .git/hooks/pre-push.local exists.
+tmp=$(mktemp)
+trap 'rm -f "$tmp"' EXIT
+cat > "$tmp"
+
+while read local_ref local_sha remote_ref remote_sha; do
+  if [ "$remote_ref" = "refs/heads/main" ]; then
+    if [ "$remote_sha" != "0000000000000000000000000000000000000000" ]; then
+      if ! git merge-base --is-ancestor "$remote_sha" "$local_sha" 2>/dev/null; then
+        echo "Force push to main is disabled."
+        exit 1
+      fi
+    fi
+  fi
+
+  if [ "$remote_ref" = "refs/heads/dev" ]; then
+    if [ "$remote_sha" != "0000000000000000000000000000000000000000" ]; then
+      if ! git merge-base --is-ancestor "$remote_sha" "$local_sha" 2>/dev/null; then
+        echo "Force push to dev — people who pushed to dev (not on main):"
+        git log origin/main.."$remote_sha" --format='%an' 2>/dev/null | sort -u | sed 's/^/  /'
+        printf "Did you coordinate with everyone above? [y/N] "
+        read -r answer
+        case "$answer" in [yY]|[yY][eE][sS]) ;; *) echo "Aborted."; exit 1;; esac
+      fi
+    fi
+  fi
+done < "$tmp"
+
+if [ -x ".git/hooks/pre-push.local" ]; then
+  . .git/hooks/pre-push.local < "$tmp" || exit 1
+fi
+exit 0

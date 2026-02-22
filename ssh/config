@@ -1,0 +1,6 @@
+# Use SSH agent and macOS Keychain so you only type your key passphrase once per session.
+# Ensure your main ~/.ssh/config has: Include ~/.dotfiles/ssh/config
+Host github.com gitlab.com
+	AddKeysToAgent yes
+	UseKeychain yes
+	IdentityFile ~/.ssh/id_ed25519

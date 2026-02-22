@@ -1,0 +1,394 @@
+// Place your key bindings in this file to override the defaults
+[
+  {
+    "key": "cmd+i",
+    "command": "composerMode.agent"
+  },
+  // Search: ctrl+n/ctrl+shift+n must win over vim when navigating results (place early so they take precedence)
+  {
+    "key": "ctrl+n",
+    "command": "search.action.focusNextSearchResult",
+    "when": "hasSearchResult && editorTextFocus"
+  },
+  {
+    "key": "ctrl+shift+n",
+    "command": "search.action.focusPreviousSearchResult",
+    "when": "hasSearchResult && editorTextFocus"
+  },
+  // Navigate back/forward: - and = must win over vim (place early so they take precedence)
+  {
+    "key": "-",
+    "command": "workbench.action.navigateBack",
+    "when": "editorTextFocus && vim.active"
+  },
+  {
+    "key": "=",
+    "command": "workbench.action.navigateForward",
+    "when": "editorTextFocus && vim.active"
+  },
+  // leader+c in visual mode: copy selection then send to Agent (workaround: command doesn't see Vim selection, so copy first)
+  {
+    "key": "space c",
+    "command": "runCommands",
+    "args": {
+      "commands": [
+        "editor.action.clipboardCopyAction",
+        "composer.sendToAgent"
+      ]
+    },
+    "when": "editorTextFocus && vim.active && vim.mode == 'Visual'"
+  },
+  // ===================================================
+  // window navigation
+  {
+    "key": "ctrl+h",
+    "command": "workbench.action.navigateLeft"
+  },
+  {
+    "key": "ctrl+l",
+    "command": "workbench.action.navigateRight"
+  },
+  {
+    "key": "ctrl+k",
+    "command": "workbench.action.navigateUp"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "workbench.action.navigateDown"
+  },
+  {
+    "key": "ctrl+q",
+    "command": "workbench.action.focusNextGroup"
+  },
+  // ===================================================
+  // navigate tabs
+  {
+    "key": "cmd+l",
+    "command": "-expandLineSelection",
+    "when": "textInputFocus"
+  },
+  {
+    "key": "cmd+h",
+    "command": "workbench.action.previousEditor"
+  },
+  {
+    "key": "cmd+c cmd+c",
+    "command": "workbench.action.nextEditor"
+  },
+  {
+    "key": "cmd+-",
+    "command": "-workbench.action.zoomOut"
+  },
+  // ===================================================
+  // equivalent to :sp
+  {
+    "key": "cmd+-",
+    "command": "workbench.action.splitEditorOrthogonal"
+  },
+  {
+    "key": "cmd+k cmd+\\",
+    "command": "-workbench.action.splitEditorOrthogonal"
+  },
+  // ===================================================
+  // equivalent to :NerdTreeToggle and :treemacs/toggle
+  {
+    "key": "cmd+o cmd+p",
+    "command": "workbench.view.explorer",
+    "when": "!sideBarVisible || activeViewlet != 'workbench.view.explorer'"
+  },
+  {
+    "key": "cmd+o cmd+p",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "sideBarVisible && activeViewlet == 'workbench.view.explorer'"
+  },
+  {
+    "key": "cmd+o cmd+o",
+    "command": "outline.focus"
+  },
+  {
+    "key": "cmd+;",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  // ===================================================
+  // spacemacs and doom emacs user will recognize this
+  // {
+  //   "key": "space f f",
+  //   "command": "workbench.action.quickOpen",
+  //   "when": "editorTextFocus && vim.active && vim.mode != 'Insert'"
+  // },
+  {
+    "key": "cmd+p",
+    "command": "-workbench.action.quickOpen"
+  },
+  // ===================================================
+  // ctrl n(next) and p(previous) already works, just adding jk as a personal preference
+  {
+    "key": "ctrl+j",
+    "command": "workbench.action.quickOpenSelectNext",
+    "when": "inQuickOpen"
+  },
+  {
+    "key": "ctrl+k",
+    "command": "workbench.action.quickOpen",
+    "when": "inQuickOpen"
+  },
+  // ===================================================
+  // debugging
+  // step to next
+  {
+    "key": "n",
+    "command": "workbench.action.debug.stepOver",
+    "when": "debugState == 'stopped' && inDebugMode"
+  },
+  {
+    "key": "s",
+    "command": "workbench.action.debug.stepInto",
+    "when": "debugState == 'stopped' && inDebugMode"
+  },
+  {
+    "key": "c",
+    "command": "workbench.action.debug.continue",
+    "when": "debugState == 'stopped' && inDebugMode"
+  },
+  // ===================================================
+  // comamnd pallet everywhere
+  {
+    "key": ";",
+    "command": "workbench.action.showCommands",
+    "when": "!editorFocus && !inputFocus"
+  },
+  // ===================================================
+  // ctrl n(next) and p(previous) already works, just adding jk as a personal preference
+  {
+    "key": "ctrl+j",
+    "command": "selectNextSuggestion",
+    "when": "suggestWidgetVisible"
+  },
+  {
+    "key": "ctrl+k",
+    "command": "selectPrevSuggestion",
+    "when": "suggestWidgetVisible"
+  },
+  // ===================================================
+  // file explorer
+  // new file
+  // {
+  //   "key": "a",
+  //   "command": "explorer.newFile",
+  //   "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+  // },
+  // delete
+  {
+    "key": "d",
+    "command": "moveFileToTrash",
+    "when": "explorerResourceMoveableToTrash && filesExplorerFocus && foldersViewVisible && !explorerResourceReadonly && !inputFocus"
+  },
+  {
+    "key": "r",
+    "command": "renameFile",
+    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+  },
+  {
+    "key": "f2",
+    "command": "-renameFile",
+    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+  },
+  // ===================================================
+  // navigate search results (duplicates at top take precedence over vim when hasSearchResult)
+  {
+    "key": "ctrl+n",
+    "command": "search.action.focusNextSearchResult",
+    "when": "inSearchEditor && !inputFocus"
+  },
+  {
+    "key": "ctrl+backspace",
+    "command": "-deleteLeft",
+    "when": "textInputFocus"
+  },
+  {
+    "key": "ctrl+backspace",
+    "command": "search.action.clearSearchResults"
+  },
+  // ===================================================
+  // git
+  // {
+  //   "key": "a",
+  //   "command": "git.stage",
+  //   "when": "!filesExplorerFocus && explorerViewletVisible && !inputFocus"
+  // },
+  // go to next in list of files and visizalize it in the sidebar
+  // {
+  //   "key": "j",
+  //   "command": "list.focusDown",
+  //   "when": "listFocus && !inputFocus"
+  // },
+  // ===================================================
+  // git diff
+  {
+    "key": "n",
+    "command": "workbench.action.compareEditor.nextChange",
+    "when": "textCompareEditorVisible && editorFocus"
+  },
+  {
+    "key": "shift+n",
+    "command": "workbench.action.compareEditor.previousChange",
+    "when": "textCompareEditorVisible && editorFocus"
+  },
+  {
+    "key": "ctrl+n",
+    "command": "gitlens.diffWithNext",
+    "when": "editorTextFocus && !isInDiffEditor && config.gitlens.keymap == 'chorded' && gitlens:activeFileStatus =~ /revision/"
+  },
+  {
+    "key": "ctrl+n",
+    "command": "gitlens.diffWithNextInDiffRight",
+    "when": "editorTextFocus && isInDiffRightEditor && config.gitlens.keymap == 'chorded' && gitlens:activeFileStatus =~ /revision/"
+  },
+  {
+    "key": "ctrl+n",
+    "command": "gitlens.diffWithNextInDiffRight",
+    "when": "editorTextFocus && isInDiffRightEditor && config.gitlens.keymap == 'chorded' && gitlens:activeFileStatus =~ /revision/"
+  },
+  {
+    "key": "ctrl+shift+n",
+    "command": "gitlens.diffWithPrevious",
+    "when": "editorTextFocus && !isInDiffEditor && config.gitlens.keymap == 'chorded' && gitlens:activeFileStatus =~ /revision/"
+  },
+  {
+    "key": "ctrl+shift+n",
+    "command": "gitlens.diffWithPreviousInDiffRight",
+    "when": "editorTextFocus && isInDiffRightEditor && config.gitlens.keymap == 'chorded' && gitlens:activeFileStatus =~ /revision/"
+  },
+  {
+    "key": "ctrl+shift+n",
+    "command": "gitlens.diffWithPreviousInDiffRight",
+    "when": "editorTextFocus && isInDiffRightEditor && config.gitlens.keymap == 'chorded' && gitlens:activeFileStatus =~ /revision/"
+  },
+  {
+    "key": "ctrl+shift+n",
+    "command": "-workbench.action.newWindow"
+  },
+  // ===================================================
+  // terminal related keybindings
+  {
+    "key": "cmd+h",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "`,"
+    },
+    "when": "terminalFocus"
+  },
+  {
+    "key": "cmd+l",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "`."
+    },
+    "when": "terminalFocus"
+  },
+  {
+    "key": "cmd+l",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "`."
+    },
+    "when": "terminalFocus"
+  },
+  {
+    "key": "cmd+n",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "`n"
+    },
+    "when": "terminalFocus"
+  },
+  {
+    "key": "cmd+w",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "`x"
+    },
+    "when": "terminalFocus"
+  },
+  {
+    "key": "cmd+r",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "`e"
+    },
+    "when": "terminalFocus"
+  },
+  {
+    "key": "cmd+k",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "`K"
+    },
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+l",
+    "command": "workbench.action.terminal.clear",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "s d",
+    "command": "goToNextReference",
+    "when": "inReferenceSearchEditor || referenceSearchVisible"
+  },
+  {
+    "key": "f4",
+    "command": "-goToNextReference",
+    "when": "inReferenceSearchEditor || referenceSearchVisible"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "selectNextCodeAction",
+    "when": "codeActionMenuVisible"
+  },
+  {
+    "key": "ctrl+down",
+    "command": "-selectNextCodeAction",
+    "when": "codeActionMenuVisible"
+  },
+  {
+    "key": "ctrl+k",
+    "command": "selectPrevCodeAction",
+    "when": "codeActionMenuVisible"
+  },
+  {
+    "key": "ctrl+up",
+    "command": "-selectPrevCodeAction",
+    "when": "codeActionMenuVisible"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "search.focus.nextInputBox",
+    "when": "inSearchEditor && inputBoxFocus || inputBoxFocus && searchViewletVisible"
+  },
+  {
+    "key": "ctrl+k",
+    "command": "search.focus.previousInputBox",
+    "when": "inSearchEditor && inputBoxFocus || inputBoxFocus && searchViewletVisible && !searchInputBoxFocus"
+  },
+  {
+    "key": "ctrl+alt+l",
+    "command": "-bookmarks.jumpToNext",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+alt+j",
+    "command": "-bookmarks.jumpToPrevious",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+k cmd+k",
+    "command": "aipopup.action.modal.generate",
+    "when": "editorFocus && !composerBarIsVisible"
+  },
+  {
+    "key": "cmd+k",
+    "command": "-aipopup.action.modal.generate",
+    "when": "editorFocus && !composerBarIsVisible"
+  }
+]

@@ -1,0 +1,480 @@
+#!/usr/bin/env python3
+"""Calculate Cursor usage and billing-cycle weekly progress.
+
+Supports two response formats:
+1) Itemized records with date + amount fields (legacy mode).
+2) Cursor usage-summary payload (auto-detected by billingCycleStart/billingCycleEnd).
+
+Usage examples:
+  cursor-usage --json-file usage-summary.json
+  cursor-usage --url "https://cursor.com/api/usage-summary" \
+    --header "Cookie: __Secure-next-auth.session-token=<token>"
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import sys
+from datetime import datetime, timedelta, timezone
+from typing import Any
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Get Cursor usage and weekly billing-cycle progress."
+    )
+    parser.add_argument(
+        "--month",
+        help="Target month in YYYY-MM format (default: current month).",
+    )
+    parser.add_argument(
+        "--json-file",
+        help="Path to a local JSON file with usage data.",
+    )
+    parser.add_argument(
+        "--url",
+        default="https://cursor.com/api/usage-summary",
+        help="Usage API endpoint URL (default: https://cursor.com/api/usage-summary).",
+    )
+    parser.add_argument(
+        "--method",
+        default="GET",
+        help="HTTP method to use with --url (default: GET).",
+    )
+    parser.add_argument(
+        "--header",
+        action="append",
+        default=[],
+        help='HTTP header, repeatable. Example: --header "Authorization: Bearer <token>"',
+    )
+    parser.add_argument(
+        "--body",
+        help='Optional JSON request body string for non-GET requests. Example: \'{"foo":"bar"}\'',
+    )
+    parser.add_argument(
+        "--items-path",
+        default="items",
+        help=(
+            "Dot path to the list of usage items in the response JSON "
+            "(default: items). Use empty string to enable auto-detection."
+        ),
+    )
+    parser.add_argument(
+        "--date-fields",
+        default="createdAt,timestamp,date,time",
+        help="Comma-separated candidate date field names.",
+    )
+    parser.add_argument(
+        "--amount-fields",
+        default="costUsd,cost_usd,amountUsd,amount_usd,cost,price",
+        help="Comma-separated candidate USD field names.",
+    )
+    parser.add_argument(
+        "--summary-metric",
+        default="individualUsage.overall",
+        help=(
+            "Metric path for usage-summary payload "
+            '(default: individualUsage.overall; alternatives: teamUsage.pooled, teamUsage.onDemand).'
+        ),
+    )
+    parser.add_argument(
+        "--usd-per-unit",
+        type=float,
+        help=(
+            "Optional conversion rate from usage units to USD "
+            "(for usage-summary mode)."
+        ),
+    )
+    parser.add_argument(
+        "--bar-width",
+        type=int,
+        default=24,
+        help="Width of progress bars (default: 24).",
+    )
+    parser.add_argument(
+        "--now",
+        help="Override current time in ISO-8601 (useful for testing).",
+    )
+    parser.add_argument(
+        "--session-token-env",
+        default="CURSOR_SESSION_TOKEN",
+        help=(
+            "Env var name containing the Cursor session token "
+            "(default: CURSOR_SESSION_TOKEN)."
+        ),
+    )
+    parser.add_argument(
+        "--cookie-name",
+        default="WorkosCursorSessionToken",
+        help="Cookie name used for Cursor auth (default: WorkosCursorSessionToken).",
+    )
+    return parser.parse_args()
+
+
+def parse_month(value: str | None) -> tuple[int, int]:
+    if not value:
+        now = datetime.now(tz=timezone.utc)
+        return now.year, now.month
+    try:
+        dt = datetime.strptime(value, "%Y-%m")
+    except ValueError as exc:
+        raise ValueError("--month must be in YYYY-MM format.") from exc
+    return dt.year, dt.month
+
+
+def parse_headers(values: list[str]) -> dict[str, str]:
+    headers: dict[str, str] = {}
+    for raw in values:
+        if ":" not in raw:
+            raise ValueError(f'Invalid --header "{raw}". Expected "Key: Value".')
+        key, value = raw.split(":", 1)
+        headers[key.strip()] = value.strip()
+    return headers
+
+
+def apply_session_cookie_from_env(
+    headers: dict[str, str],
+    env_name: str,
+    cookie_name: str,
+) -> dict[str, str]:
+    if any(k.lower() == "cookie" for k in headers):
+        return headers
+
+    token = os.environ.get(env_name, "").strip()
+    if not token:
+        return headers
+
+    next_headers = dict(headers)
+    next_headers["Cookie"] = f"{cookie_name}={token}"
+    return next_headers
+
+
+def load_json_from_url(
+    url: str,
+    method: str,
+    headers: dict[str, str],
+    body: str | None,
+) -> Any:
+    data = None
+    if body:
+        data = body.encode("utf-8")
+        headers.setdefault("Content-Type", "application/json")
+    request = Request(url=url, method=method.upper(), headers=headers, data=data)
+    try:
+        with urlopen(request) as response:
+            payload = response.read().decode("utf-8")
+            return json.loads(payload)
+    except HTTPError as exc:
+        raise RuntimeError(f"HTTP error {exc.code}: {exc.reason}") from exc
+    except URLError as exc:
+        raise RuntimeError(f"Network error: {exc.reason}") from exc
+    except json.JSONDecodeError as exc:
+        raise RuntimeError("Response is not valid JSON.") from exc
+
+
+def load_json_from_file(path: str) -> Any:
+    try:
+        with open(path, "r", encoding="utf-8") as file:
+            return json.load(file)
+    except FileNotFoundError as exc:
+        raise RuntimeError(f"File not found: {path}") from exc
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(f"Invalid JSON in file: {path}") from exc
+
+
+def resolve_path(root: Any, path: str) -> Any:
+    if not path:
+        return root
+    current = root
+    for part in path.split("."):
+        if isinstance(current, list) and part.isdigit():
+            index = int(part)
+            current = current[index]
+        elif isinstance(current, dict):
+            current = current.get(part)
+        else:
+            return None
+    return current
+
+
+def detect_items(data: Any) -> list[dict[str, Any]]:
+    if isinstance(data, list):
+        return [x for x in data if isinstance(x, dict)]
+    if not isinstance(data, dict):
+        return []
+    for key in ("items", "data", "results", "usage", "requests"):
+        value = data.get(key)
+        if isinstance(value, list):
+            return [x for x in value if isinstance(x, dict)]
+    return []
+
+
+def extract_items(data: Any, items_path: str) -> list[dict[str, Any]]:
+    resolved = resolve_path(data, items_path) if items_path else None
+    if isinstance(resolved, list):
+        return [x for x in resolved if isinstance(x, dict)]
+    return detect_items(data)
+
+
+def parse_datetime(value: Any) -> datetime | None:
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        ts = float(value)
+        if ts > 1e12:
+            ts /= 1000.0
+        return datetime.fromtimestamp(ts, tz=timezone.utc)
+    if isinstance(value, str):
+        text = value.strip()
+        if not text:
+            return None
+        if text.isdigit():
+            ts = float(text)
+            if ts > 1e12:
+                ts /= 1000.0
+            return datetime.fromtimestamp(ts, tz=timezone.utc)
+        if text.endswith("Z"):
+            text = text[:-1] + "+00:00"
+        try:
+            dt = datetime.fromisoformat(text)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return dt
+        except ValueError:
+            return None
+    return None
+
+
+def parse_amount(value: Any) -> float | None:
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    if isinstance(value, str):
+        text = value.strip().replace("$", "").replace(",", "")
+        if not text:
+            return None
+        try:
+            return float(text)
+        except ValueError:
+            return None
+    return None
+
+
+def format_bar(ratio: float, width: int) -> str:
+    safe_ratio = max(0.0, min(1.0, ratio))
+    filled = int(round(safe_ratio * width))
+    return f"[{'#' * filled}{'.' * (width - filled)}]"
+
+
+def parse_now(now_value: str | None) -> datetime:
+    if not now_value:
+        return datetime.now(tz=timezone.utc)
+    parsed = parse_datetime(now_value)
+    if parsed is None:
+        raise ValueError("--now must be a valid ISO-8601 date-time.")
+    return parsed.astimezone(timezone.utc)
+
+
+def is_usage_summary_payload(data: Any) -> bool:
+    return (
+        isinstance(data, dict)
+        and "billingCycleStart" in data
+        and "billingCycleEnd" in data
+    )
+
+
+def get_metric(summary: dict[str, Any], path: str) -> dict[str, Any]:
+    value = resolve_path(summary, path)
+    if not isinstance(value, dict):
+        raise RuntimeError(f'Metric path "{path}" was not found in usage-summary payload.')
+    return value
+
+
+def clamp_dt(value: datetime, start: datetime, end: datetime) -> datetime:
+    if value < start:
+        return start
+    if value > end:
+        return end
+    return value
+
+
+def print_summary_weekly_report(args: argparse.Namespace, data: dict[str, Any]) -> None:
+    cycle_start = parse_datetime(data.get("billingCycleStart"))
+    cycle_end = parse_datetime(data.get("billingCycleEnd"))
+    if cycle_start is None or cycle_end is None:
+        raise RuntimeError("Invalid billing cycle dates in payload.")
+    cycle_start = cycle_start.astimezone(timezone.utc)
+    cycle_end = cycle_end.astimezone(timezone.utc)
+    if cycle_end <= cycle_start:
+        raise RuntimeError("billingCycleEnd must be after billingCycleStart.")
+
+    metric = get_metric(data, args.summary_metric)
+    used_raw = parse_amount(metric.get("used"))
+    limit_raw = parse_amount(metric.get("limit"))
+    enabled = bool(metric.get("enabled", True))
+    if used_raw is None:
+        raise RuntimeError(f'Metric "{args.summary_metric}" does not include a numeric "used".')
+
+    now = clamp_dt(parse_now(args.now), cycle_start, cycle_end)
+    elapsed_seconds = max((now - cycle_start).total_seconds(), 1.0)
+    rate_per_second = used_raw / elapsed_seconds
+    cycle_total_seconds = (cycle_end - cycle_start).total_seconds()
+
+    print("Cursor usage summary")
+    print(f"Billing cycle (UTC): {cycle_start.date()} -> {cycle_end.date()}")
+    print(f"Metric: {args.summary_metric} (enabled={enabled})")
+    if limit_raw is None:
+        print(f"Used: {used_raw:,.0f} units (no limit in payload)")
+    else:
+        pct = (used_raw / limit_raw * 100.0) if limit_raw > 0 else 0.0
+        print(f"Used: {used_raw:,.0f} / {limit_raw:,.0f} units ({pct:.2f}%)")
+        print(f"Now:  {format_bar(used_raw / limit_raw if limit_raw > 0 else 0.0, args.bar_width)}")
+
+    if args.usd_per_unit is not None:
+        used_usd = used_raw * args.usd_per_unit
+        print(f"Used (USD): ${used_usd:,.2f}")
+        if limit_raw is not None:
+            limit_usd = limit_raw * args.usd_per_unit
+            print(f"Limit (USD): ${limit_usd:,.2f}")
+
+    # usage-summary is cumulative only, so per-week values are pace-based estimates.
+    current_week_start = cycle_start
+    current_week_end = cycle_end
+    current_week_index = 1
+    probe_start = cycle_start
+    probe_index = 1
+    while probe_start < cycle_end:
+        probe_end = min(probe_start + timedelta(days=7), cycle_end)
+        if probe_start <= now < probe_end or (now == cycle_end and probe_end == cycle_end):
+            current_week_start = probe_start
+            current_week_end = probe_end
+            current_week_index = probe_index
+            break
+        probe_start = probe_end
+        probe_index += 1
+
+    seconds_before_current_week = (current_week_start - cycle_start).total_seconds()
+    elapsed_in_current_week = max((now - current_week_start).total_seconds(), 0.0)
+    estimated_used_before_current_week = rate_per_second * seconds_before_current_week
+    estimated_used_in_current_week = max(used_raw - estimated_used_before_current_week, 0.0)
+
+    print("")
+    print(
+        "Current week usage (estimated): "
+        f"W{current_week_index} {current_week_start.date()}.."
+        f"{(current_week_end - timedelta(seconds=1)).date()}"
+    )
+    if limit_raw is not None and limit_raw > 0:
+        current_week_budget = limit_raw * (
+            (current_week_end - current_week_start).total_seconds() / cycle_total_seconds
+        )
+        week_ratio = (
+            estimated_used_in_current_week / current_week_budget
+            if current_week_budget > 0
+            else 0.0
+        )
+        print(
+            f"Used this week: {format_bar(week_ratio, args.bar_width)} "
+            f"{week_ratio * 100.0:6.2f}% "
+            f"({estimated_used_in_current_week:,.0f} / {current_week_budget:,.0f} units)"
+        )
+    else:
+        print(f"Used this week: {estimated_used_in_current_week:,.0f} units")
+    if args.usd_per_unit is not None:
+        print(f"Used this week (USD): ${estimated_used_in_current_week * args.usd_per_unit:,.2f}")
+    print(
+        f"Week elapsed: {elapsed_in_current_week / (current_week_end - current_week_start).total_seconds() * 100.0:5.1f}%"
+    )
+
+    print("")
+    print("Weekly progress (estimated from current cycle pace):")
+
+    week_start = cycle_start
+    week_index = 1
+    while week_start < cycle_end:
+        week_end = min(week_start + timedelta(days=7), cycle_end)
+        seconds_from_start = (week_end - cycle_start).total_seconds()
+        projected_used = rate_per_second * seconds_from_start
+
+        week_label = (
+            f"W{week_index} {week_start.date()}..{(week_end - timedelta(seconds=1)).date()}"
+        )
+
+        if limit_raw is not None and limit_raw > 0:
+            ratio = projected_used / limit_raw
+            bar = format_bar(ratio, args.bar_width)
+            pct = ratio * 100.0
+            print(f"{week_label} {bar} {pct:6.2f}% ({projected_used:,.0f} units)")
+        else:
+            print(f"{week_label} {projected_used:,.0f} units")
+
+        week_start = week_end
+        week_index += 1
+
+
+def main() -> int:
+    args = parse_args()
+    try:
+        if bool(args.json_file) == bool(args.url):
+            raise ValueError("Provide exactly one source: --json-file or --url.")
+
+        if args.json_file:
+            data = load_json_from_file(args.json_file)
+        else:
+            headers = parse_headers(args.header)
+            headers = apply_session_cookie_from_env(
+                headers=headers,
+                env_name=args.session_token_env,
+                cookie_name=args.cookie_name,
+            )
+            data = load_json_from_url(args.url, args.method, headers, args.body)
+
+        if is_usage_summary_payload(data):
+            print_summary_weekly_report(args, data)
+            return 0
+
+        target_year, target_month = parse_month(args.month)
+        items = extract_items(data, args.items_path)
+        if not items:
+            raise RuntimeError(
+                "No usage items found. For usage-summary payload, use billingCycleStart/billingCycleEnd response."
+            )
+
+        date_fields = [field.strip() for field in args.date_fields.split(",") if field.strip()]
+        amount_fields = [field.strip() for field in args.amount_fields.split(",") if field.strip()]
+
+        total_usd = 0.0
+        matched_count = 0
+
+        for item in items:
+            date_value = next((item.get(field) for field in date_fields if field in item), None)
+            amount_value = next(
+                (item.get(field) for field in amount_fields if field in item),
+                None,
+            )
+
+            dt = parse_datetime(date_value)
+            amount = parse_amount(amount_value)
+            if dt is None or amount is None:
+                continue
+            if dt.year == target_year and dt.month == target_month:
+                total_usd += amount
+                matched_count += 1
+
+        month_label = f"{target_year:04d}-{target_month:02d}"
+        print(f"Cursor usage month: {month_label}")
+        print(f"Matched records: {matched_count}")
+        print(f"Total usage (USD): ${total_usd:.2f}")
+        return 0
+    except (ValueError, RuntimeError) as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

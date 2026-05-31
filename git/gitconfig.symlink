@@ -29,3 +29,9 @@
 [push]
 	default = current
 	autoSetupRemote = true
+[branch]
+	# Recent branches first for `git branch` and completions
+	sort = -committerdate
+[fetch]
+	# Drop stale remote-tracking branches after fetch
+	prune = true

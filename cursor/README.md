@@ -56,5 +56,3 @@ Background polling + macOS budget alerts live in [`usage-limiter/`](usage-limite
 ```bash
 ~/.dotfiles/cursor/usage-limiter/install.sh
 ```
-
-On-demand detailed usage reports: `cursor-usage` (`bin/cursor-usage`).

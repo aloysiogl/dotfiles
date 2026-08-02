@@ -2,8 +2,6 @@
 
 Background daemon that polls Cursor usage on a configurable interval (default every 10 minutes) and shows macOS alerts at daily budget thresholds (60%, 80%, 100%).
 
-Complements `bin/cursor-usage` (on-demand detailed reports with weekly progress).
-
 ## Install
 
 ```bash
@@ -47,9 +45,6 @@ python3 ~/.cursor/usage-limiter/poll.py
 
 # Re-fire alerts (clears today's flags + polls)
 ~/.cursor/usage-limiter/trigger-alert.sh
-
-# On-demand detailed report (separate tool)
-cursor-usage
 
 # Logs
 tail -f ~/.cursor/usage-limiter/limiter.log

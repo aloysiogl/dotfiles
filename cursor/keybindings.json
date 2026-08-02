@@ -19,12 +19,12 @@
   {
     "key": "-",
     "command": "workbench.action.navigateBack",
-    "when": "editorTextFocus && vim.active"
+    "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
   },
   {
     "key": "=",
     "command": "workbench.action.navigateForward",
-    "when": "editorTextFocus && vim.active"
+    "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
   },
   // leader+c in visual mode: copy selection then send to Agent (workaround: command doesn't see Vim selection, so copy first)
   {
@@ -72,7 +72,7 @@
     "command": "workbench.action.previousEditor"
   },
   {
-    "key": "cmd+c cmd+c",
+    "key": "cmd+]",
     "command": "workbench.action.nextEditor"
   },
   {
@@ -135,21 +135,21 @@
   // ===================================================
   // debugging
   // step to next
-  {
-    "key": "n",
-    "command": "workbench.action.debug.stepOver",
-    "when": "debugState == 'stopped' && inDebugMode"
-  },
-  {
-    "key": "s",
-    "command": "workbench.action.debug.stepInto",
-    "when": "debugState == 'stopped' && inDebugMode"
-  },
-  {
-    "key": "c",
-    "command": "workbench.action.debug.continue",
-    "when": "debugState == 'stopped' && inDebugMode"
-  },
+  // {
+  //   "key": "n",
+  //   "command": "workbench.action.debug.stepOver",
+  //   "when": "debugState == 'stopped' && inDebugMode"
+  // },
+  // {
+  //   "key": "s",
+  //   "command": "workbench.action.debug.stepInto",
+  //   "when": "debugState == 'stopped' && inDebugMode"
+  // },
+  // {
+  //   "key": "c",
+  //   "command": "workbench.action.debug.continue",
+  //   "when": "debugState == 'stopped' && inDebugMode"
+  // },
   // ===================================================
   // comamnd pallet everywhere
   {
@@ -227,12 +227,12 @@
   {
     "key": "n",
     "command": "workbench.action.compareEditor.nextChange",
-    "when": "textCompareEditorVisible && editorFocus"
+    "when": "textCompareEditorVisible && editorFocus && vim.active && vim.mode == 'Normal'"
   },
   {
     "key": "shift+n",
     "command": "workbench.action.compareEditor.previousChange",
-    "when": "textCompareEditorVisible && editorFocus"
+    "when": "textCompareEditorVisible && editorFocus && vim.active && vim.mode == 'Normal'"
   },
   {
     "key": "ctrl+n",
@@ -390,5 +390,10 @@
     "key": "cmd+k",
     "command": "-aipopup.action.modal.generate",
     "when": "editorFocus && !composerBarIsVisible"
+  },
+  {
+    "key": "alt+cmd+s",
+    "command": "workbench.action.toggleUnifiedSidebarFromKeyboard",
+    "when": "cursor.agentIdeUnification.enabled == true && !isAuxiliaryWindowFocusedContext"
   }
 ]

@@ -1,4 +1,14 @@
-export EDITOR='code-insiders'
+export EDITOR='cursor'
+
+# Java (jenv): shims on PATH immediately; full init only when you run `jenv`
+if [[ -d "${HOME}/.jenv/bin" ]]; then
+  export PATH="${HOME}/.jenv/shims:${HOME}/.jenv/bin:${PATH}"
+fi
+jenv() {
+  unset -f jenv 2>/dev/null
+  eval "$(command jenv init - zsh)"
+  jenv "$@"
+}
 # export PAGER="/bin/sh -c \"unset PAGER;col -b -x | \
 #     vim -R -c 'set ft=man nomod nolist' -c 'map q :q<CR>' \
 #     -c 'map <SPACE> <C-D>' -c 'map b <C-U>' \

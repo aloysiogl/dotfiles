@@ -551,5 +551,8 @@
     "vim.highlightedyank.enable": true,
     "workbench.activityBar.orientation": "vertical",
     "workbench.colorTheme": "Catppuccin Mocha",
-    "workbench.editor.enablePreview": false
+    "workbench.editor.enablePreview": false,
+    "claudeCode.preferredLocation": "sidebar",
+    "window.autoDetectColorScheme": false,
+    "python.defaultInterpreterPath": "/usr/bin/python3"
 }

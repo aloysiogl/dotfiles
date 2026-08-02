@@ -1,0 +1,7 @@
+{
+  "team_id": 18803605,
+  "monthly_target_cents": 70000,
+  "poll_interval_seconds": 600,
+  "alert_thresholds": [60, 80, 100],
+  "weekdays_only": true
+}

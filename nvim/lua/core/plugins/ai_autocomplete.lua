@@ -57,53 +57,53 @@ return {
   --     vim.keymap.set("n", "<leader>lc", ":ClaudeChat<CR>", { noremap = true, silent = true, desc = "Claude Chat" })
   --   end,
   -- },
-{
-  "olimorris/codecompanion.nvim",
-  dependencies = {
-    "nvim-lua/plenary.nvim",
-    "nvim-treesitter/nvim-treesitter",
-    "hrsh7th/nvim-cmp", -- Optional: For using slash commands and variables in the chat buffer
-    "nvim-telescope/telescope.nvim", -- Optional: For using slash commands
-    { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves `vim.ui.select`
-  },
-  config = function()
-    require("codecompanion").setup(
-    {
- strategies = {
-    chat = {
-      -- adapter = "anthropic",
-      adapter = "copilot",
+  {
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "hrsh7th/nvim-cmp",                    -- Optional: For using slash commands and variables in the chat buffer
+      "nvim-telescope/telescope.nvim",       -- Optional: For using slash commands
+      { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves `vim.ui.select`
     },
-    inline = {
-      adapter = "copilot",
-    },
-    agent = {
-      -- adapter = "anthropic",
-      adapter = "copilot",
-    },
-  },
-   adapters = {
-    anthropic = function()
-      return require("codecompanion.adapters").extend("anthropic", {
-        env = {
-          api_key = "ANTHROPIC_API_KEY"
-        },
-      })
+    config = function()
+      require("codecompanion").setup(
+        {
+          strategies = {
+            chat = {
+              -- adapter = "anthropic",
+              adapter = "copilot",
+            },
+            inline = {
+              adapter = "copilot",
+            },
+            agent = {
+              -- adapter = "anthropic",
+              adapter = "copilot",
+            },
+          },
+          adapters = {
+            anthropic = function()
+              return require("codecompanion.adapters").extend("anthropic", {
+                env = {
+                  api_key = "ANTHROPIC_API_KEY"
+                },
+              })
+            end,
+          },
+        }
+      )
     end,
   },
-    }
-    )
-  end,
-},
   {
     "nomnivore/ollama.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
-  
+
     -- All the user commands added by the plugin
     cmd = { "Ollama", "OllamaModel", "OllamaServe", "OllamaServeStop" },
-  
+
     keys = {
       -- Sample keybind for prompt menu. Note that the <c-u> is important for selections to work properly.
       {
@@ -112,7 +112,7 @@ return {
         desc = "ollama prompt",
         mode = { "n", "v" },
       },
-  
+
       -- Sample keybind for direct prompting. Note that the <c-u> is important for selections to work properly.
       {
         "<leader>oG",
@@ -121,10 +121,19 @@ return {
         mode = { "n", "v" },
       },
     },
-  
+
     ---@type Ollama.Config
     opts = {
       -- your configuration overrides
     }
+  },
+  {
+    "greggh/claude-code.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim", -- Required for git operations
+    },
+    config = function()
+      require("claude-code").setup()
+    end
   }
 }

@@ -1,10 +1,18 @@
 #!/bin/sh
 #
-# Install Cursor extensions from extensions.txt
+# Install Cursor: symlink settings/keybindings (source of truth in dotfiles) and install extensions from extensions.txt.
 
-EXTENSIONS_FILE="$(dirname "$0")/extensions.txt"
+CURSOR_DIR="$(dirname "$0")"
+EXTENSIONS_FILE="$CURSOR_DIR/extensions.txt"
+CURSOR_USER="${XDG_CONFIG_HOME:-$HOME/Library/Application Support}/Cursor/User"
 
-if ! command -v cursor &> /dev/null; then
+# Symlink config so dotfiles are the source of truth
+mkdir -p "$CURSOR_USER"
+ln -sf "$CURSOR_DIR/settings.json" "$CURSOR_USER/settings.json"
+ln -sf "$CURSOR_DIR/keybindings.json" "$CURSOR_USER/keybindings.json"
+echo "  Cursor config symlinked (settings.json, keybindings.json)."
+
+if ! command -v cursor > /dev/null 2>&1; then
   echo "  cursor CLI not found. Skipping extension install."
   exit 0
 fi

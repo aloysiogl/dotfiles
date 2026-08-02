@@ -13,11 +13,13 @@ defaults write com.apple.NetworkBrowser BrowseAllInterfaces 1
 # Always open everything in Finder's list view. This is important.
 defaults write com.apple.Finder FXPreferredViewStyle Nlsv
 
-# Set dock to autohide
-defaults write com.apple.dock autohide-time-modifier -int 0;killall Dock
+# Set dock to autohide (instant show/hide)
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock autohide-delay -float 0
+defaults write com.apple.dock autohide-time-modifier -float 0
 
 # Cmd+Q acctually closes finder
-defaults write com.apple.finder QuitMenuItem -bool YES && killall Finder
+defaults write com.apple.finder QuitMenuItem -bool YES
 
 # Show the ~/Library folder.
 chflags nohidden ~/Library
@@ -34,5 +36,10 @@ defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false # VSCod
 defaults write com.todesktop.230313mzl4w4u92 ApplePressAndHoldEnabled -bool false # Cursor
 
 # Aerospace needed defaults
-defaults write com.apple.dock expose-group-apps -bool true && killall Dock # fix mission control
-defaults write com.apple.spaces spans-displays -bool true && killall SystemUIServer # fix stability issues and allows for windows to span displays
+defaults write com.apple.dock expose-group-apps -bool true # fix mission control
+defaults write com.apple.spaces spans-displays -bool true # fix stability issues and allows for windows to span displays
+
+# Reload affected system UI
+killall Dock
+killall Finder
+killall SystemUIServer

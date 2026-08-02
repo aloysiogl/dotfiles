@@ -1,3 +1,13 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Keep machine-specific environment variables out of this repository.
+[[ -r "$HOME/.localrc" ]] && source "$HOME/.localrc"
+
 export DOTFILES_ROOT=$HOME/.dotfiles
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -13,7 +23,7 @@ DEFAULT_USER=$(whoami)
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
+zstyle ':omz:update' mode disabled
 # zstyle ':omz:update' mode auto      # update automatically without asking
 # zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
@@ -41,7 +51,7 @@ DEFAULT_USER=$(whoami)
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -60,9 +70,8 @@ DEFAULT_USER=$(whoami)
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-    # ag
-    docker 
-    docker-compose 
+    docker
+    docker-compose
     fzf
     git
     zsh-vi-mode
@@ -76,6 +85,9 @@ plugins=(
 export PATH="$PATH:$HOME/.hoop/bin"
 export PATH="$HOME/.local/bin:$PATH"
 
+# asdf (node/pnpm via .tool-versions)
+export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:/opt/homebrew/bin:$PATH"
+
 # Zsh-vi-mode settings (must be set before loading plugin)
 ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
 ZVM_SYSTEM_CLIPBOARD_ENABLED=true
@@ -88,7 +100,18 @@ zvm_exit_shell() {
     exit
 }
 
+# Faster completions: skip OMZ's compinit/compaudit; run cached compinit ourselves.
+ZSH_DISABLE_COMPFIX=true
+skip_global_compinit=1
+
 source $ZSH/oh-my-zsh.sh
+
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
@@ -117,9 +140,19 @@ alias la='ls -a'
 alias lla='ls -la'
 alias lt='ls -tree'
 
+# Lazy-load nvm (~0.8s saved at startup)
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+if [[ -s "$NVM_DIR/nvm.sh" ]]; then
+  nvm_load() {
+    unset -f nvm node npm npx nvm_load
+    \. "$NVM_DIR/nvm.sh"
+    [[ -s "$NVM_DIR/bash_completion" ]] && \. "$NVM_DIR/bash_completion"
+  }
+  nvm()  { nvm_load; nvm  "$@"; }
+  node() { nvm_load; node "$@"; }
+  npm()  { nvm_load; npm  "$@"; }
+  npx()  { nvm_load; npx  "$@"; }
+fi
 
 alias hl="hoop login"
 alias hcs="while [ true ]; do hoop connect talisman-stag-ro --port 5433; sleep 1 || break; done"

@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# ==================================================
+#  KoolDots (2026)
+#  Project URL: https://github.com/LinuxBeginnings
+#  License: GNU GPLv3
+#  SPDX-License-Identifier: GPL-3.0-or-later
+# ==================================================
 
 # Modified version of Refresh.sh but waybar wont refresh
 # Used by automatic wallpaper change
 # Modified inorder to refresh rofi background, Wallust, SwayNC only
 
-SCRIPTSDIR=$HOME/.config/hypr/scripts
-UserScripts=$HOME/.config/hypr/UserScripts
+SCRIPTSDIR=${XDG_CONFIG_HOME:-$HOME/.config}/hypr/scripts
+UserScripts=${XDG_CONFIG_HOME:-$HOME/.config}/hypr/UserScripts
 
 # Define file_exists function
 file_exists() {
@@ -26,14 +31,11 @@ for _prs in "${_ps[@]}"; do
 done
 
 # quit ags & relaunch ags
-#ags -q && ags &
+ags -q && ags &
 
 # quit quickshell & relaunch quickshell
 pkill qs && qs &
 
-# Wallust refresh (synchronous to ensure colors are ready)
-${SCRIPTSDIR}/WallustSwww.sh
-sleep 0.2
 
 # reload swaync
 swaync-client --reload-config

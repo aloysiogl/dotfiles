@@ -168,17 +168,156 @@ vim.keymap.set("v", "<C-_>", "gc", {
 })
 
 -- tmux navigation
-vim.keymap.set("n", "<C-k>", "<cmd> TmuxNavigateUp<CR>", {
-    silent = true
+local tmux_directions = {
+    ["<C-h>"] = "Left",
+    ["<C-j>"] = "Down",
+    ["<C-k>"] = "Up",
+    ["<C-l>"] = "Right",
+}
+
+local function open_codecompanion_cli_reference(options)
+    options = options or {}
+
+    local function warn(message)
+        if not options.silent then
+            vim.notify(message, vim.log.levels.WARN)
+        end
+        return false
+    end
+
+    local text = vim.api.nvim_get_current_line()
+    local cursor_column = vim.api.nvim_win_get_cursor(0)[2] + 1
+    local reference
+    local line_number
+    local column_number
+
+    -- Recognize the location format most coding agents emit:
+    -- path/to/file.ext:line or path/to/file.ext:line:column.
+    for start_position, path, line, column, end_position in
+        text:gmatch("()([%w%._~%-%+/@]+):(%d+):?(%d*)()")
+    do
+        if cursor_column >= start_position and cursor_column < end_position then
+            reference = path
+            line_number = tonumber(line)
+            column_number = tonumber(column)
+            break
+        end
+    end
+
+    -- A bare file path is useful too; <cfile> excludes surrounding Markdown
+    -- punctuation and a trailing :line suffix.
+    if not reference then
+        reference = vim.fn.expand("<cfile>")
+    end
+    if reference == "" then
+        return warn("No file reference under the cursor")
+    end
+
+    local path = vim.fs.normalize(vim.fn.expand(reference))
+    if not path:match("^/") then
+        path = vim.fs.normalize(vim.fs.joinpath(vim.fn.getcwd(), path))
+    end
+    local stat = vim.uv.fs_stat(path)
+    if not stat or stat.type ~= "file" then
+        return warn("File reference not found: " .. reference)
+    end
+
+    -- Prefer the existing code pane so the CLI remains visible. If there is
+    -- no code pane, open a new tab without replacing the agent terminal.
+    local source_window = vim.api.nvim_get_current_win()
+    local target_window
+    for _, window in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        if window ~= source_window then
+            local buffer = vim.api.nvim_win_get_buf(window)
+            local buffer_type = vim.api.nvim_get_option_value("buftype", { buf = buffer })
+            local filetype = vim.api.nvim_get_option_value("filetype", { buf = buffer })
+            if buffer_type == "" and filetype ~= "codecompanion" then
+                target_window = window
+                break
+            end
+        end
+    end
+
+    if target_window then
+        vim.api.nvim_set_current_win(target_window)
+        local current_path = vim.fs.normalize(vim.api.nvim_buf_get_name(0))
+        if current_path ~= path then
+            local opened = pcall(vim.cmd, "edit " .. vim.fn.fnameescape(path))
+            if not opened then
+                vim.cmd("tabedit " .. vim.fn.fnameescape(path))
+            end
+        end
+    else
+        vim.cmd("tabedit " .. vim.fn.fnameescape(path))
+    end
+
+    if line_number then
+        local last_line = vim.api.nvim_buf_line_count(0)
+        local target_line = math.min(math.max(line_number, 1), last_line)
+        local line_text = vim.api.nvim_buf_get_lines(0, target_line - 1, target_line, false)[1] or ""
+        local target_column = math.min(math.max((column_number or 1) - 1, 0), #line_text)
+        vim.api.nvim_win_set_cursor(0, { target_line, target_column })
+        vim.cmd("normal! zz")
+    end
+
+    return true
+end
+
+for key, direction in pairs(tmux_directions) do
+    vim.keymap.set("n", key, "<cmd>TmuxNavigate" .. direction .. "<CR>", {
+        silent = true,
+        desc = "Navigate " .. direction,
+    })
+end
+
+local codecompanion_navigation = vim.api.nvim_create_augroup("CodeCompanionNavigation", {
+    clear = true,
 })
-vim.keymap.set("n", "<C-j>", "<cmd> TmuxNavigateDown<CR>", {
-    silent = true
+
+-- A structured CodeCompanion chat is normally left in insert mode. Leave
+-- insert mode before navigating so Ctrl-h/j/k/l behave like they do in code.
+vim.api.nvim_create_autocmd("FileType", {
+    group = codecompanion_navigation,
+    pattern = "codecompanion",
+    callback = function(event)
+        for key, direction in pairs(tmux_directions) do
+            vim.keymap.set("i", key, "<Esc><cmd>TmuxNavigate" .. direction .. "<CR>", {
+                buffer = event.buf,
+                silent = true,
+                desc = "Navigate " .. direction,
+            })
+        end
+    end,
 })
-vim.keymap.set("n", "<C-h>", "<cmd> TmuxNavigateLeft<CR>", {
-    silent = true
-})
-vim.keymap.set("n", "<C-l>", "<cmd> TmuxNavigateRight<CR>", {
-    silent = true
+
+-- Raw CodeCompanion agents run in terminal mode. Exit terminal mode before
+-- moving to another Neovim or tmux pane.
+vim.api.nvim_create_autocmd("FileType", {
+    group = codecompanion_navigation,
+    pattern = "codecompanion_cli",
+    callback = function(event)
+        for key, direction in pairs(tmux_directions) do
+            vim.keymap.set("t", key, "<C-\\><C-n><cmd>TmuxNavigate" .. direction .. "<CR>", {
+                buffer = event.buf,
+                silent = true,
+                desc = "Navigate " .. direction,
+            })
+        end
+        vim.keymap.set("n", "gR", open_codecompanion_cli_reference, {
+            buffer = event.buf,
+            silent = true,
+            desc = "Open agent file reference",
+        })
+        vim.keymap.set("n", "<CR>", function()
+            if not open_codecompanion_cli_reference({ silent = true }) then
+                vim.cmd("normal! +")
+            end
+        end, {
+            buffer = event.buf,
+            silent = true,
+            desc = "Open agent reference or move down",
+        })
+    end,
 })
 
 -- telescope
@@ -239,19 +378,6 @@ vim.keymap.set("n", "s", "<Plug>(easymotion-s)", {
 })
 vim.keymap.set("v", "s", "<Plug>(easymotion-s)", {
     desc = "Easymotion s"
-})
-
-vim.keymap.set("v", "<leader>la", ":CodeCompanion ", {
-    noremap = true,
-    silent = false
-})
-vim.keymap.set("n", "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", {
-    noremap = true,
-    silent = true
-})
-vim.keymap.set("n", "<leader>ca", "<cmd>CodeCompanionActions<cr>", {
-    noremap = true,
-    silent = true
 })
 
 -- chat gpt

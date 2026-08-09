@@ -1,3 +1,9 @@
+local function codecompanion_cli(agent)
+  return function()
+    require("codecompanion").cli({ agent = agent })
+  end
+end
+
 return {
   -- {
   --   "zbirenbaum/copilot.lua",
@@ -59,41 +65,184 @@ return {
   -- },
   {
     "olimorris/codecompanion.nvim",
+    cmd = {
+      "CodeCompanion",
+      "CodeCompanionActions",
+      "CodeCompanionChat",
+      "CodeCompanionCLI",
+      "CodeCompanionCmd",
+      "CodeCompanionCodeReview",
+    },
+    keys = {
+      {
+        "<leader>cc",
+        "<cmd>CodeCompanionChat Toggle<cr>",
+        desc = "CodeCompanion chat",
+      },
+      {
+        "<leader>ca",
+        "<cmd>CodeCompanionActions<cr>",
+        mode = { "n", "v" },
+        desc = "CodeCompanion actions",
+      },
+      {
+        "<leader>ce",
+        ":CodeCompanion ",
+        mode = "v",
+        desc = "CodeCompanion inline edit",
+      },
+      {
+        "<leader>cl",
+        codecompanion_cli("claude_code"),
+        desc = "Claude Code CLI",
+      },
+      {
+        "<leader>co",
+        codecompanion_cli("codex"),
+        desc = "Codex CLI",
+      },
+      {
+        "<leader>cu",
+        codecompanion_cli("cursor"),
+        desc = "Cursor CLI",
+      },
+      {
+        "<leader>cp",
+        function()
+          require("codecompanion").cli({ prompt = true })
+        end,
+        mode = { "n", "v" },
+        desc = "Prompt active AI CLI",
+      },
+      {
+        "<leader>cr",
+        function()
+          require("codecompanion").cli("#{this}", { focus = false })
+        end,
+        mode = { "n", "v" },
+        desc = "Reference selection/file in AI CLI",
+      },
+      {
+        "<leader>cd",
+        function()
+          require("codecompanion").cli("#{diagnostics} Can you fix these?", {
+            focus = false,
+            submit = true,
+          })
+        end,
+        desc = "Send diagnostics to AI CLI",
+      },
+      {
+        "<leader>ct",
+        function()
+          require("codecompanion").cli("#{terminal} Can you diagnose and fix this failure?", {
+            focus = false,
+            submit = true,
+          })
+        end,
+        desc = "Send terminal output to AI CLI",
+      },
+      {
+        "<leader>cC",
+        "<cmd>CodeCompanionChat adapter=codex<cr>",
+        desc = "New Codex ACP chat",
+      },
+      {
+        "<leader>cL",
+        "<cmd>CodeCompanionChat adapter=claude_code<cr>",
+        desc = "New Claude ACP chat",
+      },
+      {
+        "<leader>cU",
+        "<cmd>CodeCompanionChat adapter=cursor_cli<cr>",
+        desc = "New Cursor ACP chat",
+      },
+    },
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
-      "hrsh7th/nvim-cmp",                    -- Optional: For using slash commands and variables in the chat buffer
-      "nvim-telescope/telescope.nvim",       -- Optional: For using slash commands
-      { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves `vim.ui.select`
+      "hrsh7th/nvim-cmp",
+      "nvim-telescope/telescope.nvim",
+      { "stevearc/dressing.nvim", opts = {} },
     },
-    config = function()
-      require("codecompanion").setup(
-        {
-          strategies = {
-            chat = {
-              -- adapter = "anthropic",
-              adapter = "copilot",
+    opts = {
+      interactions = {
+        chat = {
+          adapter = "codex",
+        },
+        inline = {
+          adapter = "copilot",
+        },
+        cmd = {
+          adapter = "copilot",
+        },
+        background = {
+          adapter = "copilot",
+        },
+        cli = {
+          agent = "claude_code",
+          agents = {
+            claude_code = {
+              cmd = "claude",
+              args = {},
+              description = "Claude Code CLI",
+              provider = "terminal",
             },
-            inline = {
-              adapter = "copilot",
+            codex = {
+              cmd = "codex",
+              args = {},
+              description = "OpenAI Codex CLI",
+              provider = "terminal",
             },
-            agent = {
-              -- adapter = "anthropic",
-              adapter = "copilot",
+            cursor = {
+              cmd = "agent",
+              args = {},
+              description = "Cursor CLI",
+              provider = "terminal",
             },
           },
-          adapters = {
-            anthropic = function()
-              return require("codecompanion.adapters").extend("anthropic", {
-                env = {
-                  api_key = "ANTHROPIC_API_KEY"
-                },
-              })
-            end,
+          opts = {
+            auto_insert = true,
           },
-        }
-      )
-    end,
+        },
+      },
+      adapters = {
+        acp = {
+          extend = {
+            codex = {
+              defaults = {
+                auth_method = "chat-gpt",
+              },
+            },
+            claude_code = {
+              env = {
+                ANTHROPIC_API_KEY = "ANTHROPIC_API_KEY",
+              },
+            },
+          },
+        },
+        http = {
+          anthropic = function()
+            return require("codecompanion.adapters").extend("anthropic", {
+              env = {
+                api_key = "ANTHROPIC_API_KEY",
+              },
+            })
+          end,
+        },
+      },
+      display = {
+        cli = {
+          window = {
+            layout = "vertical",
+            width = 0.4,
+            opts = {
+              list = false,
+            },
+          },
+        },
+      },
+    },
   },
   {
     "nomnivore/ollama.nvim",
@@ -127,13 +276,4 @@ return {
       -- your configuration overrides
     }
   },
-  {
-    "greggh/claude-code.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim", -- Required for git operations
-    },
-    config = function()
-      require("claude-code").setup()
-    end
-  }
 }

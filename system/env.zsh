@@ -1,5 +1,8 @@
 export EDITOR='cursor'
 
+# User-installed CLIs (agent native installers and CodeCompanion ACP bridges)
+export PATH="${HOME}/.local/bin:${HOME}/.npm-global/bin:${PATH}"
+
 # Java (jenv): shims on PATH immediately; full init only when you run `jenv`
 if [[ -d "${HOME}/.jenv/bin" ]]; then
   export PATH="${HOME}/.jenv/shims:${HOME}/.jenv/bin:${PATH}"

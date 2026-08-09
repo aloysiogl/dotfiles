@@ -7,6 +7,70 @@ General remarks:
 - It's hard to get in and out of the terminal, should think about shortcuts which work directly from the command mode.
 - Should think of an easier way of switching tabs while on a normal keyboard.
 
+## AI agents (CodeCompanion)
+
+CodeCompanion is the shared Neovim interface for Claude Code, Codex, and Cursor.
+Claude Code is the default raw terminal agent; Codex is the default structured
+ACP chat. Restart the terminal after changing `system/env.zsh` so Neovim can
+find the ACP bridge executables.
+
+### Prerequisites
+
+Install the three agent CLIs using their official installers:
+
+```bash
+curl -fsSL https://chatgpt.com/codex/install.sh | sh
+curl -fsSL https://claude.ai/install.sh | bash
+curl https://cursor.com/install -fsS | bash
+```
+
+References: [Codex CLI](https://learn.chatgpt.com/docs/codex/cli),
+[Claude Code](https://code.claude.com/docs/en/setup), and
+[Cursor CLI](https://cursor.com/docs/cli/installation).
+
+CodeCompanion's structured Codex and Claude chats use ACP bridge executables.
+The dotfiles add `~/.npm-global/bin` to `PATH`, so install them there:
+
+```bash
+npm config set prefix "${HOME}/.npm-global"
+npm install -g \
+  @agentclientprotocol/codex-acp \
+  @agentclientprotocol/claude-agent-acp
+exec zsh
+```
+
+Authenticate each CLI once before opening its CodeCompanion integration:
+
+```bash
+codex login
+claude
+agent login
+```
+
+| Mapping | Action |
+| --- | --- |
+| `<leader>cl` | Open or focus the Claude Code terminal |
+| `<leader>co` | Open or focus the Codex terminal |
+| `<leader>cu` | Open or focus the Cursor terminal |
+| `<leader>cp` | Prompt the active CLI; a visual selection is included |
+| `<leader>cr` | Add the current file or visual selection as context |
+| `<leader>cd` | Send current-buffer LSP diagnostics to the active CLI |
+| `<leader>ct` | Send the most recent terminal output to the active CLI |
+| `<leader>cc` | Toggle the current structured chat |
+| `<leader>cC` | Start a structured Codex ACP chat |
+| `<leader>cL` | Start a structured Claude ACP chat |
+| `<leader>cU` | Start a structured Cursor ACP chat |
+| `<leader>ca` | Open CodeCompanion actions |
+| `<leader>ce` | Edit a visual selection inline using Copilot |
+
+Put the cursor on a file reference and press `gR` to open it in Neovim. In a
+raw CLI terminal, first press `jk` to enter terminal-normal mode, then press
+`Enter` (or `gR`); references in `path:line:column` format jump directly to that
+location in the code pane. In structured chats, `Enter` remains the send key.
+Cursor requires a one-time `agent login`. Codex ACP uses the existing ChatGPT
+login. Claude's raw terminal uses the existing `claude` login; its ACP bridge
+can also use `ANTHROPIC_API_KEY`.
+
 TODOS:
 Quickfix list:
 - [ ] Be able to select an item and close

@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if ! command -v openusage >/dev/null 2>&1; then
+  echo "openusage is not installed" >&2
+  exit 1
+fi
+
+if ! command -v jq >/dev/null 2>&1; then
+  echo "jq is required for the all-provider OpenUsage summary" >&2
+  exit 1
+fi
+
+openusage export --output - --format json --source auto |
+  jq -r '
+    def money:
+      "$" + (((. * 100) | round) / 100 | tostring);
+
+    def percent:
+      (((. * 10) | round) / 10 | tostring) + "%";
+
+    def display_name($provider):
+      if $provider == "claude_code" then "claude"
+      else $provider
+      end;
+
+    def claude_detail($snapshot):
+      [
+        if $snapshot.metrics.usage_five_hour then
+          ($snapshot.metrics.usage_five_hour.window // "5h")
+          + " " + ($snapshot.metrics.usage_five_hour.used | percent)
+        else empty end,
+        if $snapshot.metrics.usage_seven_day then
+          ($snapshot.metrics.usage_seven_day.window // "7d")
+          + " " + ($snapshot.metrics.usage_seven_day.used | percent)
+        else empty end,
+        if $snapshot.metrics.today_api_cost then
+          "today " + ($snapshot.metrics.today_api_cost.used | money)
+        else empty end
+      ] | join(" | ");
+
+    def codex_detail($snapshot):
+      [
+        if $snapshot.metrics.plan_percent_used then
+          ($snapshot.metrics.plan_percent_used.window // "plan")
+          + " " + ($snapshot.metrics.plan_percent_used.used | percent)
+        else empty end
+      ] | join(" | ");
+
+    def cursor_detail($snapshot):
+      [
+        if $snapshot.metrics.plan_percent_used then
+          "cycle " + ($snapshot.metrics.plan_percent_used.used | percent)
+        else empty end,
+        if ($snapshot.metrics.plan_spend.used and $snapshot.metrics.plan_spend.limit) then
+          ($snapshot.metrics.plan_spend.used | money)
+          + "/" + ($snapshot.metrics.plan_spend.limit | money)
+        else empty end
+      ] | join(" | ");
+
+    . as $root
+    | ["claude_code", "codex", "cursor"][] as $provider
+    | ($root.snapshots | map(select(.provider_id == $provider)) | first) as $snapshot
+    | if $snapshot == null then
+        [display_name($provider), "NOT DETECTED"]
+      else
+        (if $provider == "claude_code" then claude_detail($snapshot)
+         elif $provider == "codex" then codex_detail($snapshot)
+         else cursor_detail($snapshot)
+         end) as $detail
+        | [
+            display_name($provider),
+            (if $detail != "" then $detail
+             elif $snapshot.status != "OK" then
+               $snapshot.status + ": " + ($snapshot.message // "no usage data")
+             else $snapshot.message // "no usage data"
+             end)
+          ]
+      end
+    | @tsv
+  '

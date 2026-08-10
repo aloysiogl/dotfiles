@@ -39,6 +39,16 @@
   - [ ] move between terminals, probably in the tab switches
   - [ ] improve terminal backward search/forward (mode when you exit the command line) to find stuff, make it easy to copy outputs (session manager?)
 
+## AI coding workflow experiments
+
+- [ ] Test `ast-grep` alongside `rg` for structural code search; compare search accuracy, files opened, and time to locate edit sites.
+- [ ] Trial Serena as the only code-intelligence MCP in the EMR project; compare symbol/reference navigation, tool calls, and task success against the current workflow.
+- [ ] Trial RTK on repetitive test/build output while retaining complete logs, exact errors, stack frames, and patch anchors for recovery.
+- [ ] Test Repomix only for filtered, one-off repository handoffs; measure whether its token tree and secret scan improve cross-agent reviews without injecting the whole repository.
+- [ ] Test Context7 as a project-scoped MCP on tasks that need version-specific dependency documentation; keep it disabled otherwise.
+- [ ] Compare GitNexus with Codebase Memory MCP on repeated call-path and change-impact questions; adopt at most one graph tool and only if it beats `rg` plus LSP navigation.
+- [ ] Test Worktrunk for parallel agent sessions in isolated Git worktrees, including cleanup and handoff ergonomics.
+
 ## Nvim
 
 - [ ] Make nvim telescope more in line with my current vscode space ff

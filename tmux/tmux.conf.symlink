@@ -1,6 +1,6 @@
 
-set -g default-terminal "xterm-256color"
-set-option -ga terminal-overrides ",xterm-256color:Tc"
+set -g default-terminal "tmux-256color"
+set-option -ga terminal-overrides ",xterm-256color:RGB"
 # Enable CSI u (extended keys) so tmux can distinguish modifier+key combos
 # that terminals normally can't differentiate (e.g. Enter vs Shift+Enter).
 # Alacritty must also be configured to send CSI u sequences for these keys.

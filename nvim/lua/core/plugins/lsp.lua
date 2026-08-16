@@ -93,7 +93,7 @@ return {
         -- Setup mason first
         require('mason').setup()
         require('mason-lspconfig').setup({
-          ensure_installed = { 'lua_ls', 'ruff', 'clangd' },
+          ensure_installed = { 'lua_ls', 'ruff', 'pyright', 'clangd' },
         })
 
         -- Get capabilities from cmp
@@ -171,13 +171,17 @@ return {
           },
         })
 
+        vim.lsp.config('pyright', {
+          capabilities = capabilities,
+        })
+
         vim.lsp.config('clangd', {
           capabilities = capabilities,
           cmd = { 'clangd', '--offset-encoding=utf-16' },
         })
 
         -- Enable the configured servers
-        vim.lsp.enable({ 'lua_ls', 'ruff', 'clangd' })
+        vim.lsp.enable({ 'lua_ls', 'ruff', 'pyright', 'clangd' })
       end
     }
   },
